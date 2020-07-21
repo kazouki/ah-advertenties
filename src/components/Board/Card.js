@@ -21,9 +21,10 @@ const useStyles = makeStyles({
   root: {
     borderRadius: "5px",
     minWidth: 275,
-    background: `linear-gradient(45deg, #10459f 30%, #3C78DF 90%)`,
+    background: "linear-gradient(45deg, #10459f 30%, #3C78DF 90%)",
+
     //none|h-offset v-offset blur spread color |inset|initial|inherit;
-    boxShadow: "-20px 50px 80px -30px black",
+    boxShadow: "-20px 80px 80px -30px black",
     // background: `url(${BluePaper}) repeat`,
     display: "block",
     width: "420px",

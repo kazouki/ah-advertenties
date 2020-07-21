@@ -8,6 +8,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { setLayoutState } from "../../store/editor/actions";
+import { findByLabelText } from "@testing-library/react";
 
 const Container = styled.div`
   display: flex;
@@ -136,38 +137,86 @@ function DndLayout(props) {
     }
   };
   return (
-    <DragDropContext
-      onDragStart={onDragStart}
-      onDragUpdate={onDragUpdate}
-      onDragEnd={onDragEnd}
-    >
-      <Droppable droppableId="all-columns" direction="horizontal" type="column">
-        {(provided) => (
-          <Container {...provided.droppableProps} ref={provided.innerRef}>
-            {state.columnOrder.map((columnId, index) => {
-              const column = state.columns[columnId];
-              const ptexts = column.ptextIds.map(
-                (ptextId) => state.ptexts[ptextId]
-              );
+    <div style={{ backgroundColor: "#BEBEBE" }}>
+      <DragDropContext
+        onDragStart={onDragStart}
+        onDragUpdate={onDragUpdate}
+        onDragEnd={onDragEnd}
+      >
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {(provided) => (
+            <Container {...provided.droppableProps} ref={provided.innerRef}>
+              {state.columnOrder.map((columnId, index) => {
+                const column = state.columns[columnId];
+                const ptexts = column.ptextIds.map(
+                  (ptextId) => state.ptexts[ptextId]
+                );
 
-              //creating rule: only drop in next column allowed
-              // const isDropDisabled = index < state.homeIndex;
+                //creating rule: only drop in next column allowed
+                // const isDropDisabled = index < state.homeIndex;
 
-              return (
-                <Column
-                  key={column.id}
-                  column={column}
-                  ptexts={ptexts}
-                  isDropDisabled={false}
-                  index={index}
-                />
-              );
-            })}
-            {provided.placeholder}
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+                return (
+                  <span
+                    id="cardBackgroundPlate"
+                    key={column.id}
+                    style={{
+                      margin: -20,
+                      marginTop: -60,
+                      border: "40px solid #00A0E2",
+                      height: "100%",
+                    }}
+                  >
+                    <Column
+                      // key={column.id}
+                      column={column}
+                      ptexts={ptexts}
+                      isDropDisabled={false}
+                      index={index}
+                    />
+                    <span
+                      id="glueStrip"
+                      style={{
+                        position: "relative",
+                        top: -38,
+                        left: -70,
+                      }}
+                    >
+                      <hr
+                        style={{
+                          border: 0,
+                          width: "150%",
+                          color: "white",
+                          background:
+                            "linear-gradient(to bottom right, #E8E8E8, white)",
+                          height: "50px",
+                        }}
+                      ></hr>
+                      <hr
+                        style={{
+                          border: 0,
+                          width: "150%",
+                          color: "grey",
+                          background:
+                            "linear-gradient(to bottom right, #DCDCDC, white)",
+                          // backgroundColor: "#d3d3d3",
+                          height: "50px",
+                          marginTop: -10,
+                        }}
+                      ></hr>
+                    </span>
+                  </span>
+                );
+              })}
+              {provided.placeholder}
+            </Container>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 }
 

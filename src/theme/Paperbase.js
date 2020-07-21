@@ -149,7 +149,14 @@ function Paperbase(props) {
       <div className={classes.root}>
         <div className={classes.appContent}>
           <Header />
-          <main className={classes.mainContent}>
+          <main
+            className={classes.mainContent}
+            style={{
+              // background: "linear-gradient(to bottom right, #E8E8E8, white)",
+              background: "#00A0E2",
+              overflowX: "hidden",
+            }}
+          >
             {/* React Router routes go here } */}
             <Route path="/card" component={AHCard} />
             <Route path="/layout" component={DndLayout} />
