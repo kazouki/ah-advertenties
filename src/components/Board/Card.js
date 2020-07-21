@@ -18,7 +18,8 @@ const useStyles = makeStyles({
     minWidth: 275,
     background: `linear-gradient(45deg, #10459f 30%, #3C78DF 90%)`,
     //none|h-offset v-offset blur spread color |inset|initial|inherit;
-    boxShadow: "-40px 50px 80px -30px black",
+
+    boxShadow: "-20px 50px 80px -30px black",
     // background: `url(${BluePaper}) repeat`,
     display: "block",
     width: "420px",
@@ -106,7 +107,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AHCard() {
+export default function AHCard(props) {
   const [description, setDescription] = useState("");
   const classes = useStyles();
   const CHARACTER_LIMIT = 20;
@@ -115,9 +116,12 @@ export default function AHCard() {
     <Card className={classes.root} display="inline">
       <CardContent>
         <Typography className={classes.title} gutterBottom>
-          <span>
-            <img className={classes.ahlogo} src={ahLogoWit} alt="" />
-          </span>
+          {/* <span
+            {...props.provided.dragHandleProps}
+            ref={props.provided.innerRef}
+          > */}
+          <img className={classes.ahlogo} src={ahLogoWit} alt="" />
+          {/* </span> */}
           Aangeboden
           <Checkbox color="default" className={classes.checkbox} />
           Gevraagd

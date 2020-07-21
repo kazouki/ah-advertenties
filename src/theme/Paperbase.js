@@ -11,6 +11,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Header from "./Header";
 
 import AHCard from "../components/Board/Card";
+import DndLayout from "../components/Editor/dndLayout";
 
 let theme = createMuiTheme({
   typography: {
@@ -158,6 +159,7 @@ function Paperbase(props) {
           <main className={classes.mainContent}>
             {/* React Router routes go here } */}
             <Route path="/card" component={AHCard} />
+            <Route path="/layout" component={DndLayout} />
           </main>
         </div>
       </div>
