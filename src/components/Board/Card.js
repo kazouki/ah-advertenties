@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+
 // import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
@@ -18,7 +19,6 @@ const useStyles = makeStyles({
     minWidth: 275,
     background: `linear-gradient(45deg, #10459f 30%, #3C78DF 90%)`,
     //none|h-offset v-offset blur spread color |inset|initial|inherit;
-
     boxShadow: "-20px 50px 80px -30px black",
     // background: `url(${BluePaper}) repeat`,
     display: "block",

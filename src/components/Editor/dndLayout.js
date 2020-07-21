@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import initialData from "./initial-data";
+// import initialData from "./initial-data";
 import Column from "./column";
 import styled from "styled-components";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { useDispatch, useSelector } from "react-redux";
+import { selectLayoutState } from "../../store/editor/selectors";
 import { setLayoutState } from "../../store/editor/actions";
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 function DndLayout(props) {
   // const [state, setState] = useState(props.layoutState);
   const dispatch = useDispatch();
-  // const state = props.layoutState;
-  const state = initialData;
+  const state = useSelector(selectLayoutState);
 
   const onDragStart = (start) => {
     // document.body.style.color = "orange";
