@@ -55,6 +55,13 @@ const useStyles = makeStyles({
     fontSize: 10,
     color: "white",
   },
+  datumboxlabel: {
+    position: "relative",
+    top: "-1px",
+    left: 5,
+    fontSize: 10,
+    color: "white",
+  },
   phoneboxlabel: {
     position: "relative",
     top: "-2px",
@@ -62,6 +69,22 @@ const useStyles = makeStyles({
     color: "white",
     marginLeft: 4,
     marginRight: 2,
+  },
+
+  datumbox: {
+    position: "relative",
+    borderRadius: "5px",
+    background: "white",
+    height: 20,
+    top: 9,
+    left: 11,
+    // marginTop: 2,
+    marginLeft: 1,
+    marginBottom: 2,
+    width: "103px",
+    input: {
+      color: "black",
+    },
   },
   namebox: {
     borderRadius: "5px",
@@ -126,6 +149,22 @@ export default function AHCard(props) {
           <Checkbox color="default" className={classes.checkbox} />
           Gevraagd
           <Checkbox color="default" className={classes.checkbox} />
+          <span className={classes.datumboxlabel}>Datum </span>
+          <TextField
+            margin="dense"
+            rows={1}
+            rowsMax={1}
+            className={classes.datumbox}
+            InputProps={{
+              style: {
+                fontSize: 10,
+                fontFamily: "Bradley Hand",
+                marginLeft: 4,
+                marginTop: 2,
+              },
+              disableUnderline: true,
+            }}
+          />
         </Typography>
         <TextField
           margin="dense"
