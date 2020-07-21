@@ -67,7 +67,7 @@ export default function Ptext(props) {
           isDragging={snapshot.isDragging}
         >
           <div>
-            <AHCard />
+            <AHCard ptextId={props.ptext?.id} />
           </div>
           <Handle isDragDisabled={isDragDisabled} {...provided.dragHandleProps}>
             <DragHandle />

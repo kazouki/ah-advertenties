@@ -1,12 +1,12 @@
 const initialState = {
   layoutState: {
     ptexts: {
-      "ptext-1": { id: "ptext-1", content: "content..." },
-      "ptext-2": { id: "ptext-2", content: "content..." },
-      "ptext-3": { id: "ptext-3", content: "content..." },
-      "ptext-4": { id: "ptext-4", content: "content..." },
-      "ptext-5": { id: "ptext-5", content: "content..." },
-      "ptext-6": { id: "ptext-6", content: "content..." },
+      "ptext-1": { id: "ptext-1", content: "content1..." },
+      "ptext-2": { id: "ptext-2", content: "content2..." },
+      "ptext-3": { id: "ptext-3", content: "content3..." },
+      "ptext-4": { id: "ptext-4", content: "content4..." },
+      "ptext-5": { id: "ptext-5", content: "content5..." },
+      "ptext-6": { id: "ptext-6", content: "content6..." },
     },
     columns: {
       "column-1": {

@@ -27,7 +27,7 @@ const PtextList = styled.div`
   transition: background-color 0.3s ease;
   background-color: ${(props) => (props.isDraggingOver ? "white" : "inherit")};
   // flex-grow: 1;
-  // min-height: 100px;
+  min-height: 280px;
 
   display: flex;
 `;
