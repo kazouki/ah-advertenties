@@ -4,7 +4,8 @@ import Ptext from "./ptext";
 
 import Paper from "@material-ui/core/Paper";
 
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
+// import { Draggable } from "react-beautiful-dnd";
 
 //flex-direction / flex-grow / min-height   are essential
 const Container = styled.div`
@@ -18,9 +19,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Title = styled.h3`
-  padding: 8px;
-`;
+// const Title = styled.h3`
+//   padding: 8px;
+// `;
 
 const PtextList = styled.div`
   padding: 8px;
@@ -34,38 +35,48 @@ const PtextList = styled.div`
 
 export default function Column(props) {
   return (
-    <Draggable draggableId={props.column.id} index={props.index}>
-      {(provided) => (
-        <Container {...provided.draggableProps} ref={provided.innerRef}>
-          <Paper>
-            {/* <Title {...provided.dragHandleProps}>{props.column.title}</Title> */}
-            <Droppable
-              droppableId={props.column?.id}
-              type="active"
-              //create droppable rules based on 'type' assignment
-              // type={props.column.id === "column-3" ? "done" : "active"}
-              //disable the dropping draggables on this droppable
-              isDropDisabled={props.isDropDisabled}
-              direction="horizontal"
+    /*
+    ### optional draggable droppables
+     <Draggable draggableId={props.column.id} index={props.index}>
+     {(provided) => (
+     <Container {...provided.draggableProps} ref={provided.innerRef}>
+    */
+    <Container>
+      <Paper>
+        {/* ### provide drag handle for draggable droppable */}
+        {/* <Title {...provided.dragHandleProps}>{props.column.title}</Title> */}
+
+        <Droppable
+          droppableId={props.column?.id}
+          type="active"
+          //create droppable rules based on 'type' assignment
+          //  type={props.column.id === "column-3" ? "done" : "active"}
+          //disable the dropping draggables on this droppable
+
+          isDropDisabled={props.isDropDisabled}
+          direction="horizontal"
+        >
+          {(provided, snapshot) => (
+            <PtextList
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              isDraggingOver={snapshot.isDraggingOver}
             >
-              {(provided, snapshot) => (
-                <PtextList
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  isDraggingOver={snapshot.isDraggingOver}
-                >
-                  {props.ptexts
-                    ? props.ptexts.map((ptext, index) => (
-                        <Ptext key={ptext?.id} ptext={ptext} index={index} />
-                      ))
-                    : null}
-                  {provided.placeholder}
-                </PtextList>
-              )}
-            </Droppable>
-          </Paper>
-        </Container>
-      )}
-    </Draggable>
+              {props.ptexts
+                ? props.ptexts.map((ptext, index) => (
+                    <Ptext key={ptext?.id} ptext={ptext} index={index} />
+                  ))
+                : null}
+              {provided.placeholder}
+            </PtextList>
+          )}
+        </Droppable>
+      </Paper>
+    </Container>
+    /*
+    // ### closing for draggable droppables
+     )}
+     </Draggable>
+    */
   );
 }

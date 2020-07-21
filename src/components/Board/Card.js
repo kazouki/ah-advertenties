@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 
@@ -109,7 +109,7 @@ const useStyles = makeStyles({
     height: 20,
     width: "356px",
     input: {
-      disableUnderline: "true",
+      // disableUnderline: "true",
       color: "black",
     },
   },
@@ -135,7 +135,6 @@ const useStyles = makeStyles({
 });
 
 export default function AHCard(props) {
-  const [description, setDescription] = useState("");
   const dispatch = useDispatch();
   const layoutState = useSelector(selectLayoutState);
   const classes = useStyles();
@@ -159,7 +158,7 @@ export default function AHCard(props) {
   return (
     <Card className={classes.root} display="inline">
       <CardContent>
-        <Typography className={classes.title} gutterBottom>
+        <Typography className={classes.title} component={"span"} gutterBottom>
           {/* <span
             {...props.provided.dragHandleProps}
             ref={props.provided.innerRef}
@@ -230,7 +229,7 @@ export default function AHCard(props) {
             style: { fontSize: 14, fontFamily: "Bradley Hand", marginLeft: 2 },
             disableUnderline: true,
             inputProps: {
-              maxlength: CHARACTER_LIMIT,
+              maxLength: CHARACTER_LIMIT,
               className: classes.input,
             },
           }}
@@ -238,7 +237,7 @@ export default function AHCard(props) {
           multiline
           fullWidth
         />
-        <Typography>
+        <Typography component={"span"}>
           <span className={classes.nameboxlabel}>Naam </span>
           <TextField
             name="name"
@@ -276,12 +275,11 @@ export default function AHCard(props) {
             }}
           />
         </Typography>
-        <Typography>
+        <Typography component={"span"}>
           <span className={classes.nameboxlabel}>E-mail </span>
           <TextField
             name="email"
             onChange={onFieldChangeHandler}
-            disableUnderline={true}
             margin="dense"
             rows={1}
             rowsMax={1}
@@ -295,13 +293,13 @@ export default function AHCard(props) {
               },
               disableUnderline: true,
               inputProps: {
-                maxlength: CHARACTER_LIMIT,
+                maxLength: CHARACTER_LIMIT,
                 className: classes.input,
               },
             }}
           />
         </Typography>
-        <Typography>
+        <Typography component={"span"}>
           <span className={classes.footertext}>
             OM HET AANBOD ACTUEEL TE HOUDEN, WORDEN KAARTJES NA 14 DAGEN
             VERWIJDERD.

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import {
@@ -6,7 +6,6 @@ import {
   createMuiTheme,
   withStyles,
 } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Header from "./Header";
 
@@ -56,7 +55,7 @@ theme = {
     },
     MuiTabs: {
       root: {
-        marginLeft: theme.spacing.unit,
+        marginLeft: theme.spacing(1),
       },
       indicator: {
         height: 3,
@@ -74,16 +73,10 @@ theme = {
           minWidth: 0,
         },
       },
-      labelContainer: {
-        padding: 0,
-        [theme.breakpoints.up("md")]: {
-          padding: 0,
-        },
-      },
     },
     MuiIconButton: {
       root: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing(1),
       },
     },
     MuiTooltip: {

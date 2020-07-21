@@ -6,10 +6,6 @@ import DragHandle from "@material-ui/icons/DragHandle";
 
 import AHCard from "../Board/Card";
 
-import { setLayoutState } from "../../store/editor/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { selectLayoutState } from "../../store/editor/selectors";
-
 const Container = styled.div`
   /* border: 1px solid lightgrey; */
   border-radius: 5px;
@@ -32,26 +28,9 @@ const Handle = styled.div`
 `;
 
 export default function Ptext(props) {
-  const dispatch = useDispatch();
-  const layoutState = useSelector(selectLayoutState);
-
   // OPTIONAL ::: set draggable to disabled
   const isDragDisabled = false;
   // const isDragDisabled = props.task.id === "task-1";
-
-  const onTextChangeHandler = (e) => {
-    const newState = {
-      ...layoutState,
-      ptexts: {
-        ...layoutState.ptexts,
-        [props.ptext?.id]: {
-          ...layoutState.ptexts[props.ptext?.id],
-          content: e.target.value,
-        },
-      },
-    };
-    dispatch(setLayoutState(newState));
-  };
 
   return (
     <Draggable
@@ -66,22 +45,11 @@ export default function Ptext(props) {
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <div>
-            <AHCard ptextId={props.ptext?.id} />
-          </div>
+          <AHCard ptextId={props.ptext?.id} />
+
           <Handle isDragDisabled={isDragDisabled} {...provided.dragHandleProps}>
             <DragHandle />
           </Handle>
-          {/* {props.ptext?.content} */}
-          {/* <TextField
-            id="standard-multiline-flexible"
-            label=""
-            multiline
-            fullWidth={true}
-            // rowsMax={4}
-            // value={layoutState.ptexts[props.ptext?.id].content}
-            onChange={onTextChangeHandler}
-          /> */}
         </Container>
       )}
     </Draggable>

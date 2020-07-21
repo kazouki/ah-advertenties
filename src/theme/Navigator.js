@@ -20,7 +20,7 @@ import Folder from "@material-ui/icons/Folder";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 
-import styled from "styled-components";
+// import styled from "styled-components";
 
 const categories = [
   {
@@ -90,7 +90,7 @@ const styles = (theme) => ({
   },
   textDense: {},
   divider: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
   },
 });
 
