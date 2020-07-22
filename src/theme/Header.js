@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
-// import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
@@ -110,7 +109,6 @@ function Header(props) {
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
-  // onDrawerToggle: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Header);

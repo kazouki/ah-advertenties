@@ -50,7 +50,7 @@ function CardModal(props) {
       >
         <Fade in={open}>
           <div>
-            <AHCard ptextId={props.ptext?.id} />
+            <AHCard ptextId={props.ptextId} />
           </div>
         </Fade>
       </Modal>
@@ -89,9 +89,11 @@ const PencilIcon = styled.div`
 `;
 
 export default function Ptext(props) {
-  // OPTIONAL ::: set draggable to disabled
+  //###### optionals
+  // set draggable to disabled
   const isDragDisabled = false;
   // const isDragDisabled = props.task.id === "task-1";
+  //######
 
   return (
     <Draggable
@@ -108,7 +110,7 @@ export default function Ptext(props) {
         >
           <AHCard ptextId={props.ptext?.id} />
           <PencilIcon>
-            <CardModal props={props} />
+            <CardModal ptextId={props.ptext?.id} />
           </PencilIcon>
 
           <Handle isDragDisabled={isDragDisabled} {...provided.dragHandleProps}>

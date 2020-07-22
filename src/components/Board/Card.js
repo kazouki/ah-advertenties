@@ -2,13 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 
-// import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
-// import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-// import { blue } from "@material-ui/core/colors";
-// import BluePaper from "../img/old-blue-paper.jpg";
 import ahLogoWit from "../img/ahlogo4.png";
 
 import { setLayoutState } from "../../store/editor/actions";
@@ -160,12 +156,7 @@ export default function AHCard(props) {
     <Card className={classes.root} display="inline">
       <CardContent>
         <Typography className={classes.title} component={"span"} gutterBottom>
-          {/* <span
-            {...props.provided.dragHandleProps}
-            ref={props.provided.innerRef}
-          > */}
           <img className={classes.ahlogo} src={ahLogoWit} alt="" />
-          {/* </span> */}
           Aangeboden
           <Checkbox
             name="aangeboden"
@@ -217,7 +208,6 @@ export default function AHCard(props) {
           }}
         />
         <TextField
-          // value={layoutState?.ptexts[props?.ptextId].content}
           name="description"
           onChange={onFieldChangeHandler}
           rows={6}

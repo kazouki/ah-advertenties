@@ -152,7 +152,6 @@ function Paperbase(props) {
           <main
             className={classes.mainContent}
             style={{
-              // background: "linear-gradient(to bottom right, #E8E8E8, white)",
               background: "#00A0E2",
               overflowX: "hidden",
             }}
