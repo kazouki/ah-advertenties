@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+
 // import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
@@ -10,15 +11,20 @@ import Typography from "@material-ui/core/Typography";
 // import BluePaper from "../img/old-blue-paper.jpg";
 import ahLogoWit from "../img/ahlogo4.png";
 
+import { setLayoutState } from "../../store/editor/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLayoutState } from "../../store/editor/selectors";
+
 import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles({
   root: {
     borderRadius: "5px",
     minWidth: 275,
-    background: `linear-gradient(45deg, #10459f 30%, #3C78DF 90%)`,
+    background: "linear-gradient(45deg, #10459f 30%, #3C78DF 90%)",
+
     //none|h-offset v-offset blur spread color |inset|initial|inherit;
-    boxShadow: "-40px 50px 80px -30px black",
+    boxShadow: "-20px 80px 80px -30px black",
     // background: `url(${BluePaper}) repeat`,
     display: "block",
     width: "420px",
@@ -54,6 +60,13 @@ const useStyles = makeStyles({
     fontSize: 10,
     color: "white",
   },
+  datumboxlabel: {
+    position: "relative",
+    top: "-1px",
+    left: 5,
+    fontSize: 10,
+    color: "white",
+  },
   phoneboxlabel: {
     position: "relative",
     top: "-2px",
@@ -61,6 +74,22 @@ const useStyles = makeStyles({
     color: "white",
     marginLeft: 4,
     marginRight: 2,
+  },
+
+  datumbox: {
+    position: "relative",
+    borderRadius: "5px",
+    background: "white",
+    height: 20,
+    top: 9,
+    left: 11,
+    // marginTop: 2,
+    marginLeft: 1,
+    marginBottom: 2,
+    width: "103px",
+    input: {
+      color: "black",
+    },
   },
   namebox: {
     borderRadius: "5px",
@@ -81,7 +110,7 @@ const useStyles = makeStyles({
     height: 20,
     width: "356px",
     input: {
-      disableUnderline: "true",
+      // disableUnderline: "true",
       color: "black",
     },
   },
@@ -106,24 +135,73 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AHCard() {
-  const [description, setDescription] = useState("");
+export default function AHCard(props) {
+  const dispatch = useDispatch();
+  const layoutState = useSelector(selectLayoutState);
   const classes = useStyles();
   const CHARACTER_LIMIT = 20;
+
+  const onFieldChangeHandler = (e) => {
+    const newState = {
+      ...layoutState,
+      ptexts: {
+        ...layoutState.ptexts,
+        [props?.ptextId]: {
+          ...layoutState.ptexts[props?.ptextId],
+          [e.target.name]: e.target.value,
+        },
+      },
+    };
+    // console.log("newState", newState);
+    dispatch(setLayoutState(newState));
+  };
 
   return (
     <Card className={classes.root} display="inline">
       <CardContent>
-        <Typography className={classes.title} gutterBottom>
-          <span>
-            <img className={classes.ahlogo} src={ahLogoWit} alt="" />
-          </span>
+        <Typography className={classes.title} component={"span"} gutterBottom>
+          {/* <span
+            {...props.provided.dragHandleProps}
+            ref={props.provided.innerRef}
+          > */}
+          <img className={classes.ahlogo} src={ahLogoWit} alt="" />
+          {/* </span> */}
           Aangeboden
-          <Checkbox color="default" className={classes.checkbox} />
+          <Checkbox
+            name="aangeboden"
+            onChange={onFieldChangeHandler}
+            color="default"
+            className={classes.checkbox}
+          />
           Gevraagd
-          <Checkbox color="default" className={classes.checkbox} />
+          <Checkbox
+            name="gevraagd"
+            onChange={onFieldChangeHandler}
+            color="default"
+            className={classes.checkbox}
+          />
+          <span className={classes.datumboxlabel}>Datum </span>
+          <TextField
+            onChange={onFieldChangeHandler}
+            name="datum"
+            margin="dense"
+            rows={1}
+            rowsMax={1}
+            className={classes.datumbox}
+            InputProps={{
+              style: {
+                fontSize: 10,
+                fontFamily: "Bradley Hand",
+                marginLeft: 4,
+                marginTop: 2,
+              },
+              disableUnderline: true,
+            }}
+          />
         </Typography>
         <TextField
+          name="title"
+          onChange={onFieldChangeHandler}
           margin="dense"
           rows={1}
           rowsMax={1}
@@ -139,8 +217,9 @@ export default function AHCard() {
           }}
         />
         <TextField
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          // value={layoutState?.ptexts[props?.ptextId].content}
+          name="description"
+          onChange={onFieldChangeHandler}
           rows={6}
           rowsMax={6}
           step="1"
@@ -151,7 +230,7 @@ export default function AHCard() {
             style: { fontSize: 14, fontFamily: "Bradley Hand", marginLeft: 2 },
             disableUnderline: true,
             inputProps: {
-              maxlength: CHARACTER_LIMIT,
+              maxLength: CHARACTER_LIMIT,
               className: classes.input,
             },
           }}
@@ -159,9 +238,11 @@ export default function AHCard() {
           multiline
           fullWidth
         />
-        <Typography>
+        <Typography component={"span"}>
           <span className={classes.nameboxlabel}>Naam </span>
           <TextField
+            name="name"
+            onChange={onFieldChangeHandler}
             margin="dense"
             rows={1}
             rowsMax={1}
@@ -178,6 +259,8 @@ export default function AHCard() {
           />
           <span className={classes.phoneboxlabel}>Telefoon </span>
           <TextField
+            name="telephone"
+            onChange={onFieldChangeHandler}
             margin="dense"
             rows={1}
             rowsMax={1}
@@ -193,10 +276,11 @@ export default function AHCard() {
             }}
           />
         </Typography>
-        <Typography>
+        <Typography component={"span"}>
           <span className={classes.nameboxlabel}>E-mail </span>
           <TextField
-            disableUnderline={true}
+            name="email"
+            onChange={onFieldChangeHandler}
             margin="dense"
             rows={1}
             rowsMax={1}
@@ -210,13 +294,13 @@ export default function AHCard() {
               },
               disableUnderline: true,
               inputProps: {
-                maxlength: CHARACTER_LIMIT,
+                maxLength: CHARACTER_LIMIT,
                 className: classes.input,
               },
             }}
           />
         </Typography>
-        <Typography>
+        <Typography component={"span"}>
           <span className={classes.footertext}>
             OM HET AANBOD ACTUEEL TE HOUDEN, WORDEN KAARTJES NA 14 DAGEN
             VERWIJDERD.

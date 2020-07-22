@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import {
@@ -6,11 +6,11 @@ import {
   createMuiTheme,
   withStyles,
 } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Header from "./Header";
 
 import AHCard from "../components/Board/Card";
+import DndLayout from "../components/Editor/dndLayout";
 
 let theme = createMuiTheme({
   typography: {
@@ -55,7 +55,7 @@ theme = {
     },
     MuiTabs: {
       root: {
-        marginLeft: theme.spacing.unit,
+        marginLeft: theme.spacing(1),
       },
       indicator: {
         height: 3,
@@ -73,16 +73,10 @@ theme = {
           minWidth: 0,
         },
       },
-      labelContainer: {
-        padding: 0,
-        [theme.breakpoints.up("md")]: {
-          padding: 0,
-        },
-      },
     },
     MuiIconButton: {
       root: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing(1),
       },
     },
     MuiTooltip: {
@@ -155,9 +149,17 @@ function Paperbase(props) {
       <div className={classes.root}>
         <div className={classes.appContent}>
           <Header />
-          <main className={classes.mainContent}>
+          <main
+            className={classes.mainContent}
+            style={{
+              // background: "linear-gradient(to bottom right, #E8E8E8, white)",
+              background: "#00A0E2",
+              overflowX: "hidden",
+            }}
+          >
             {/* React Router routes go here } */}
             <Route path="/card" component={AHCard} />
+            <Route path="/layout" component={DndLayout} />
           </main>
         </div>
       </div>
