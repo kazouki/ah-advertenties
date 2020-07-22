@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Ptext from "./ptext";
+import Ptext from "./ptextModal";
 
 import Paper from "@material-ui/core/Paper";
 

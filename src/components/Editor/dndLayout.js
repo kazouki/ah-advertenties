@@ -8,7 +8,6 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { setLayoutState } from "../../store/editor/actions";
-import { findByLabelText } from "@testing-library/react";
 
 const Container = styled.div`
   display: flex;
@@ -137,7 +136,10 @@ function DndLayout(props) {
     }
   };
   return (
-    <div style={{ backgroundColor: "#BEBEBE" }}>
+    <div
+      style={{ background: "linear-gradient(45deg, #989898 30%, #BEBEBE 90%)" }}
+    >
+      {/* <div style={{ backgroundColor: "#BEBEBE" }}> */}
       <DragDropContext
         onDragStart={onDragStart}
         onDragUpdate={onDragUpdate}
@@ -164,6 +166,7 @@ function DndLayout(props) {
                     id="cardBackgroundPlate"
                     key={column.id}
                     style={{
+                      // background: "",
                       margin: -20,
                       marginTop: -60,
                       border: "40px solid #00A0E2",
