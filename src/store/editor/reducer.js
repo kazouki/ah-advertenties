@@ -1,12 +1,23 @@
+const fields = {
+  aangeboden: " ",
+  gevraagd: " ",
+  title: " ",
+  description: " ",
+  name: " ",
+  telephone: " ",
+  email: " ",
+  datum: " ",
+};
+
 const initialState = {
   layoutState: {
     ptexts: {
-      "ptext-1": { id: "ptext-1", content: "content1..." },
-      "ptext-2": { id: "ptext-2", content: "content2..." },
-      "ptext-3": { id: "ptext-3", content: "content3..." },
-      "ptext-4": { id: "ptext-4", content: "content4..." },
-      "ptext-5": { id: "ptext-5", content: "content5..." },
-      "ptext-6": { id: "ptext-6", content: "content6..." },
+      "ptext-1": { ...fields, id: "ptext-1" },
+      "ptext-2": { ...fields, id: "ptext-2" },
+      "ptext-3": { ...fields, id: "ptext-3" },
+      "ptext-4": { ...fields, id: "ptext-4" },
+      "ptext-5": { ...fields, id: "ptext-5" },
+      "ptext-6": { ...fields, id: "ptext-6" },
     },
     columns: {
       "column-1": {
