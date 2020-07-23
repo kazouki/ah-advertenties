@@ -64,7 +64,7 @@ const useStyles = makeStyles({
     fontSize: 10,
     color: "white",
   },
-  datumboxlabel: {
+  dateboxlabel: {
     position: "relative",
     top: "-1px",
     left: 5,
@@ -80,7 +80,7 @@ const useStyles = makeStyles({
     marginRight: 2,
   },
 
-  datumbox: {
+  datebox: {
     position: "relative",
     borderRadius: "5px",
     background: "white",
@@ -159,7 +159,10 @@ export default function AHCard(props) {
         ...state.ptexts,
         [props?.ptextId]: {
           ...state.ptexts[props?.ptextId],
-          [e.target.name]: e.target.value,
+          [e.target.name]:
+            e.target.name !== "aangeboden" && e.target.name !== "gevraagd"
+              ? e.target.value
+              : e.target.checked,
         },
       },
     };
@@ -184,7 +187,7 @@ export default function AHCard(props) {
           Aangeboden
           <Checkbox
             name="aangeboden"
-            value={
+            checked={
               props.editDisabled
                 ? layoutState?.ptexts[props?.ptextId].aangeboden
                 : state?.ptexts[props?.ptextId].aangeboden
@@ -199,7 +202,7 @@ export default function AHCard(props) {
           Gevraagd
           <Checkbox
             name="gevraagd"
-            value={
+            checked={
               props.editDisabled
                 ? layoutState?.ptexts[props?.ptextId].gevraagd
                 : state?.ptexts[props?.ptextId].gevraagd
@@ -211,19 +214,19 @@ export default function AHCard(props) {
               disabled: props.editDisabled,
             }}
           />
-          <span className={classes.datumboxlabel}>Datum </span>
+          <span className={classes.dateboxlabel}>date </span>
           <TextField
-            name="datum"
+            name="date"
             value={
               props.editDisabled
-                ? layoutState?.ptexts[props?.ptextId].datum
-                : state?.ptexts[props?.ptextId].datum
+                ? layoutState?.ptexts[props?.ptextId].date
+                : state?.ptexts[props?.ptextId].date
             }
             onChange={onFieldChangeHandler}
             margin="dense"
             rows={1}
             rowsMax={1}
-            className={classes.datumbox}
+            className={classes.datebox}
             InputProps={{
               style: {
                 fontSize: 10,

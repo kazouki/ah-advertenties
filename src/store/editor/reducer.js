@@ -1,12 +1,12 @@
 const fields = {
-  aangeboden: " ",
-  gevraagd: " ",
+  aangeboden: false,
+  gevraagd: false,
   title: " ",
   description: " ",
   name: " ",
   telephone: " ",
   email: " ",
-  datum: " ",
+  date: " ",
 };
 
 const initialState = {

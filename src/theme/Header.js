@@ -61,14 +61,14 @@ function Header(props) {
                   onClick={onDrawerToggle}
                   className={classes.menuButton}
                 >
-                  <MenuIcon />
+                  {/* <MenuIcon /> */}
                 </IconButton>
               </Grid>
             </Hidden>
             <Grid item xs />
             <Grid item>
               <Typography className={classes.link} component="a" href="#">
-                ...
+                Log in
               </Typography>
             </Grid>
             <Grid item>
@@ -96,7 +96,14 @@ function Header(props) {
         position="static"
         elevation={0}
       >
-        <Tabs value={0} textColor="inherit">
+        <Tabs value={0} textColor="inherit" centered>
+          <Tab
+            label="Alle Kaarten"
+
+            // icon={Icons.seatIcon}
+            // component={Link}
+            // to="/passenger"
+          />
           <Tab textColor="inherit" label="..." />
           <Tab textColor="inherit" label="..." />
           <Tab textColor="inherit" label="..." />
