@@ -5,7 +5,10 @@ import Ptext from "./ptextModal";
 import Paper from "@material-ui/core/Paper";
 
 import { Droppable } from "react-beautiful-dnd";
+
+//##### optionals
 // import { Draggable } from "react-beautiful-dnd";
+//#####
 
 //flex-direction / flex-grow / min-height   are essential
 const Container = styled.div`
@@ -19,9 +22,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+//##### optionals
 // const Title = styled.h3`
 //   padding: 8px;
 // `;
+//#####
 
 const PtextList = styled.div`
   padding: 8px;

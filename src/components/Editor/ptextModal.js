@@ -13,6 +13,11 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import { selectLayoutState } from "../../store/editor/selectors";
+import { setLayoutState } from "../../store/editor/actions";
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -22,8 +27,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CardModal(props) {
+  const layoutState = useSelector(selectLayoutState);
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+
+  const saveCardStateToStore = (state) => {
+    dispatch(setLayoutState(state));
+    handleClose();
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -50,7 +63,12 @@ function CardModal(props) {
       >
         <Fade in={open}>
           <div>
-            <AHCard ptextId={props.ptextId} />
+            <AHCard
+              ptextId={props.ptextId}
+              editDisabled={false}
+              initState={layoutState}
+              saveStateTo={saveCardStateToStore}
+            />
           </div>
         </Fade>
       </Modal>
@@ -89,6 +107,7 @@ const PencilIcon = styled.div`
 `;
 
 export default function Ptext(props) {
+  const layoutState = useSelector(selectLayoutState);
   //###### optionals
   // set draggable to disabled
   const isDragDisabled = false;
@@ -108,7 +127,11 @@ export default function Ptext(props) {
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <AHCard ptextId={props.ptext?.id} />
+          <AHCard
+            ptextId={props.ptext?.id}
+            editDisabled={true}
+            initState={layoutState}
+          />
           <PencilIcon>
             <CardModal ptextId={props.ptext?.id} />
           </PencilIcon>

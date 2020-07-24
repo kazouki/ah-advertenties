@@ -1,16 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Route } from "react-router-dom";
 import {
   MuiThemeProvider,
   createMuiTheme,
   withStyles,
 } from "@material-ui/core/styles";
-
-import Header from "./Header";
-
-import AHCard from "../components/Board/Card";
-import DndLayout from "../components/Editor/dndLayout";
 
 let theme = createMuiTheme({
   typography: {
@@ -143,12 +137,12 @@ const styles = {
 
 function Paperbase(props) {
   const { classes } = props;
+  const LayoutComponent = props.LayoutComponent;
 
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appContent}>
-          <Header />
           <main
             className={classes.mainContent}
             style={{
@@ -156,9 +150,7 @@ function Paperbase(props) {
               overflowX: "hidden",
             }}
           >
-            {/* React Router routes go here } */}
-            <Route path="/card" component={AHCard} />
-            <Route path="/layout" component={DndLayout} />
+            <LayoutComponent />
           </main>
         </div>
       </div>
