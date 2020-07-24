@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createCard } from "../../store/artwork/actions";
+import { createCard } from "../../store/card/actions";
 import { selectUser } from "../../store/user/selectors";
 import { selectToken } from "../../store/user/selectors";
 

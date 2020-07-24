@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import Artwork from "../../components/Artwork";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
-import { fetchArtworkDetail } from "../../store/artwork/actions";
-import { addHeart } from "../../store/artwork/actions";
+import CardView from "../../components/CardView";
 
-import { postBid } from "../../store/artwork/actions";
-import { getHighestBid } from "../../store/artwork/actions";
+import { fetchCardDetail } from "../../store/card/actions";
+import { addHeart } from "../../store/card/actions";
+
+import { postBid } from "../../store/card/actions";
+import { getHighestBid } from "../../store/card/actions";
 import { getUserWithStoredToken } from "../../store/user/actions";
 
-import { selectArtworkDetail } from "../../store/artwork/selectors";
-import { selectHighestBid } from "../../store/artwork/selectors";
+import { selectCardDetail } from "../../store/card/selectors";
+import { selectHighestBid } from "../../store/card/selectors";
 
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
@@ -23,20 +25,20 @@ import Form from "react-bootstrap/Form";
 import { Col } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 
-export default function ArtworkDetail(props) {
+export default function CardDetail(props) {
   const [bidValue, setBidValue] = useState("default");
   const [tooLowAlert, setTooLowAlert] = useState("");
 
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const artworkDetail = useSelector(selectArtworkDetail);
+  const cardDetail = useSelector(selectCardDetail);
   const highestBidAndId = useSelector(selectHighestBid);
   const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    dispatch(fetchArtworkDetail(id));
+    dispatch(fetchCardDetail(id));
     dispatch(getHighestBid(id));
     dispatch(getUserWithStoredToken());
   }, [dispatch, id]);
@@ -55,7 +57,7 @@ export default function ArtworkDetail(props) {
           bidValue === "default" && highestBidAndId.highestBid
             ? highestBidAndId.highestBid + 1
             : bidValue === "default" && !highestBidAndId.highestBid
-            ? artworkDetail.minimumBid + 1
+            ? cardDetail.minimumBid + 1
             : bidValue,
         email: user.email,
         token: user.token,
@@ -80,16 +82,17 @@ export default function ArtworkDetail(props) {
     <span>
       <Row>
         <Col>
-          {artworkDetail ? (
-            <Artwork
-              key={artworkDetail.id}
-              id={artworkDetail.id}
-              title={artworkDetail.title}
-              imageUrl={artworkDetail.imageUrl}
-              hearts={artworkDetail.hearts}
-              minimumBid={artworkDetail.minimumBid}
-              activeBids={artworkDetail.bids.length}
-              bidders={artworkDetail.bids}
+          (CardDetail component) before CardView is rendered ...
+          {cardDetail ? (
+            <CardView
+              key={cardDetail.id}
+              id={cardDetail.id}
+              title={cardDetail.title}
+              imageUrl={cardDetail.imageUrl}
+              hearts={cardDetail.hearts}
+              minimumBid={cardDetail.minimumBid}
+              activeBids={cardDetail.bids.length}
+              bidders={cardDetail.bids}
               showLink={false}
               giveHeart={onGiveHeart}
               detailMode={true}
@@ -122,7 +125,7 @@ export default function ArtworkDetail(props) {
                             Place a bid (starting at $
                             {highestBidAndId.highestBid
                               ? `${highestBidAndId.highestBid + 1}`
-                              : `${artworkDetail.minimumBid}`}
+                              : `${cardDetail.minimumBid}`}
                             )
                           </Form.Label>
                           <Form.Control
@@ -132,7 +135,7 @@ export default function ArtworkDetail(props) {
                                 ? highestBidAndId.highestBid + 1
                                 : bidValue === "default" &&
                                   !highestBidAndId.highestBid
-                                ? artworkDetail.minimumBid + 1
+                                ? cardDetail.minimumBid + 1
                                 : bidValue
                             }
                             onChange={onSetBidValue}
@@ -140,7 +143,7 @@ export default function ArtworkDetail(props) {
                             min={
                               highestBidAndId
                                 ? highestBidAndId.highestBid + 1
-                                : artworkDetail.minimumBid
+                                : cardDetail.minimumBid
                             }
                             placeholder="Bid"
                             required

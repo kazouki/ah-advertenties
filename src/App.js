@@ -10,7 +10,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login/index";
 
 // import Home from "./pages/Homepage";
-// import ArtworkDetail from "./pages/ArtworkDetail";
+import CardDetail from "./pages/CardDetail";
 import NewCard from "./pages/NewCard";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,7 @@ import { selectAppLoading } from "./store/appState/selectors";
 import { getUserWithStoredToken } from "./store/user/actions";
 
 import Paperbase from "./theme/Paperbase";
+import DndLayout from "./components/Editor/dndLayout";
 import "typeface-roboto";
 
 function App() {
@@ -34,8 +35,15 @@ function App() {
       <MessageBox />
       {isLoading ? <Loading /> : null}
       <Switch>
-        <Route exact path="/" component={Paperbase} />
-        {/* <Route path="/artworks/:id" component={ArtworkDetail} /> */}
+        <Route
+          exact
+          path="/"
+          component={() => <Paperbase LayoutComponent={DndLayout} />}
+        />
+        <Route
+          path="/carddetail/:id"
+          component={() => <Paperbase LayoutComponent={CardDetail} />}
+        />
         <Route path="/newcard" component={NewCard} />
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />

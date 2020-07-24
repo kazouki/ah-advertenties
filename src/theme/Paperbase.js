@@ -6,8 +6,6 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 
-import DndLayout from "../components/Editor/dndLayout";
-
 let theme = createMuiTheme({
   typography: {
     useNextVariants: true,
@@ -139,6 +137,7 @@ const styles = {
 
 function Paperbase(props) {
   const { classes } = props;
+  const LayoutComponent = props.LayoutComponent;
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -151,7 +150,7 @@ function Paperbase(props) {
               overflowX: "hidden",
             }}
           >
-            <DndLayout />
+            <LayoutComponent />
           </main>
         </div>
       </div>

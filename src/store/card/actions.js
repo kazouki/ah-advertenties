@@ -44,12 +44,12 @@ export function createCard({
   };
 }
 
-export function fetchArtworks() {
+export function fetchCards() {
   return async function thunk(dispatch, getState) {
     try {
-      const res = await api("artworks", { method: "GET" });
+      const res = await api("cards", { method: "GET" });
       if (res) {
-        dispatch({ type: "ARTWORKS", payload: res.data });
+        dispatch({ type: "CARDS", payload: res.data });
       } else return null;
     } catch (e) {
       console.log(e);
@@ -57,12 +57,12 @@ export function fetchArtworks() {
   };
 }
 
-export function fetchArtworkDetail(id) {
+export function fetchCardDetail(id) {
   return async function thunk(dispatch, getState) {
     try {
-      const res = await api(`artworks/${id}`, { method: "GET" });
+      const res = await api(`cards/${id}`, { method: "GET" });
       if (res) {
-        dispatch({ type: "ARTWORK_DETAIL", payload: res.data.artworkDetail });
+        dispatch({ type: "CARD_DETAIL", payload: res.data.cardDetail });
         return true;
       } else return false;
     } catch (e) {
@@ -71,20 +71,20 @@ export function fetchArtworkDetail(id) {
   };
 }
 
-export function addHeart(artworkId) {
+export function addHeart(cardId) {
   return async function (dispatch, getState) {
     try {
-      const res = await api(`artworks`, {
+      const res = await api(`cards`, {
         method: "PATCH",
-        data: { artworkId },
+        data: { cardId },
         jwt: "",
       });
-      dispatch({ type: "ARTWORK_DETAIL", payload: res.data });
+      dispatch({ type: "CARD_DETAIL", payload: res.data });
 
       try {
-        const res = await api("artworks", { method: "GET" });
+        const res = await api("cards", { method: "GET" });
         if (res) {
-          dispatch({ type: "ARTWORKS", payload: res.data });
+          dispatch({ type: "CARDS", payload: res.data });
         } else return null;
       } catch (e) {
         console.log(e);
@@ -95,25 +95,25 @@ export function addHeart(artworkId) {
   };
 }
 
-export function postBid({ artworkId, amount, email, token, highestBid }) {
+export function postBid({ cardId, amount, email, token, highestBid }) {
   return async function (dispatch, getState) {
     try {
-      const res = await api("artworks/bid", {
+      const res = await api("cards/bid", {
         method: "POST",
-        data: { artworkId, amount, email },
+        data: { cardId, amount, email },
         jwt: token,
       });
 
       try {
-        const res = await api(`artworks/highestbid/${artworkId}`);
+        const res = await api(`cards/highestbid/${cardId}`);
         dispatch({ type: "HIGHEST_BID", payload: res.data });
 
         try {
-          const res = await api(`artworks/${artworkId}`, { method: "GET" });
+          const res = await api(`cards/${cardId}`, { method: "GET" });
           if (res) {
             dispatch({
-              type: "ARTWORK_DETAIL",
-              payload: res.data.artworkDetail,
+              type: "CARD_DETAIL",
+              payload: res.data.cardDetail,
             });
             return true;
           } else return false;
@@ -131,10 +131,10 @@ export function postBid({ artworkId, amount, email, token, highestBid }) {
   };
 }
 
-export function getHighestBid(artworkId) {
+export function getHighestBid(cardId) {
   return async function (dispatch, getState) {
     try {
-      const res = await api(`artworks/highestbid/${artworkId}`);
+      const res = await api(`cards/highestbid/${cardId}`);
       dispatch({ type: "HIGHEST_BID", payload: res.data });
     } catch (e) {
       console.log(e);
