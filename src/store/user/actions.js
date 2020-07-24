@@ -43,10 +43,10 @@ export const signUp = (name, email, password, artist) => {
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
-        dispatch(setMessage("danger", true, error.response.data.message));
+        dispatch(setMessage("warning", true, error.response.data.message));
       } else {
         console.log(error.message);
-        dispatch(setMessage("danger", true, error.message));
+        dispatch(setMessage("warning", true, error.message));
       }
       dispatch(appDoneLoading());
     }
@@ -63,15 +63,22 @@ export const login = (email, password) => {
       });
 
       dispatch(loginSuccess(response.data));
-      dispatch(showMessageWithTimeout("success", false, "welcome back!", 1500));
+      dispatch(
+        showMessageWithTimeout(
+          "success",
+          false,
+          `Welkom terug ${getState().user.name}!`,
+          5000
+        )
+      );
       dispatch(appDoneLoading());
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
-        dispatch(setMessage("danger", true, error.response.data.message));
+        dispatch(setMessage("warning", true, error.response.data.message));
       } else {
         console.log(error.message);
-        dispatch(setMessage("danger", true, error.message));
+        dispatch(setMessage("warning", true, error.message));
       }
       dispatch(appDoneLoading());
     }
