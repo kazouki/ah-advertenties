@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { setLayoutState } from "../../store/editor/actions";
 
+import { AH_BLUE } from "../../config/constants.js";
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -172,7 +174,7 @@ function DndLayout(props) {
                     style={{
                       margin: -20,
                       marginTop: -60,
-                      border: "40px solid #00A0E2",
+                      border: `40px solid ${AH_BLUE}`,
                       height: "100%",
                     }}
                   >

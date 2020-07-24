@@ -1,21 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import { Col } from "react-bootstrap";
-
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/user/actions";
 import { selectToken } from "../../store/user/selectors";
 
+import { makeStyles } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+import Grid from "@material-ui/core/Grid";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+
+import clsx from "clsx";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Button from "@material-ui/core/Button";
+
+import { AH_BLUE } from "../../config/constants.js";
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+}));
+
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState("");
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const history = useHistory();
+
+  const classes = useStyles();
 
   useEffect(() => {
     if (token !== null) {
@@ -32,40 +57,108 @@ export default function SignUp() {
     setPassword("");
   }
 
-  return (
-    <Container>
-      <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
-        <h1 className="mt-5 mb-5">Login</h1>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            type="email"
-            placeholder="Enter email"
-            required
-          />
-        </Form.Group>
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            placeholder="Password"
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mt-5">
-          <Button variant="primary" type="submit" onClick={submitForm}>
-            Log in
-          </Button>
-        </Form.Group>
-        <Link to="/signup" style={{ textAlign: "center" }}>
-          Click here to sign up
-        </Link>
-      </Form>
-    </Container>
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  return (
+    <>
+      <Container
+        style={{
+          width: "98%",
+          height: "70vw",
+          background: "rgb(48,194,255, 0.04)",
+          paddingTop: 70,
+          marginTop: 40,
+        }}
+      >
+        <Container
+          style={{
+            width: "50%",
+            height: "40%",
+            minWidth: "400px",
+            minHeight: "400px",
+            background: "white",
+            paddingTop: 20,
+            borderRadius: 10,
+          }}
+        >
+          <Container style={{ marginTop: 0 }}>
+            <CssBaseline />
+            <Container>
+              <FormControl className={classes.margin}>
+                <Grid container spacing={1} alignItems="flex-end">
+                  <Grid item>
+                    <AccountCircle style={{ color: AH_BLUE }} />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      id="input-with-icon-grid"
+                      label="E-mail"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                    />
+                  </Grid>
+                </Grid>
+              </FormControl>
+            </Container>
+
+            <Container style={{ marginTop: 20 }}>
+              <FormControl className={clsx(classes.margin, classes.textField)}>
+                <InputLabel htmlFor="standard-adornment-password">
+                  Wachtwoord
+                </InputLabel>
+                <Input
+                  id="standard-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? (
+                          <Visibility style={{ color: AH_BLUE }} />
+                        ) : (
+                          <VisibilityOff style={{ color: AH_BLUE }} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Container>
+            <Container>
+              <Button
+                variant="contained"
+                style={{ color: AH_BLUE, background: "white", marginTop: 30 }}
+                type="submit"
+                onClick={submitForm}
+              >
+                inloggen
+              </Button>
+            </Container>
+
+            <Container style={{ marginTop: 40, textDecoration: "none" }}>
+              Nog geen Account?
+            </Container>
+            <Container style={{ marginTop: 5, textDecoration: "none" }}>
+              Klik
+              <b>
+                <Link to="/signup"> hier </Link>
+              </b>
+              om je in te schrijven
+            </Container>
+          </Container>
+        </Container>
+      </Container>
+    </>
   );
 }

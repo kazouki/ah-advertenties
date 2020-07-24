@@ -10,8 +10,11 @@ import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
+
 import { Link } from "react-router-dom";
+
 import ahLogoWit from "../../static/img/ahlogo4.png";
+import { AH_BLUE } from "../../config/constants.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,11 +26,25 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
+    marginTop: 7,
+    // flexGrow: 1,
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
+    color: "white",
+  },
+  titleExtension: {
+    // marginTop: 4,
+    // fontSize: 17,
+  },
+  menuItem: {
     flexGrow: 1,
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
+    color: "white",
   },
   search: {
     position: "relative",
@@ -75,14 +92,29 @@ export default function SearchAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: "#00A0E2" }}>
+      <AppBar position="static" style={{ background: AH_BLUE }}>
         <Toolbar>
           <Link to={"/"}>
             <img className={classes.homeButton} src={ahLogoWit} alt="" />
           </Link>
 
-          <Typography className={classes.title} variant="h6" noWrap>
-            ...
+          <Typography className={classes.title} variant="h5" noWrap>
+            Albert Heijn
+          </Typography>
+          <Typography className={classes.titleExtension} variant="h6" noWrap>
+            Advertenties
+          </Typography>
+          <Typography className={classes.menuItem} noWrap>
+            Nieuwe Kaart
+          </Typography>
+          <Typography className={classes.menuItem} noWrap>
+            Mijn Favorieten
+          </Typography>
+          <Typography className={classes.menuItem} noWrap>
+            link3
+          </Typography>
+          <Typography className={classes.menuItem} noWrap>
+            link4
           </Typography>
 
           <div className={classes.search}>
@@ -109,14 +141,16 @@ export default function SearchAppBar() {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
+          <Link style={{ color: "white" }} to="/login">
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>

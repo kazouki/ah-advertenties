@@ -6,6 +6,8 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 
+import { AH_BLUE } from "../config/constants.js";
+
 let theme = createMuiTheme({
   typography: {
     useNextVariants: true,
@@ -18,7 +20,7 @@ let theme = createMuiTheme({
   palette: {
     primary: {
       light: "#63ccff",
-      main: "#009be5",
+      main: AH_BLUE,
       dark: "#006db3",
     },
   },
@@ -146,7 +148,7 @@ function Paperbase(props) {
           <main
             className={classes.mainContent}
             style={{
-              background: "#00A0E2",
+              background: AH_BLUE,
               overflowX: "hidden",
             }}
           >
