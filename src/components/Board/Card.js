@@ -5,7 +5,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import ahLogoWit from "../img/ahlogo4.png";
+import ahLogoWit from "../../static/img/ahlogo4.png";
 
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -66,8 +66,9 @@ const useStyles = makeStyles({
   },
   dateboxlabel: {
     position: "relative",
-    top: "-1px",
-    left: 5,
+    top: "0px",
+    marginRight: -5,
+    left: 0,
     fontSize: 10,
     color: "white",
   },
@@ -86,7 +87,7 @@ const useStyles = makeStyles({
     background: "white",
     height: 20,
     top: 9,
-    left: 11,
+    left: 9,
     marginLeft: 1,
     marginBottom: 2,
     width: "103px",
@@ -113,7 +114,6 @@ const useStyles = makeStyles({
     height: 20,
     width: "356px",
     input: {
-      // disableUnderline: "true",
       color: "black",
     },
   },
@@ -135,6 +135,7 @@ const useStyles = makeStyles({
     height: "30px",
     width: "40px",
     marginRight: 10,
+    right: 0,
   },
 });
 
@@ -214,7 +215,7 @@ export default function AHCard(props) {
               disabled: props.editDisabled,
             }}
           />
-          <span className={classes.dateboxlabel}>date </span>
+          <span className={classes.dateboxlabel}>datum </span>
           <TextField
             name="date"
             value={
