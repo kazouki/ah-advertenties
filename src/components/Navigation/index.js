@@ -99,7 +99,7 @@ export default function SearchAppBar() {
     <div className={classes.root}>
       <AppBar position="static" style={{ background: AH_BLUE }}>
         <Toolbar>
-          <Link to={"/"}>
+          <Link to={"/"} style={{ outline: "none" }}>
             <img className={classes.homeButton} src={ahLogoWit} alt="" />
           </Link>
 
@@ -113,10 +113,10 @@ export default function SearchAppBar() {
             Nieuwe Kaart
           </Typography>
           <Typography className={classes.menuItem} noWrap>
-            Mijn Favorieten
+            Mijn Kaarten
           </Typography>
           <Typography className={classes.menuItem} noWrap>
-            link3
+            Favorieten
           </Typography>
           <Typography className={classes.menuItem} noWrap>
             link4

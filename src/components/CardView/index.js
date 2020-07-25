@@ -9,6 +9,10 @@ import { Link } from "react-router-dom";
 import { Col } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 
+/////////
+import Container from "@material-ui/core/Container";
+import context from "react-bootstrap/esm/AccordionContext";
+
 export default function CardView(props) {
   const onClickGiveHeart = (event) => {
     props.giveHeart(props.id);
@@ -27,83 +31,51 @@ export default function CardView(props) {
   // minimumBid,
 
   return (
-    <Card>
-      cardview card is rendered ...
-      {props.detailMode ? (
-        <span style={{ display: "inline-block" }}>
-          <Card.Img
-            style={{ width: "50%" }}
-            variant="top"
-            src={props.imageUrl}
-            alt=""
-          />
-        </span>
-      ) : (
-        <span>
-          <Card.Img variant="top" src={props.imageUrl} alt="" />
-        </span>
-      )}
-      <Card.Body>
-        <Row>
-          <Col>
-            <Card.Title>{props.title}</Card.Title>
-          </Col>
-          <Col md={props.heartGrid}>
-            {props.giveHeartParent ? (
-              <Button
-                size="sm"
-                variant="outline-primary"
-                onClick={props.giveHeart}
-              >
-                <BsFillHeartFill /> {props.hearts}
-              </Button>
-            ) : (
-              <>
-                <Button
-                  size="sm"
-                  variant="outline-primary"
-                  onClick={onClickGiveHeart}
-                >
-                  <BsFillHeartFill /> {props.hearts}
-                </Button>
-              </>
-            )}
-          </Col>
-        </Row>
-        <Card.Text></Card.Text>
-        <ListGroup variant="flush">
-          <ListGroup.Item>
-            <b>bidding start amount is </b> {props.minimumBid}
-            {props.minimumBid === 1 ? <b> dollar</b> : <b> dollars</b>}
-          </ListGroup.Item>
-        </ListGroup>
+    <Container>
+      <Container>
+        <img variant="top" src={props.imageUrl} alt="" />
+      </Container>
+      <Container>{props.title}</Container>
 
-        <ListGroup variant="flush">
-          {props.bidders ? (
-            <>
-              {props.bidders.map((bidder) => (
-                <span key={bidder.id}>
-                  <ListGroup.Item>
-                    <i>{bidder.email}</i> <b>has placed a bid of $</b>
-                    {bidder.amount}
-                  </ListGroup.Item>
-                </span>
-              ))}
-            </>
-          ) : (
-            <span>
-              <ListGroup.Item>
-                <b>active bids</b> {props.activeBids}
-              </ListGroup.Item>
-            </span>
-          )}
-          {props.showLink ? (
-            <Link to={`/artworks/${props.id}`}>
-              <Button variant="outline-secondary">View Card Details</Button>
-            </Link>
-          ) : null}
-        </ListGroup>
-      </Card.Body>
-    </Card>
+      <Container>
+        {props.giveHeartParent ? (
+          <Button size="sm" variant="primary" onClick={props.giveHeart}>
+            <BsFillHeartFill /> {props.hearts}
+          </Button>
+        ) : (
+          <>
+            <Button
+              size="sm"
+              variant="outline-primary"
+              onClick={onClickGiveHeart}
+            >
+              <BsFillHeartFill /> {props.hearts}
+            </Button>
+          </>
+        )}
+      </Container>
+
+      <Container>
+        <b>bidding start amount is </b> {props.minimumBid}
+        {props.minimumBid === 1 ? <b> dollar</b> : <b> dollars</b>}
+      </Container>
+
+      <Container>
+        {props.bidders ? (
+          <>
+            {props.bidders.map((bidder) => (
+              <span key={bidder.id}>
+                <i>{bidder.email}</i> <b>has placed a bid of $</b>
+                {bidder.amount}
+              </span>
+            ))}
+          </>
+        ) : (
+          <span>
+            <b>active bids</b> {props.activeBids}
+          </span>
+        )}
+      </Container>
+    </Container>
   );
 }

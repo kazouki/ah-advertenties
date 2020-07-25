@@ -13,7 +13,7 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
+// import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Grid from "@material-ui/core/Grid";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -125,7 +125,7 @@ export default function SignUp() {
             }}
           >
             <Container style={{ marginTop: 0 }}>
-              <CssBaseline />
+              {/* <CssBaseline /> */}
 
               <Container>
                 <FormControl className={classes.margin}>

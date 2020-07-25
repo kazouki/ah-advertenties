@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-// import "bootstrap/dist/css/bootstrap.min.css";
-
 import CardView from "../../components/CardView";
 
 import { fetchCardDetail } from "../../store/card/actions";
@@ -24,6 +22,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Col } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
+
+////////
+
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
 
 export default function CardDetail(props) {
   const [bidValue, setBidValue] = useState("default");
@@ -52,7 +57,7 @@ export default function CardDetail(props) {
 
     dispatch(
       postBid({
-        artworkId: id,
+        cardId: id,
         amount:
           bidValue === "default" && highestBidAndId.highestBid
             ? highestBidAndId.highestBid + 1
@@ -78,94 +83,120 @@ export default function CardDetail(props) {
     if (!e.target.value) setTooLowAlert("");
   };
 
+  const useStyles = makeStyles((theme) => ({
+    margin: {
+      margin: theme.spacing(1),
+    },
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: "center",
+      color: theme.palette.text.secondary,
+    },
+  }));
+
+  const classes = useStyles();
+
   return (
-    <span>
-      <Row>
-        <Col>
-          (CardDetail component) before CardView is rendered ...
-          {cardDetail ? (
-            <CardView
-              key={cardDetail.id}
-              id={cardDetail.id}
-              title={cardDetail.title}
-              imageUrl={cardDetail.imageUrl}
-              hearts={cardDetail.hearts}
-              minimumBid={cardDetail.minimumBid}
-              activeBids={cardDetail.bids.length}
-              bidders={cardDetail.bids}
-              showLink={false}
-              giveHeart={onGiveHeart}
-              detailMode={true}
-              heartGrid={10}
-            />
-          ) : null}
-        </Col>
-        {userToken ? (
-          <span>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
-                    {highestBidAndId ? (
-                      <span>
-                        <Card.Title>
-                          {highestBidAndId.highestBid ? (
-                            <>
-                              Highest bidder is{" "}
-                              {highestBidAndId.highestBidEmail} with $
-                              {highestBidAndId.highestBid}
-                            </>
-                          ) : (
-                            <>be the first one to place a bid!</>
-                          )}
-                        </Card.Title>
-
-                        <Form.Group controlId="formBasicNumber">
-                          <Form.Label>
-                            Place a bid (starting at $
-                            {highestBidAndId.highestBid
-                              ? `${highestBidAndId.highestBid + 1}`
-                              : `${cardDetail.minimumBid}`}
-                            )
-                          </Form.Label>
-                          <Form.Control
-                            value={
-                              bidValue === "default" &&
-                              highestBidAndId.highestBid
-                                ? highestBidAndId.highestBid + 1
-                                : bidValue === "default" &&
-                                  !highestBidAndId.highestBid
-                                ? cardDetail.minimumBid + 1
-                                : bidValue
-                            }
-                            onChange={onSetBidValue}
-                            type="number"
-                            min={
-                              highestBidAndId
-                                ? highestBidAndId.highestBid + 1
-                                : cardDetail.minimumBid
-                            }
-                            placeholder="Bid"
-                            required
-                          />
-
-                          <Button
-                            variant="outline-secondary"
-                            onClick={onBidSubmitHandler}
-                          >
-                            place bid
-                          </Button>
-                          {tooLowAlert}
-                        </Form.Group>
-                      </span>
+    <>
+      {userToken ? (
+        <span>
+          {highestBidAndId ? (
+            <div className={classes.root}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Paper className={classes.paper}>
+                    "add to favs button" / tool links
+                  </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                  <Paper className={classes.paper}>
+                    {cardDetail ? (
+                      <CardView
+                        key={cardDetail.id}
+                        id={cardDetail.id}
+                        title={cardDetail.title}
+                        imageUrl={cardDetail.imageUrl}
+                        hearts={cardDetail.hearts}
+                        minimumBid={cardDetail.minimumBid}
+                        activeBids={cardDetail.bids.length}
+                        bidders={cardDetail.bids}
+                        giveHeart={onGiveHeart}
+                        detailMode={true}
+                        heartGrid={10}
+                      />
                     ) : null}
-                  </Form>
-                </Card.Body>
-              </Card>
-            </Col>
-          </span>
-        ) : null}
-      </Row>
-    </span>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                  <Paper className={classes.paper}>messagebox section</Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <Container>
+                      Place a bid (starting at $
+                      {highestBidAndId.highestBid
+                        ? `${highestBidAndId.highestBid + 1}`
+                        : `${cardDetail.minimumBid}`}
+                      )
+                    </Container>
+
+                    <Container>
+                      <Form.Control
+                        value={
+                          bidValue === "default" && highestBidAndId.highestBid
+                            ? highestBidAndId.highestBid + 1
+                            : bidValue === "default" &&
+                              !highestBidAndId.highestBid
+                            ? cardDetail.minimumBid + 1
+                            : bidValue
+                        }
+                        onChange={onSetBidValue}
+                        type="number"
+                        min={
+                          highestBidAndId
+                            ? highestBidAndId.highestBid + 1
+                            : cardDetail.minimumBid
+                        }
+                        placeholder="Bid"
+                        required
+                      />
+
+                      <Button
+                        variant="outline-secondary"
+                        onClick={onBidSubmitHandler}
+                      >
+                        place bid
+                      </Button>
+                      {tooLowAlert}
+                    </Container>
+                  </Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    {highestBidAndId.highestBid ? (
+                      <>
+                        Highest bidder is {highestBidAndId.highestBidEmail} with
+                        ${highestBidAndId.highestBid}
+                      </>
+                    ) : (
+                      <>be the first one to place a bid!</>
+                    )}
+                  </Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>send button</Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>emoji button?</Paper>
+                </Grid>
+              </Grid>
+            </div>
+          ) : null}
+        </span>
+      ) : null}
+    </>
   );
 }

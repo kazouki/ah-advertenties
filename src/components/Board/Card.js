@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     color: "white",
     marginBottom: -10,
     marginTop: -10,
-    marginLeft: -2,
+    marginLeft: 0,
   },
   footertext: {
     display: "flex",

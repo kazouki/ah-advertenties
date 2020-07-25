@@ -44,19 +44,22 @@ function App() {
             <Paperbase LayoutComponent={DndLayout} bg={AH_BLUE} />
           )}
         />
-        <Route
+
+        {/* <Route
           path="/carddetail/:id"
           component={() => (
             <Paperbase LayoutComponent={CardDetail} bg={AH_BLUE} />
           )}
-        />
+        /> */}
+        <Route path="/carddetail/:id" component={CardDetail} />
+
         <Route path="/newcard" component={NewCard} />
         <Route path="/signup" component={SignUp} bg={AH_BLUE} />
         {/* <Route
           path="/login"
           component={() => <Paperbase LayoutComponent={Login} bg={"white"} />}
         /> */}
-        <Route path="/login" component={Login} />} />
+        <Route path="/login" component={Login} />
         <Route path="/profile" component={Profile} />
       </Switch>
     </div>

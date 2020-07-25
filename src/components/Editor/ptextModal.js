@@ -1,13 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 
 import DragHandle from "@material-ui/icons/DragHandle";
 import CreateIcon from "@material-ui/icons/Create";
+import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 
 import AHCard from "../Board/Card";
 
-// ##################  modal config
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -18,6 +20,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { setLayoutState } from "../../store/editor/actions";
 
+const Container = styled.div`
+  /* border: 1px solid lightgrey; */
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  // background-color: ${(props) => (props.isDragging ? "white" : "white")};
+
+  display: flex;
+`;
+
+const Handle = styled.div`
+  width: 25px;
+  height: 20px;
+  /* background-color: ${(props) =>
+    props.isDragDisabled ? "grey" : "orange"}; */
+  //  background-color: white;
+  color: white; 
+  position: relative;
+  left: -30px;
+`;
+
+const PencilIcon = styled.div`
+  width: 0;
+  color: white;
+  position: relative;
+  left: -60px;
+  top: 2px;
+`;
+const PeopleIcon = styled.div`
+  width: 0;
+  color: white;
+  position: relative;
+  left: -90px;
+  top: 2px;
+`;
+
+// ##################  modal
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -77,35 +116,6 @@ function CardModal(props) {
 }
 // ##################
 
-const Container = styled.div`
-  /* border: 1px solid lightgrey; */
-  border-radius: 5px;
-  padding: 8px;
-  margin-bottom: 10px;
-  // background-color: ${(props) => (props.isDragging ? "white" : "white")};
-
-  display: flex;
-`;
-
-const Handle = styled.div`
-  width: 25px;
-  height: 20px;
-  /* background-color: ${(props) =>
-    props.isDragDisabled ? "grey" : "orange"}; */
-  //  background-color: white;
-  color: white; 
-  position: relative;
-  left: -30px;
-`;
-
-const PencilIcon = styled.div`
-  width: 0;
-  color: white;
-  position: relative;
-  left: -60px;
-  top: 2px;
-`;
-
 export default function Ptext(props) {
   const layoutState = useSelector(selectLayoutState);
   //###### optionals
@@ -113,6 +123,7 @@ export default function Ptext(props) {
   const isDragDisabled = false;
   // const isDragDisabled = props.task.id === "task-1";
   //######
+  const ptextIdInt = props.ptext?.id.split("-")[1];
 
   return (
     <Draggable
@@ -132,6 +143,15 @@ export default function Ptext(props) {
             editDisabled={true}
             initState={layoutState}
           />
+          <PeopleIcon>
+            <Link
+              to={`/carddetail/${ptextIdInt}`}
+              style={{ cursor: "default", outline: "none" }}
+            >
+              <EmojiPeopleIcon style={{ color: "white" }} fontSize="small" />
+            </Link>
+          </PeopleIcon>
+
           <PencilIcon>
             <CardModal ptextId={props.ptext?.id} />
           </PencilIcon>
