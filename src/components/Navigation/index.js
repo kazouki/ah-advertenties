@@ -10,11 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
+import Avatar from "@material-ui/core/Avatar";
 
 import { Link } from "react-router-dom";
 
 import ahLogoWit from "../../static/img/ahlogo4.png";
 import { AH_BLUE } from "../../config/constants.js";
+
+import { useSelector } from "react-redux";
+import { selectToken } from "../../store/user/selectors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchAppBar() {
   const classes = useStyles();
+  const token = useSelector(selectToken);
 
   return (
     <div className={classes.root}>
@@ -141,16 +146,27 @@ export default function SearchAppBar() {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <Link style={{ color: "white" }} to="/login">
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Link>
+          {!token ? (
+            <Link style={{ color: "white" }} to="/login">
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </Link>
+          ) : (
+            <Link to="/profile">
+              <IconButton color="inherit" className={classes.iconButtonAvatar}>
+                <Avatar
+                  className={classes.avatar}
+                  src="https://material-ui.com/static/images/avatar/7.jpg"
+                />
+              </IconButton>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
     </div>

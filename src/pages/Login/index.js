@@ -24,7 +24,30 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
 
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
 import { AH_BLUE } from "../../config/constants.js";
+
+let theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+    h5: {
+      fontWeight: 500,
+      fontSize: 26,
+      letterSpacing: 0.5,
+    },
+  },
+  palette: {
+    primary: {
+      light: "#63ccff",
+      main: AH_BLUE,
+      dark: "#006db3",
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -67,98 +90,102 @@ export default function SignUp() {
 
   return (
     <>
-      <Container
-        style={{
-          width: "98%",
-          height: "70vw",
-          background: "rgb(48,194,255, 0.04)",
-          paddingTop: 70,
-          marginTop: 40,
-        }}
-      >
+      <MuiThemeProvider theme={theme}>
         <Container
           style={{
-            width: "50%",
-            height: "40%",
-            minWidth: "400px",
-            minHeight: "400px",
-            background: "white",
-            paddingTop: 20,
-            borderRadius: 10,
+            width: "98%",
+            height: "70vw",
+            background: "rgb(48,194,255, 0.04)",
+            paddingTop: 70,
+            marginTop: 40,
           }}
         >
-          <Container style={{ marginTop: 0 }}>
-            <CssBaseline />
-            <Container>
-              <FormControl className={classes.margin}>
-                <Grid container spacing={1} alignItems="flex-end">
-                  <Grid item>
-                    <AccountCircle style={{ color: AH_BLUE }} />
+          <Container
+            style={{
+              width: "50%",
+              height: "40%",
+              minWidth: "400px",
+              minHeight: "400px",
+              background: "white",
+              paddingTop: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Container style={{ marginTop: 0 }}>
+              <CssBaseline />
+              <Container>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <AccountCircle style={{ color: AH_BLUE }} />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        id="input-with-icon-grid"
+                        label="E-mail"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <TextField
-                      id="input-with-icon-grid"
-                      label="E-mail"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                    />
-                  </Grid>
-                </Grid>
-              </FormControl>
-            </Container>
+                </FormControl>
+              </Container>
 
-            <Container style={{ marginTop: 20 }}>
-              <FormControl className={clsx(classes.margin, classes.textField)}>
-                <InputLabel htmlFor="standard-adornment-password">
-                  Wachtwoord
-                </InputLabel>
-                <Input
-                  id="standard-adornment-password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {showPassword ? (
-                          <Visibility style={{ color: AH_BLUE }} />
-                        ) : (
-                          <VisibilityOff style={{ color: AH_BLUE }} />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </Container>
-            <Container>
-              <Button
-                variant="contained"
-                style={{ color: AH_BLUE, background: "white", marginTop: 30 }}
-                type="submit"
-                onClick={submitForm}
-              >
-                inloggen
-              </Button>
-            </Container>
+              <Container style={{ marginTop: 20 }}>
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                >
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Wachtwoord
+                  </InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {showPassword ? (
+                            <Visibility style={{ color: AH_BLUE }} />
+                          ) : (
+                            <VisibilityOff style={{ color: AH_BLUE }} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Container>
+              <Container>
+                <Button
+                  variant="contained"
+                  style={{ color: AH_BLUE, background: "white", marginTop: 30 }}
+                  type="submit"
+                  onClick={submitForm}
+                >
+                  inloggen
+                </Button>
+              </Container>
 
-            <Container style={{ marginTop: 40, textDecoration: "none" }}>
-              Nog geen Account?
-            </Container>
-            <Container style={{ marginTop: 5, textDecoration: "none" }}>
-              Klik
-              <b>
-                <Link to="/signup"> hier </Link>
-              </b>
-              om je in te schrijven
+              <Container style={{ marginTop: 40, textDecoration: "none" }}>
+                Nog geen Account?
+              </Container>
+              <Container style={{ marginTop: 5, textDecoration: "none" }}>
+                Klik
+                <b>
+                  <Link to="/signup"> hier </Link>
+                </b>
+                om je in te schrijven
+              </Container>
             </Container>
           </Container>
         </Container>
-      </Container>
+      </MuiThemeProvider>
     </>
   );
 }

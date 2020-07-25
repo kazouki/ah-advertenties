@@ -133,7 +133,8 @@ const styles = {
   mainContent: {
     flex: 1,
     padding: "48px 36px 0",
-    background: "#eaeff1",
+    background: (props) => props.bg,
+    overflowX: "hidden",
   },
 };
 
@@ -145,13 +146,7 @@ function Paperbase(props) {
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appContent}>
-          <main
-            className={classes.mainContent}
-            style={{
-              background: AH_BLUE,
-              overflowX: "hidden",
-            }}
-          >
+          <main className={classes.mainContent}>
             <LayoutComponent />
           </main>
         </div>
