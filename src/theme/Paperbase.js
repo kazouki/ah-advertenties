@@ -5,8 +5,13 @@ import {
   createMuiTheme,
   withStyles,
 } from "@material-ui/core/styles";
-
 import { AH_BLUE } from "../config/constants.js";
+
+import { Widget } from "react-chat-widget";
+import "react-chat-widget/lib/styles.css";
+const getCustomLauncher = (handleToggle) => (
+  <button onClick={handleToggle}>This is my launcher component!</button>
+);
 
 let theme = createMuiTheme({
   typography: {
@@ -150,6 +155,9 @@ function Paperbase(props) {
             <LayoutComponent />
           </main>
         </div>
+      </div>
+      <div className="chatWidget">
+        <Widget launcher={(handleToggle) => getCustomLauncher(handleToggle)} />
       </div>
     </MuiThemeProvider>
   );

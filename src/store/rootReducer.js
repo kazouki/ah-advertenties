@@ -4,6 +4,7 @@ import user from "./user/reducer";
 import lookupSliceReducer from "./lookup/reducer";
 import editorSliceReducer from "./editor/reducer";
 import cardsSliceReducer from "./card/reducer";
+import messagesSliceReducer from "./message/reducer";
 
 export default combineReducers({
   appState,
@@ -11,4 +12,5 @@ export default combineReducers({
   lookupSliceReducer,
   editorSliceReducer,
   cardsSliceReducer,
+  messagesSliceReducer,
 });

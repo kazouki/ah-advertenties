@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Column from "./column";
 import styled from "styled-components";
 
@@ -7,6 +7,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { setLayoutState } from "../../store/editor/actions";
+import { fetchCards } from "../../store/card/actions";
 
 import { AH_BLUE } from "../../config/constants.js";
 
@@ -18,6 +19,10 @@ const Container = styled.div`
 function DndLayout(props) {
   const dispatch = useDispatch();
   const state = useSelector(selectLayoutState);
+
+  useEffect(() => {
+    dispatch(fetchCards());
+  });
 
   const onDragStart = (start) => {
     //###### optionals

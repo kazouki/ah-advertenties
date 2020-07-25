@@ -10,9 +10,11 @@ import { addHeart } from "../../store/card/actions";
 import { postBid } from "../../store/card/actions";
 import { getHighestBid } from "../../store/card/actions";
 import { getUserWithStoredToken } from "../../store/user/actions";
+import { fetchMessages } from "../../store/message/actions";
 
 import { selectCardDetail } from "../../store/card/selectors";
 import { selectHighestBid } from "../../store/card/selectors";
+import { selectMessages } from "../../store/message/selectors";
 
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
@@ -41,6 +43,26 @@ export default function CardDetail(props) {
   const highestBidAndId = useSelector(selectHighestBid);
   const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
+  const messages = useSelector(selectMessages);
+
+  const useStyles = makeStyles((theme) => ({
+    margin: {
+      margin: theme.spacing(1),
+    },
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: "center",
+      color: theme.palette.text.secondary,
+    },
+    chatboxContainer: {
+      maxHeight: 60,
+      width: "30vw",
+    },
+  }));
+  const classes = useStyles();
 
   useEffect(() => {
     dispatch(fetchCardDetail(id));
@@ -83,21 +105,9 @@ export default function CardDetail(props) {
     if (!e.target.value) setTooLowAlert("");
   };
 
-  const useStyles = makeStyles((theme) => ({
-    margin: {
-      margin: theme.spacing(1),
-    },
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-    },
-  }));
-
-  const classes = useStyles();
+  const fetchMessagesHandler = () => {
+    dispatch(fetchMessages({ cardOwnerId: id }));
+  };
 
   return (
     <>
@@ -131,7 +141,13 @@ export default function CardDetail(props) {
                   </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                  <Paper className={classes.paper}>messagebox section</Paper>
+                  <Paper className={classes.paper}>
+                    messagebox section
+                    <Container>
+                      <button onClick={fetchMessagesHandler}>fetch test</button>
+                      {messages[0] ? JSON.stringify(messages[0]) : null}
+                    </Container>
+                  </Paper>
                 </Grid>
                 <Grid item xs={3}>
                   <Paper className={classes.paper}>
@@ -187,7 +203,7 @@ export default function CardDetail(props) {
                   </Paper>
                 </Grid>
                 <Grid item xs={3}>
-                  <Paper className={classes.paper}>send button</Paper>
+                  <Paper className={classes.paper}>.....</Paper>
                 </Grid>
                 <Grid item xs={3}>
                   <Paper className={classes.paper}>emoji button?</Paper>
