@@ -1,34 +1,16 @@
 import React from "react";
 
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
-import ListGroup from "react-bootstrap/ListGroup";
 import { BsFillHeartFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
-import Row from "react-bootstrap/Row";
 
 /////////
 import Container from "@material-ui/core/Container";
-import context from "react-bootstrap/esm/AccordionContext";
 
 export default function CardView(props) {
   const onClickGiveHeart = (event) => {
     props.giveHeart(props.id);
   };
-
-  // aangeboden,
-  // gevraagd,
-  // title,
-  // description,
-  // name,
-  // telephone,
-  // email,
-  // date,
-  // userId,
-  // imageUrl,
-  // minimumBid,
 
   return (
     <Container>

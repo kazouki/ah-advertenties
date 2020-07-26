@@ -19,11 +19,8 @@ import { selectMessages } from "../../store/message/selectors";
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
 
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Col } from "react-bootstrap";
-import Row from "react-bootstrap/Row";
 
 ////////
 

@@ -1,5 +1,3 @@
-import { fetchCards } from "../card/actions";
-
 const fields = {
   aangeboden: false,
   gevraagd: false,
@@ -33,7 +31,7 @@ export const setLayoutState = (newState) => ({
 });
 
 export const initializeLayout = (cards) => {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     let newPtexts = {};
     cards.forEach((card) => {
       newPtexts[`ptext-${card.id}`] = {

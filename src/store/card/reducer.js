@@ -13,6 +13,18 @@ export default function cardsSliceReducer(
       return { ...state, cardId: payload };
     case "HIGHEST_BID":
       return { ...state, highestBid: payload };
+    case "CREATE_CARD":
+      console.log("payload in CREATE_CARD", payload.data);
+      const createCards = state.cards.cards;
+      createCards.push(payload.data);
+      console.log("createCards", createCards);
+      return { ...state, cards: { cards: createCards } };
+    case "DELETE_CARD":
+      const deleteCards = state.cards.cards;
+      const filtered = deleteCards.filter(function (el) {
+        return parseInt(el.id) !== parseInt(payload);
+      });
+      return { ...state, cards: { cards: filtered } };
 
     default:
       return state;

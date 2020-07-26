@@ -7,6 +7,7 @@ import { Draggable } from "react-beautiful-dnd";
 import DragHandle from "@material-ui/icons/DragHandle";
 import CreateIcon from "@material-ui/icons/Create";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import AHCard from "../Board/Card";
 
@@ -19,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { selectLayoutState } from "../../store/editor/selectors";
 import { setLayoutState } from "../../store/editor/actions";
+import { deleteCard } from "../../store/card/actions";
 
 const Container = styled.div`
   /* border: 1px solid lightgrey; */
@@ -53,6 +55,13 @@ const PeopleIcon = styled.div`
   color: white;
   position: relative;
   left: -90px;
+  top: 2px;
+`;
+const GarbageIcon = styled.div`
+  width: 0;
+  color: white;
+  position: relative;
+  left: -120px;
   top: 2px;
 `;
 
@@ -118,6 +127,7 @@ function CardModal(props) {
 
 export default function Ptext(props) {
   const layoutState = useSelector(selectLayoutState);
+  const dispatch = useDispatch();
   //###### optionals
   // set draggable to disabled
   const isDragDisabled = false;
@@ -143,6 +153,13 @@ export default function Ptext(props) {
             editDisabled={true}
             initState={layoutState}
           />
+          <GarbageIcon>
+            <DeleteIcon
+              style={{ color: "white" }}
+              fontSize="small"
+              onClick={() => dispatch(deleteCard(ptextIdInt))}
+            />
+          </GarbageIcon>
           <PeopleIcon>
             <Link
               to={`/carddetail/${ptextIdInt}`}

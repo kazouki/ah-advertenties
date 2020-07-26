@@ -19,9 +19,6 @@ import { selectAppLoading } from "./store/appState/selectors";
 import { getUserWithStoredToken } from "./store/user/actions";
 
 import { fetchCards } from "./store/card/actions";
-import { selectCards } from "./store/card/selectors";
-
-import { initializeLayout } from "./store/editor/actions";
 
 import Paperbase from "./theme/Paperbase";
 import DndLayout from "./components/Editor/dndLayout";
