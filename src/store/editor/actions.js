@@ -34,10 +34,6 @@ export const setLayoutState = (newState) => ({
 
 export const initializeLayout = (cards) => {
   return async (dispatch, getState) => {
-    // console.log("getState fomr init", getState().cardsSliceReducer);
-
-    // console.log(cards);
-
     let newPtexts = {};
     cards.forEach((card) => {
       newPtexts[`ptext-${card.id}`] = {
@@ -54,7 +50,6 @@ export const initializeLayout = (cards) => {
         columnIndex: card.columnIndex,
       };
     });
-    // console.log("newPtexts", newPtexts);
 
     let newPtextIds = {};
     cards.forEach((card) => {
@@ -64,10 +59,8 @@ export const initializeLayout = (cards) => {
         })
         .map((e) => `ptext-${e.id}`);
     });
-    // console.log("newPtextIds", newPtextIds);
 
     let newColumns = {};
-    console.log("keys of newPtexts ::: ", Object.keys(newPtexts));
     Object.keys(newPtexts).forEach((ptext) => {
       newColumns[`column-${newPtexts[ptext].columnIndex}`] = {
         id: `column-${newPtexts[ptext].columnIndex}`,
@@ -75,27 +68,19 @@ export const initializeLayout = (cards) => {
         ptextIds: newPtextIds[`column-${newPtexts[ptext].columnIndex}`],
       };
     });
-    console.log("newcolumns :: ", newColumns);
 
-    let newColumnOrder = ["column-1", "column-2", "column-3"];
-
-    console.log(newPtexts);
+    const newColumnOrder = Object.keys(newPtextIds).reverse();
 
     const newState = {
       ...initialState.layoutState,
       ptexts: {
         ...newPtexts,
-        // "ptext-1": { ...fields, title: cards[0].title, id: "ptext-1" },
       },
       columns: {
         ...newColumns,
       },
       columnOrder: [...newColumnOrder],
     };
-
-    console.log("newState ::: ", newState);
-
-    // console.log("initialState in initializeLayout (in thunk)", initialState);
     dispatch(setLayoutState(newState));
   };
 };
@@ -106,7 +91,6 @@ export const setContentDescription = (description) => ({
 });
 
 export const addNewColumn = () => {
-  console.log("addcolum reached");
   return (dispatch, getState) => {
     const layoutState = getState().editorSliceReducer.layoutState;
 
