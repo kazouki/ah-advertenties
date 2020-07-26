@@ -18,6 +18,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAppLoading } from "./store/appState/selectors";
 import { getUserWithStoredToken } from "./store/user/actions";
 
+import { fetchCards } from "./store/card/actions";
+import { selectCards } from "./store/card/selectors";
+
+import { initializeLayout } from "./store/editor/actions";
+
 import Paperbase from "./theme/Paperbase";
 import DndLayout from "./components/Editor/dndLayout";
 import "typeface-roboto";
@@ -26,9 +31,11 @@ import { AH_BLUE } from "./config/constants.js";
 function App() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectAppLoading);
+  // const cards = useSelector(selectCards);
 
   useEffect(() => {
     dispatch(getUserWithStoredToken());
+    dispatch(fetchCards());
   }, [dispatch]);
 
   return (

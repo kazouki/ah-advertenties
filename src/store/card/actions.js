@@ -1,6 +1,7 @@
 import api from "../../api";
 
 import { showMessageWithTimeout } from "../appState/actions";
+import { initializeLayout } from "../editor/actions";
 
 export function createCard({
   aangeboden,
@@ -50,6 +51,12 @@ export function fetchCards() {
       const res = await api("cards", { method: "GET" });
       if (res) {
         dispatch({ type: "CARDS", payload: res.data });
+        // console.log(
+        //   "getState fomr fetchCards",
+        //   getState().cardsSliceReducer.cards.cards[0]
+        // );
+        const cards = getState().cardsSliceReducer.cards.cards;
+        dispatch(initializeLayout(cards));
       } else return null;
     } catch (e) {
       console.log(e);
