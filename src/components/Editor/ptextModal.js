@@ -133,7 +133,8 @@ export default function Ptext(props) {
   const isDragDisabled = false;
   // const isDragDisabled = props.task.id === "task-1";
   //######
-  const ptextIdInt = props.ptext?.id.split("-")[1];
+  const cardId = props.ptext?.id.split("-")[1];
+  console.log("cardId", cardId);
 
   return (
     <Draggable
@@ -157,12 +158,12 @@ export default function Ptext(props) {
             <DeleteIcon
               style={{ color: "white" }}
               fontSize="small"
-              onClick={() => dispatch(deleteCard(ptextIdInt))}
+              onClick={() => dispatch(deleteCard(cardId))}
             />
           </GarbageIcon>
           <PeopleIcon>
             <Link
-              to={`/carddetail/${ptextIdInt}`}
+              to={`/carddetail/${cardId}`}
               style={{ cursor: "default", outline: "none" }}
             >
               <EmojiPeopleIcon style={{ color: "white" }} fontSize="small" />

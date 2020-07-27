@@ -2,7 +2,6 @@ import api from "../../api";
 
 import { showMessageWithTimeout } from "../appState/actions";
 import { initializeLayout } from "../editor/actions";
-import { setLayoutState } from "../editor/actions";
 
 export function createCard() {
   return async function (dispatch, getState) {
@@ -10,55 +9,97 @@ export function createCard() {
       const res = await api("cards", {
         method: "POST",
         data: {
-          aangeboden: "false",
-          gevraagd: "false",
-          title: "",
-          description: "",
-          name: "",
-          telephone: "",
-          email: "",
-          date: "",
           userId: getState().user.id,
-          imageUrl: "",
-          minimumBid: 0,
-          columnIndex: 0,
-          token: getState().user.token,
         },
         jwt: getState().user.token,
       });
 
-      dispatch({ type: "CREATE_CARD", payload: res });
-      const cards = getState().cardsSliceReducer.cards.cards;
-      dispatch(initializeLayout(cards));
-      dispatch(
-        showMessageWithTimeout(
-          "success",
-          true,
-          "Je hebt een nieuwe kaart gemaakt!"
-        )
-      );
-
-      return res;
+      if (res) {
+        dispatch({ type: "CREATE_CARD", payload: res.data });
+        const cards = getState().cardsSliceReducer.cards.cards;
+        dispatch(initializeLayout(cards));
+        dispatch(
+          showMessageWithTimeout(
+            "success",
+            true,
+            "Je hebt een nieuwe kaart gemaakt!"
+          )
+        );
+        return;
+      } else return;
     } catch (e) {
       console.log(e);
     }
   };
 }
 
-export function deleteCard(id) {
+export function deleteCard(cardId) {
   return async function (dispatch, getState) {
     try {
-      const res = await api(`cards/${id}`, {
+      const res = await api(`cards`, {
         method: "DELETE",
+        data: {
+          cardId,
+        },
+        jwt: getState().user.token,
       });
       if (res) {
-        dispatch({ type: "DELETE_CARD", payload: id });
+        dispatch({ type: "DELETE_CARD", payload: cardId });
         const cards = getState().cardsSliceReducer.cards.cards;
         console.log("cards in deleteCard", cards);
         dispatch(initializeLayout(cards));
 
         dispatch(
           showMessageWithTimeout("success", true, "Je kaart is verwijderd!")
+        );
+        return res;
+      } else return null;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+export function updateCard(cardProps) {
+  const {
+    aangeboden,
+    gevraagd,
+    title,
+    description,
+    name,
+    telephone,
+    email,
+    date,
+    columnIndex,
+    cardId,
+  } = cardProps;
+  console.log("cardProps in updateCard", cardProps);
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`cards`, {
+        method: "PUT",
+        data: {
+          aangeboden,
+          gevraagd,
+          title,
+          description,
+          name,
+          telephone,
+          email,
+          date,
+          userId: getState().user.id,
+          columnIndex,
+          cardId,
+        },
+        jwt: getState().user.token,
+      });
+      if (res) {
+        dispatch({ type: "UPDATE_CARD", payload: cardProps });
+        const cards = getState().cardsSliceReducer.cards.cards;
+        console.log("cards in updateCard", cards);
+        dispatch(initializeLayout(cards));
+
+        dispatch(
+          showMessageWithTimeout("success", true, "Je kaart is opgeslagen!")
         );
         return res;
       } else return null;

@@ -17,7 +17,7 @@ export default function messagesSliceReducer(
 ) {
   switch (type) {
     case "LOAD_MESSAGES":
-      console.log("LOAD_MESSAGES worked");
+      // console.log("LOAD_MESSAGES worked");
       return {
         ...state,
         messageBox: {

@@ -44,7 +44,7 @@ export const initializeLayout = (cards) => {
         telephone: card.telephone,
         email: card.email,
         date: card.date,
-        cardId: card.id,
+        cardId: card.cardId,
         columnIndex: card.columnIndex,
       };
     });
