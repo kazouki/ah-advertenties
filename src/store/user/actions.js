@@ -14,18 +14,16 @@ export const TOKEN_STILL_VALID = "TOKEN_STILL_VALID";
 export const LOG_OUT = "LOG_OUT";
 
 export function getUserCards(userId) {
-  return async function (dispatch, getState) {
+  return async function (dispatch) {
     try {
       console.log("userId in getUserCards", userId);
       const res = await api(`cards/usercards`, {
         method: "POST",
         data: {
-          test: "test",
           userId,
         },
       });
       if (res) {
-        // console.log(res.data);
         dispatch({ type: "LOAD_USER_CARDS", payload: res.data });
         return res;
       }

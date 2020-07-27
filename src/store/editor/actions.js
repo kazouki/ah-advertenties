@@ -31,7 +31,7 @@ export const setLayoutState = (newState) => ({
 });
 
 export const initializeLayout = (cards) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     let newPtexts = {};
     cards.forEach((card) => {
       newPtexts[`ptext-${card.id}`] = {
@@ -67,13 +67,43 @@ export const initializeLayout = (cards) => {
       };
     });
 
+    let newColumnsSpillover = {};
+    const newColumnsPtextIdsArr = Object.keys(newColumns).map((e) => {
+      return { [newColumns[e].id.split("-")[1]]: newColumns[e].ptextIds };
+    });
+
+    const columnIndices = newColumnsPtextIdsArr.map((obj) =>
+      parseInt(Object.keys(obj)[0])
+    );
+    const columnMax = Math.max.apply(null, columnIndices);
+
+    newColumnsPtextIdsArr.forEach((e) => {
+      if (Object.values(e)[0].length > 3) {
+        console.log("e", e);
+
+        newColumnsSpillover[`column-${columnMax + 1}`] = {
+          id: `column-${columnMax + 1}`,
+          title: `column-${columnMax + 1}`,
+          ptextIds: Object.values(e)[0].slice(3),
+        };
+
+        newColumnsSpillover[`column-${Object.keys(e)[0]}`] = {
+          id: `column-${Object.keys(e)[0]}`,
+          title: `column-${Object.keys(e)[0]}`,
+          ptextIds: Object.values(e)[0].slice(0, 3),
+        };
+      }
+    });
+
+    const newColumnsConstrained = { ...newColumns, ...newColumnsSpillover };
+
     let newColumnsOrdered = {};
-    Object.keys(newColumns)
+    Object.keys(newColumnsConstrained)
       .map((key) => parseInt(key.split("-")[1]))
       .sort((a, b) => a - b)
       .map((e) => `column-${e}`)
       .forEach((key) => {
-        newColumnsOrdered[key] = newColumns[key];
+        newColumnsOrdered[key] = newColumnsConstrained[key];
       });
 
     const newColumnOrder = Object.keys(newColumnsOrdered);
