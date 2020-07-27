@@ -1,4 +1,5 @@
 import { apiUrl } from "../../config/constants";
+import api from "../../api";
 import axios from "axios";
 import { selectToken } from "./selectors";
 import {
@@ -11,6 +12,29 @@ import {
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const TOKEN_STILL_VALID = "TOKEN_STILL_VALID";
 export const LOG_OUT = "LOG_OUT";
+
+export function getUserCards(userId) {
+  return async function (dispatch, getState) {
+    try {
+      console.log("userId in getUserCards", userId);
+      const res = await api(`cards/usercards`, {
+        method: "POST",
+        data: {
+          test: "test",
+          userId,
+        },
+      });
+      if (res) {
+        // console.log(res.data);
+        dispatch({ type: "LOAD_USER_CARDS", payload: res.data });
+        return res;
+      }
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
 
 const loginSuccess = (userWithToken) => {
   return {
@@ -71,6 +95,10 @@ export const login = (email, password) => {
           5000
         )
       );
+
+      // get cards belonging to user
+      dispatch(getUserCards(getState().user.id));
+
       dispatch(appDoneLoading());
     } catch (error) {
       if (error.response) {
@@ -104,6 +132,9 @@ export const getUserWithStoredToken = () => {
       // token is still valid
       dispatch(tokenStillValid(response.data));
       dispatch(appDoneLoading());
+
+      // get cards belonging to user
+      dispatch(getUserCards(getState().user.id));
     } catch (error) {
       if (error.response) {
         console.log(error.response.message);

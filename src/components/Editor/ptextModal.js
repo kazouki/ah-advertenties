@@ -19,6 +19,9 @@ import Fade from "@material-ui/core/Fade";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectLayoutState } from "../../store/editor/selectors";
+import { selectUser } from "../../store/user/selectors";
+import { selectUserCardIds } from "../../store/user/selectors";
+
 import { setLayoutState } from "../../store/editor/actions";
 import { deleteCard } from "../../store/card/actions";
 
@@ -126,35 +129,28 @@ function CardModal(props) {
 // ##################
 
 export default function Ptext(props) {
+  const user = useSelector(selectUser);
+  const userId = user.id;
+
+  const userCardIds = useSelector(selectUserCardIds);
   const layoutState = useSelector(selectLayoutState);
   const dispatch = useDispatch();
+
   //###### optionals
   // set draggable to disabled
   const isDragDisabled = false;
   // const isDragDisabled = props.task.id === "task-1";
   //######
   const cardId = props.ptext?.id.split("-")[1];
-  console.log("props.ptext    in ptextModal", props.ptext);
-  console.log("cardId    in ptextModal", cardId);
 
-  return (
-    <Draggable
-      isDragDisabled={isDragDisabled}
-      draggableId={props.ptext?.id}
-      index={props.index}
-    >
-      {(provided, snapshot) => (
-        <Container
-          isDragDisabled={isDragDisabled}
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          isDragging={snapshot.isDragging}
-        >
-          <AHCard
-            ptextId={props.ptext?.id}
-            editDisabled={true}
-            initState={layoutState}
-          />
+  function SwitchToolbar() {
+    const userOwnsCard = userCardIds?.includes(parseInt(cardId));
+    // console.log("userOwnsCard in switchtoolbar", userOwnsCard);
+    // console.log("userCardIds in switchtoolbar", userCardIds);
+    // console.log("cardId in switchtoolbar", cardId);
+    if (userOwnsCard) {
+      return (
+        <>
           <GarbageIcon>
             <DeleteIcon
               style={{ color: "white" }}
@@ -174,6 +170,55 @@ export default function Ptext(props) {
           <PencilIcon>
             <CardModal ptextId={props.ptext?.id} />
           </PencilIcon>
+        </>
+      );
+    }
+    return <></>;
+  }
+
+  return (
+    <Draggable
+      isDragDisabled={isDragDisabled}
+      draggableId={props.ptext?.id}
+      index={props.index}
+    >
+      {(provided, snapshot) => (
+        <Container
+          isDragDisabled={isDragDisabled}
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
+        >
+          <AHCard
+            ptextId={props.ptext?.id}
+            editDisabled={true}
+            initState={layoutState}
+          />
+
+          <SwitchToolbar />
+          {/* TODO   check if card.userId === user.id*/}
+          {/* {console.log("cardId in ptextModal ", cardId)} */}
+          {/* {console.log("userId in ptextModal ", userId)} */}
+
+          {/* <GarbageIcon>
+            <DeleteIcon
+              style={{ color: "white" }}
+              fontSize="small"
+              onClick={() => dispatch(deleteCard(cardId))}
+            />
+          </GarbageIcon>
+          <PeopleIcon>
+            <Link
+              to={`/carddetail/${cardId}`}
+              style={{ cursor: "default", outline: "none" }}
+            >
+              <EmojiPeopleIcon style={{ color: "white" }} fontSize="small" />
+            </Link>
+          </PeopleIcon>
+
+          <PencilIcon>
+            <CardModal ptextId={props.ptext?.id} />
+          </PencilIcon> */}
 
           <Handle isDragDisabled={isDragDisabled} {...provided.dragHandleProps}>
             <DragHandle />

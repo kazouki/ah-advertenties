@@ -19,6 +19,18 @@ export default (state = initialState, action) => {
     case TOKEN_STILL_VALID:
       return { ...state, ...action.payload };
 
+    case "LOAD_USER_CARDS":
+      if (action.payload) {
+        const allUserCards = action.payload;
+        const allUserCardIds = allUserCards.map((card) => card.id);
+
+        return {
+          ...state,
+          userCards: action.payload,
+          userCardIds: allUserCardIds,
+        };
+      } else return { ...state, ...action.payload };
+
     default:
       return state;
   }

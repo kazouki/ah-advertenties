@@ -173,10 +173,8 @@ export default function AHCard(props) {
   };
 
   const onSaveToStoreHandler = () => {
-    console.log("state from onSave", state.ptexts[props?.ptextId]);
     const cardState = state.ptexts[props?.ptextId];
     const cardId = parseInt(cardState.id.split("-")[1]);
-    console.log(cardId);
     dispatch(updateCard({ ...cardState, cardId }));
     props.saveStateTo(state);
   };

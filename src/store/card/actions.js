@@ -2,33 +2,22 @@ import api from "../../api";
 
 import { showMessageWithTimeout } from "../appState/actions";
 import { initializeLayout } from "../editor/actions";
+import { getUserCards } from "../user/actions";
 
 export function createCard() {
   return async function (dispatch, getState) {
     const columns = getState().editorSliceReducer.layoutState.columns;
-    console.log("columns in createCard", columns);
-
-    // TODO   if columns exist do following calculations, otherwise create first layout card
-    if (columns.values) {
-    } else {
-    }
-
     const columnKeys = Object.keys(columns);
-    console.log("columnKeys in createCard", columnKeys);
 
     const ptextCounts = columnKeys.map((key) => {
       return { [key]: columns[key].ptextIds.length };
     });
-    console.log("ptextCounts in createCard", ptextCounts);
 
-    //create min column # / max colum #, and use as index in find method
+    //create min column # / max colum #, and use as index constraints in find method
     const columnNrs = columnKeys.map((key) => parseInt(key.split("-")[1]));
-    console.log("columnNrs    in createCard", columnNrs);
 
     const minColumIndex = Math.min.apply(null, columnNrs);
     const maxColumIndex = Math.max.apply(null, columnNrs);
-    console.log("minColumIndex in createCard", minColumIndex);
-    console.log("maxColumIndex in createCard", maxColumIndex);
 
     // check if layout is full
     const isFull = ptextCounts
@@ -36,8 +25,6 @@ export function createCard() {
         return Object.values(obj)[0];
       })
       .every((el) => el === 3);
-    console.log("isFull    in createCard", isFull);
-    //TODO calculate if all colums are full, if TRUE 'columnIndex' is 'maxColumnIndex + 1'
 
     // determine if new column must be created
     function configureColumnIndexIfFull() {
@@ -56,11 +43,6 @@ export function createCard() {
     let columnIndex = configureColumnIndexIfFull();
     if (columnIndex < 1) columnIndex = 1;
 
-    console.log(
-      "columnIndex for new card (after calculation)     in createCard",
-      columnIndex
-    );
-
     try {
       const res = await api("cards", {
         method: "POST",
@@ -74,6 +56,10 @@ export function createCard() {
       if (res) {
         dispatch({ type: "CREATE_CARD", payload: res.data });
         const cards = getState().cardsSliceReducer.cards.cards;
+
+        // get cards belonging to user
+        dispatch(getUserCards(getState().user.id));
+
         dispatch(initializeLayout(cards));
         dispatch(
           showMessageWithTimeout(
@@ -91,7 +77,6 @@ export function createCard() {
 }
 
 export function deleteCard(cardId) {
-  console.log("cardId     in deleteCard", cardId);
   return async function (dispatch, getState) {
     try {
       const res = await api(`cards`, {
@@ -129,7 +114,6 @@ export function updateCard(cardProps) {
     columnIndex,
     cardId,
   } = cardProps;
-  console.log("cardProps in updateCard", cardProps);
   return async function (dispatch, getState) {
     try {
       const res = await api(`cards`, {
@@ -150,10 +134,8 @@ export function updateCard(cardProps) {
         jwt: getState().user.token,
       });
       if (res) {
-        console.log("##########   res.data in updateCard action", res.data);
         dispatch({ type: "UPDATE_CARD", payload: res.data });
         const cards = getState().cardsSliceReducer.cards.cards;
-        console.log("cards in updateCard", cards);
         dispatch(initializeLayout(cards));
 
         dispatch(

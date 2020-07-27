@@ -149,7 +149,6 @@ function DndLayout(props) {
     <div
       style={{ background: "linear-gradient(45deg, #989898 30%, #BEBEBE 90%)" }}
     >
-      {console.log("state in dndLayout", state)}
       <DragDropContext
         onDragStart={onDragStart}
         onDragUpdate={onDragUpdate}
