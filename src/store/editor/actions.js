@@ -67,8 +67,16 @@ export const initializeLayout = (cards) => {
       };
     });
 
-    // const newColumnOrder = Object.keys(newPtextIds).reverse();
-    const newColumnOrder = Object.keys(newPtextIds);
+    let newColumnsOrdered = {};
+    Object.keys(newColumns)
+      .map((key) => parseInt(key.split("-")[1]))
+      .sort((a, b) => a - b)
+      .map((e) => `column-${e}`)
+      .forEach((key) => {
+        newColumnsOrdered[key] = newColumns[key];
+      });
+
+    const newColumnOrder = Object.keys(newColumnsOrdered);
 
     const newState = {
       ...initialState.layoutState,
@@ -76,7 +84,7 @@ export const initializeLayout = (cards) => {
         ...newPtexts,
       },
       columns: {
-        ...newColumns,
+        ...newColumnsOrdered,
       },
       columnOrder: [...newColumnOrder],
     };

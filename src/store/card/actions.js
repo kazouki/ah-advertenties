@@ -6,18 +6,33 @@ import { initializeLayout } from "../editor/actions";
 export function createCard() {
   return async function (dispatch, getState) {
     const columns = getState().editorSliceReducer.layoutState.columns;
+    console.log("columns in createCard", columns);
+
     const columnKeys = Object.keys(columns);
+    console.log("columnKeys in createCard", columnKeys);
+
     const ptextCounts = columnKeys.map((key) => {
       return { [key]: columns[key].ptextIds.length };
     });
+    console.log("ptextCounts in createCard", ptextCounts);
+
+    //TODO create min column # / max colum #, and use as index in find method
+    const columnNrs = columnKeys.map((key) => parseInt(key.split("-")[1]));
+    const minColumIndex = Math.min.apply(null, columnNrs);
+    const maxColumIndex = Math.max.apply(null, columnNrs);
+    console.log("minColumIndex in createCard", minColumIndex);
+    console.log("maxColumIndex in createCard", maxColumIndex);
+
+    //TODO check if column-# exists
 
     const columnIndex = parseInt(
       Object.keys(
         ptextCounts.find((obj, i) => {
-          return obj[`column-${i + 1}`] < 3;
+          return obj[`column-${i + minColumIndex}`] < 3;
         })
       )[0].split("-")[1]
     );
+    console.log("columnIndex in createCard", columnIndex);
 
     try {
       const res = await api("cards", {
