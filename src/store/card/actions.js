@@ -16,23 +16,43 @@ export function createCard() {
     });
     console.log("ptextCounts in createCard", ptextCounts);
 
-    //TODO create min column # / max colum #, and use as index in find method
+    //create min column # / max colum #, and use as index in find method
     const columnNrs = columnKeys.map((key) => parseInt(key.split("-")[1]));
+    console.log("columnNrs    in createCard", columnNrs);
+
     const minColumIndex = Math.min.apply(null, columnNrs);
     const maxColumIndex = Math.max.apply(null, columnNrs);
     console.log("minColumIndex in createCard", minColumIndex);
     console.log("maxColumIndex in createCard", maxColumIndex);
 
-    //TODO check if column-# exists
+    // check if layout is full
+    const isFull = ptextCounts
+      .map((obj) => {
+        return Object.values(obj)[0];
+      })
+      .every((el) => el === 3);
+    console.log("isFull    in createCard", isFull);
+    //TODO calculate if all colums are full, if TRUE 'columnIndex' is 'maxColumnIndex + 1'
 
-    const columnIndex = parseInt(
-      Object.keys(
-        ptextCounts.find((obj, i) => {
-          return obj[`column-${i + minColumIndex}`] < 3;
-        })
-      )[0].split("-")[1]
+    // determine if new column must be created
+    function configureColumnIndex() {
+      if (isFull) {
+        return maxColumIndex + 1;
+      }
+      return parseInt(
+        Object.keys(
+          ptextCounts.find((obj, i) => {
+            return obj[`column-${i + minColumIndex}`] < 3;
+          })
+        )[0].split("-")[1]
+      );
+    }
+
+    const columnIndex = configureColumnIndex();
+    console.log(
+      "columnIndex for new card (after calculation)     in createCard",
+      columnIndex
     );
-    console.log("columnIndex in createCard", columnIndex);
 
     try {
       const res = await api("cards", {
