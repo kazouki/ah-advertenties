@@ -134,6 +134,8 @@ export default function Ptext(props) {
   // const isDragDisabled = props.task.id === "task-1";
   //######
   const cardId = props.ptext?.id.split("-")[1];
+  console.log("props.ptext    in ptextModal", props.ptext);
+  console.log("cardId    in ptextModal", cardId);
 
   return (
     <Draggable

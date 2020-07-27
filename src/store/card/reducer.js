@@ -30,9 +30,20 @@ export default function cardsSliceReducer(
     case "UPDATE_CARD":
       const deleteUpdateCards = state.cards.cards;
       const filteredUpdate = deleteUpdateCards.filter(function (el) {
-        return parseInt(el.id) !== parseInt(payload.cardId);
+        return parseInt(el.id) !== parseInt(payload.id);
       });
-      filteredUpdate.push(payload);
+      // console.log("payload in UPDATE_CARD after push ", payload);
+      console.log(
+        "############# filteredUpdate in UPDATE_CARD before push ",
+        payload
+      );
+      filteredUpdate.push({
+        ...payload,
+      });
+      console.log(
+        "############### filteredUpdate after push UPDATE_CARD ",
+        filteredUpdate
+      );
 
       return { ...state, cards: { cards: filteredUpdate } };
 

@@ -8,6 +8,11 @@ export function createCard() {
     const columns = getState().editorSliceReducer.layoutState.columns;
     console.log("columns in createCard", columns);
 
+    // TODO   if columns exist do following calculations, otherwise create first layout card
+    if (columns.values) {
+    } else {
+    }
+
     const columnKeys = Object.keys(columns);
     console.log("columnKeys in createCard", columnKeys);
 
@@ -35,7 +40,7 @@ export function createCard() {
     //TODO calculate if all colums are full, if TRUE 'columnIndex' is 'maxColumnIndex + 1'
 
     // determine if new column must be created
-    function configureColumnIndex() {
+    function configureColumnIndexIfFull() {
       if (isFull) {
         return maxColumIndex + 1;
       }
@@ -48,7 +53,9 @@ export function createCard() {
       );
     }
 
-    const columnIndex = configureColumnIndex();
+    let columnIndex = configureColumnIndexIfFull();
+    if (columnIndex < 1) columnIndex = 1;
+
     console.log(
       "columnIndex for new card (after calculation)     in createCard",
       columnIndex
@@ -84,6 +91,7 @@ export function createCard() {
 }
 
 export function deleteCard(cardId) {
+  console.log("cardId     in deleteCard", cardId);
   return async function (dispatch, getState) {
     try {
       const res = await api(`cards`, {
@@ -142,7 +150,8 @@ export function updateCard(cardProps) {
         jwt: getState().user.token,
       });
       if (res) {
-        dispatch({ type: "UPDATE_CARD", payload: cardProps });
+        console.log("##########   res.data in updateCard action", res.data);
+        dispatch({ type: "UPDATE_CARD", payload: res.data });
         const cards = getState().cardsSliceReducer.cards.cards;
         console.log("cards in updateCard", cards);
         dispatch(initializeLayout(cards));
