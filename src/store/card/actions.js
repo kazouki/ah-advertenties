@@ -5,11 +5,26 @@ import { initializeLayout } from "../editor/actions";
 
 export function createCard() {
   return async function (dispatch, getState) {
+    const columns = getState().editorSliceReducer.layoutState.columns;
+    const columnKeys = Object.keys(columns);
+    const ptextCounts = columnKeys.map((key) => {
+      return { [key]: columns[key].ptextIds.length };
+    });
+
+    const columnIndex = parseInt(
+      Object.keys(
+        ptextCounts.find((obj, i) => {
+          return obj[`column-${i + 1}`] < 3;
+        })
+      )[0].split("-")[1]
+    );
+
     try {
       const res = await api("cards", {
         method: "POST",
         data: {
           userId: getState().user.id,
+          columnIndex,
         },
         jwt: getState().user.token,
       });
@@ -46,7 +61,6 @@ export function deleteCard(cardId) {
       if (res) {
         dispatch({ type: "DELETE_CARD", payload: cardId });
         const cards = getState().cardsSliceReducer.cards.cards;
-        console.log("cards in deleteCard", cards);
         dispatch(initializeLayout(cards));
 
         dispatch(
@@ -116,7 +130,6 @@ export function fetchCards() {
       if (res) {
         dispatch({ type: "CARDS", payload: res.data });
         const cards = getState().cardsSliceReducer.cards.cards;
-        console.log("cards from fetchCards", cards);
         dispatch(initializeLayout(cards));
       } else return null;
     } catch (e) {

@@ -15,11 +15,8 @@ export default function cardsSliceReducer(
       return { ...state, highestBid: payload };
 
     case "CREATE_CARD":
-      console.log("payload in CREATE_CARD", payload);
-
       const createCards = state.cards.cards;
       createCards.push(payload);
-      console.log("createCards array in CREATE_CARD ", createCards);
 
       return { ...state, cards: { cards: createCards } };
 

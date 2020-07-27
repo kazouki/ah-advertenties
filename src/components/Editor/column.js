@@ -51,6 +51,7 @@ export default function Column(props) {
       <Paper>
         {/* ### provide drag handle for draggable droppable */}
         {/* <Title {...provided.dragHandleProps}>{props.column.title}</Title> */}
+        {props.column.title}
 
         <Droppable
           droppableId={props.column?.id}

@@ -116,7 +116,6 @@ export default function SearchAppBar() {
               to={"/"}
               onClick={() => {
                 dispatch(createCard());
-                console.log("createCard dispatch from --- Navigation.index");
               }}
             >
               Nieuwe Kaart

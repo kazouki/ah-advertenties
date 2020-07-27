@@ -62,12 +62,13 @@ export const initializeLayout = (cards) => {
     Object.keys(newPtexts).forEach((ptext) => {
       newColumns[`column-${newPtexts[ptext].columnIndex}`] = {
         id: `column-${newPtexts[ptext].columnIndex}`,
-        title: "...",
+        title: `column-${newPtexts[ptext].columnIndex}`,
         ptextIds: newPtextIds[`column-${newPtexts[ptext].columnIndex}`],
       };
     });
 
-    const newColumnOrder = Object.keys(newPtextIds).reverse();
+    // const newColumnOrder = Object.keys(newPtextIds).reverse();
+    const newColumnOrder = Object.keys(newPtextIds);
 
     const newState = {
       ...initialState.layoutState,
