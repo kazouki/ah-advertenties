@@ -52,22 +52,17 @@ function DndLayout(props) {
   };
 
   const onDragEnd = (result) => {
-    console.log("cards in onDragEnd", cards.cards);
     const cardToUpdate = cards.cards.find(
       (obj) => obj.id === parseInt(result["draggableId"].split("-")[1])
     );
-    console.log("result in onDragEnd ", result);
-    console.log("cardToUpdate in onDragEnd ", cardToUpdate);
     const newDestination = parseInt(
       result.destination["droppableId"].split("-")[1]
     );
-    console.log("newDestination ", newDestination);
     const updatedCard = {
       ...cardToUpdate,
       cardId: cardToUpdate.id,
       columnIndex: newDestination,
     };
-    console.log("updatedCard ", updatedCard);
     dispatch(updateCard(updatedCard));
 
     //###### optionals

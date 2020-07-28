@@ -16,7 +16,6 @@ export const LOG_OUT = "LOG_OUT";
 export function getUserCards(userId) {
   return async function (dispatch) {
     try {
-      console.log("userId in getUserCards", userId);
       const res = await api(`cards/usercards`, {
         method: "POST",
         data: {

@@ -1,3 +1,5 @@
+import { updateCard } from "../card/actions";
+
 const fields = {
   aangeboden: false,
   gevraagd: false,
@@ -31,7 +33,7 @@ export const setLayoutState = (newState) => ({
 });
 
 export const initializeLayout = (cards) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     let newPtexts = {};
     cards.forEach((card) => {
       newPtexts[`ptext-${card.id}`] = {
@@ -87,6 +89,33 @@ export const initializeLayout = (cards) => {
           ptextIds: Object.values(e)[0].slice(3),
         };
 
+        //////
+        const pTextsToUpdate = Object.values(e)[0]
+          .slice(3)
+          .map((key) => parseInt(key.split("-")[1]));
+
+        let cardsToUpdate = [];
+        pTextsToUpdate.forEach((e) => {
+          cardsToUpdate.push(
+            getState().cardsSliceReducer.cards["cards"].find(
+              (obj) => obj.id === e
+            )
+          );
+        });
+        console.log("cardsToUpdate ######", cardsToUpdate);
+        //TODO  dispatch update card with props: newColumnsSpillover
+        cardsToUpdate.forEach((card) => {
+          console.log("card", card);
+          dispatch(
+            updateCard({
+              ...card,
+              cardId: card.id,
+              columnIndex: columnMax + 1,
+            })
+          );
+        });
+        ////////
+
         newColumnsSpillover[`column-${Object.keys(e)[0]}`] = {
           id: `column-${Object.keys(e)[0]}`,
           title: `column-${Object.keys(e)[0]}`,
@@ -96,6 +125,7 @@ export const initializeLayout = (cards) => {
     });
 
     const newColumnsConstrained = { ...newColumns, ...newColumnsSpillover };
+    console.log("newColumnsConstrained ########", newColumnsConstrained);
 
     let newColumnsOrdered = {};
     Object.keys(newColumnsConstrained)
