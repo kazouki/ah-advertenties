@@ -6,8 +6,10 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
+import { selectCards } from "../../store/card/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
+import { updateCard } from "../../store/card/actions";
 
 import { AH_BLUE } from "../../config/constants.js";
 
@@ -19,6 +21,7 @@ const Container = styled.div`
 function DndLayout(props) {
   const dispatch = useDispatch();
   const state = useSelector(selectLayoutState);
+  const cards = useSelector(selectCards);
 
   // const cards = useSelector(selectCards);
   // console.log("cards :::", cards);
@@ -49,6 +52,24 @@ function DndLayout(props) {
   };
 
   const onDragEnd = (result) => {
+    console.log("cards in onDragEnd", cards.cards);
+    const cardToUpdate = cards.cards.find(
+      (obj) => obj.id === parseInt(result["draggableId"].split("-")[1])
+    );
+    console.log("result in onDragEnd ", result);
+    console.log("cardToUpdate in onDragEnd ", cardToUpdate);
+    const newDestination = parseInt(
+      result.destination["droppableId"].split("-")[1]
+    );
+    console.log("newDestination ", newDestination);
+    const updatedCard = {
+      ...cardToUpdate,
+      cardId: cardToUpdate.id,
+      columnIndex: newDestination,
+    };
+    console.log("updatedCard ", updatedCard);
+    dispatch(updateCard(updatedCard));
+
     //###### optionals
     // document.body.style.color = "inherit";
     // document.body.style.background = "white";
