@@ -18,8 +18,7 @@ import { Link } from "react-router-dom";
 import ahLogoWit from "../../static/img/ahlogo4.png";
 import { AH_BLUE } from "../../config/constants.js";
 
-import { useSelector, useDispatch } from "react-redux";
-import { createCard } from "../../store/card/actions";
+import { useSelector } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
 
 const useStyles = makeStyles((theme) => ({
@@ -96,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchAppBar() {
   const classes = useStyles();
   const token = useSelector(selectToken);
-  const dispatch = useDispatch();
 
   return (
     <div className={classes.root}>
@@ -113,7 +111,15 @@ export default function SearchAppBar() {
             Advertenties
           </Typography>
           <Typography className={classes.menuItem} noWrap>
-            <Link to={"/newcard"}>Nieuwe Kaart</Link>
+            <Link
+              to={"/newcard"}
+              style={{
+                color: "white",
+                textDecoration: "none",
+              }}
+            >
+              Nieuwe kaart
+            </Link>
           </Typography>
           <Typography className={classes.menuItem} noWrap>
             Mijn Kaarten

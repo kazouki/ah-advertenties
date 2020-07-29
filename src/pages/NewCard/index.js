@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createCard } from "../../store/card/actions";
-import { selectUser } from "../../store/user/selectors";
 import { selectToken } from "../../store/user/selectors";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
@@ -16,7 +13,6 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -112,7 +108,7 @@ export default function NewCard() {
 
   useEffect(() => {
     if (!userToken) {
-      history.push("/");
+      history.push("/login");
     }
   });
 
@@ -132,6 +128,7 @@ export default function NewCard() {
         minimumBid: state.cardFields.minimumBid,
       })
     );
+    history.push("/");
   };
 
   const onFieldChangeHandler = (e) => {

@@ -70,31 +70,3 @@ function App() {
 }
 
 export default App;
-
-//#####################################################################
-
-// import React from "react";
-// import Paperbase from "./theme/Paperbase";
-// import { BrowserRouter } from "react-router-dom";
-
-// import Navigation from "./components/Navigation";
-// import Loading from "./components/Loading";
-// import MessageBox from "./components/MessageBox";
-
-// // Roboto font required by material-ui
-// import "typeface-roboto";
-
-// function App() {
-//   return (
-//     <div>
-//       {/* {isLoading ? <Loading /> : null} */}
-//       <BrowserRouter>
-//         <Navigation />
-//         <MessageBox />
-//         <Paperbase />
-//       </BrowserRouter>
-//     </div>
-//   );
-// }
-
-// export default App;

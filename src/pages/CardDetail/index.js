@@ -4,12 +4,12 @@ import { useParams } from "react-router-dom";
 
 import CardView from "../../components/CardView";
 
-import { fetchCardDetail } from "../../store/card/actions";
+// import { fetchCardDetail } from "../../store/card/actions";
 import { addHeart } from "../../store/card/actions";
 
 import { postBid } from "../../store/card/actions";
-import { getHighestBid } from "../../store/card/actions";
-import { getUserWithStoredToken } from "../../store/user/actions";
+// import { getHighestBid } from "../../store/card/actions";
+// import { getUserWithStoredToken } from "../../store/user/actions";
 import { fetchMessages } from "../../store/message/actions";
 
 import { selectCardDetail } from "../../store/card/selectors";
@@ -61,19 +61,12 @@ export default function CardDetail(props) {
   }));
   const classes = useStyles();
 
-  useEffect(() => {
-    dispatch(fetchCardDetail(id));
-    dispatch(getHighestBid(id));
-    dispatch(getUserWithStoredToken());
-  }, [dispatch, id]);
-
   const onGiveHeart = () => {
     dispatch(addHeart(id));
   };
 
   const onBidSubmitHandler = (e) => {
     e.preventDefault();
-
     dispatch(
       postBid({
         cardId: id,
@@ -103,8 +96,14 @@ export default function CardDetail(props) {
   };
 
   const fetchMessagesHandler = () => {
-    dispatch(fetchMessages({ cardOwnerId: id }));
+    const cardOwnerId = cardDetail.userId;
+    dispatch(fetchMessages({ cardOwnerId }));
   };
+
+  // console.log("cardDetail ", cardDetail);
+  // console.log("userToken ", userToken);
+  console.log("highestBidAndId ", highestBidAndId);
+  console.log("highestBidAndId ", highestBidAndId);
 
   return (
     <>
@@ -150,16 +149,18 @@ export default function CardDetail(props) {
                   <Paper className={classes.paper}>
                     <Container>
                       Place a bid (starting at $
-                      {highestBidAndId.highestBid
+                      {/* {highestBidAndId.highestBid && cardDetail
                         ? `${highestBidAndId.highestBid + 1}`
                         : `${cardDetail.minimumBid}`}
-                      )
+                      ) */}
                     </Container>
 
                     <Container>
-                      <Form.Control
+                      {/* <Form.Control
                         value={
-                          bidValue === "default" && highestBidAndId.highestBid
+                          bidValue === "default" &&
+                          highestBidAndId.highestBid &&
+                          cardDetail
                             ? highestBidAndId.highestBid + 1
                             : bidValue === "default" &&
                               !highestBidAndId.highestBid
@@ -169,13 +170,13 @@ export default function CardDetail(props) {
                         onChange={onSetBidValue}
                         type="number"
                         min={
-                          highestBidAndId
+                          highestBidAndId && cardDetail
                             ? highestBidAndId.highestBid + 1
                             : cardDetail.minimumBid
                         }
                         placeholder="Bid"
                         required
-                      />
+                      /> */}
 
                       <Button
                         variant="outline-secondary"

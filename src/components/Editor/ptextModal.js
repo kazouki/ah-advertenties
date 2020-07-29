@@ -25,6 +25,9 @@ import { selectUserCardIds } from "../../store/user/selectors";
 import { setLayoutState } from "../../store/editor/actions";
 import { deleteCard } from "../../store/card/actions";
 
+import { fetchCardDetail } from "../../store/card/actions";
+import { getHighestBid } from "../../store/card/actions";
+
 const Container = styled.div`
   /* border: 1px solid lightgrey; */
   border-radius: 5px;
@@ -160,6 +163,10 @@ export default function Ptext(props) {
           </GarbageIcon>
           <PeopleIcon>
             <Link
+              onClick={() => {
+                dispatch(fetchCardDetail(cardId));
+                dispatch(getHighestBid(cardId));
+              }}
               to={`/carddetail/${cardId}`}
               style={{ cursor: "default", outline: "none" }}
             >
