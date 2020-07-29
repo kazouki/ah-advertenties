@@ -60,7 +60,7 @@ export function createCard() {
         // get cards belonging to user
         dispatch(getUserCards(getState().user.id));
 
-        dispatch(initializeLayout(cards));
+        // dispatch(initializeLayout(cards));
         dispatch(
           showMessageWithTimeout(
             "success",
@@ -102,7 +102,6 @@ export function deleteCard(cardId) {
   };
 }
 export function updateCard(cardProps) {
-  console.log("cardProps in updateCard action ", cardProps);
   const {
     aangeboden,
     gevraagd,

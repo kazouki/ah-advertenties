@@ -28,7 +28,6 @@ import { AH_BLUE } from "./config/constants.js";
 function App() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectAppLoading);
-  // const cards = useSelector(selectCards);
 
   useEffect(() => {
     dispatch(getUserWithStoredToken());

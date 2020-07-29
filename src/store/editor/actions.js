@@ -33,6 +33,7 @@ export const setLayoutState = (newState) => ({
 });
 
 export const initializeLayout = (cards) => {
+  // console.clear();
   return (dispatch, getState) => {
     let newPtexts = {};
     cards.forEach((card) => {
@@ -69,71 +70,30 @@ export const initializeLayout = (cards) => {
       };
     });
 
-    let newColumnsSpillover = {};
-    const newColumnsPtextIdsArr = Object.keys(newColumns).map((e) => {
+    const newColumnsPtextIdsXYArr = Object.keys(newColumns).map((e) => {
       return { [newColumns[e].id.split("-")[1]]: newColumns[e].ptextIds };
     });
-
-    const columnIndices = newColumnsPtextIdsArr.map((obj) =>
-      parseInt(Object.keys(obj)[0])
-    );
-    const columnMax = Math.max.apply(null, columnIndices);
-
-    newColumnsPtextIdsArr.forEach((e) => {
-      if (Object.values(e)[0].length > 3) {
-        console.log("e", e);
-
-        newColumnsSpillover[`column-${columnMax + 1}`] = {
-          id: `column-${columnMax + 1}`,
-          title: `column-${columnMax + 1}`,
-          ptextIds: Object.values(e)[0].slice(3),
-        };
-
-        //////
-        const pTextsToUpdate = Object.values(e)[0]
-          .slice(3)
-          .map((key) => parseInt(key.split("-")[1]));
-
-        let cardsToUpdate = [];
-        pTextsToUpdate.forEach((e) => {
-          cardsToUpdate.push(
-            getState().cardsSliceReducer.cards["cards"].find(
-              (obj) => obj.id === e
-            )
-          );
-        });
-        console.log("cardsToUpdate ######", cardsToUpdate);
-        //TODO  dispatch update card with props: newColumnsSpillover
-        cardsToUpdate.forEach((card) => {
-          console.log("card", card);
-          dispatch(
-            updateCard({
-              ...card,
-              cardId: card.id,
-              columnIndex: columnMax + 1,
-            })
-          );
-        });
-        ////////
-
-        newColumnsSpillover[`column-${Object.keys(e)[0]}`] = {
-          id: `column-${Object.keys(e)[0]}`,
-          title: `column-${Object.keys(e)[0]}`,
-          ptextIds: Object.values(e)[0].slice(0, 3),
-        };
-      }
+    let ptextIdsPerColumn = {};
+    newColumnsPtextIdsXYArr.forEach((e) => {
+      const key = Object.keys(e)[0];
+      const val = Object.values(e)[0];
+      ptextIdsPerColumn[`column-${key}`] = val.length;
+    });
+    dispatch({
+      type: "PTEXTIDS_PER_COLUMN",
+      payload: { ...ptextIdsPerColumn },
     });
 
-    const newColumnsConstrained = { ...newColumns, ...newColumnsSpillover };
-    console.log("newColumnsConstrained ########", newColumnsConstrained);
+    // console.log("newcolumns ", newColumns);
 
+    /////// ???????
     let newColumnsOrdered = {};
-    Object.keys(newColumnsConstrained)
+    Object.keys(newColumns)
       .map((key) => parseInt(key.split("-")[1]))
       .sort((a, b) => a - b)
       .map((e) => `column-${e}`)
       .forEach((key) => {
-        newColumnsOrdered[key] = newColumnsConstrained[key];
+        newColumnsOrdered[key] = newColumns[key];
       });
 
     const newColumnOrder = Object.keys(newColumnsOrdered);
@@ -156,7 +116,9 @@ export const setContentDescription = (description) => ({
   type: "SET_CONTENT_DESCRIPTION",
   payload: description,
 });
+/////
 
+///// temp
 export const addNewColumn = () => {
   return (dispatch, getState) => {
     const layoutState = getState().editorSliceReducer.layoutState;

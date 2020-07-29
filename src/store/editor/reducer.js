@@ -33,6 +33,8 @@ export default function editorSliceReducer(
       return { ...state, layoutState: payload };
     case "SET_CONTENT_DESCRIPTION":
       return { ...state, contentDescription: payload };
+    case "PTEXTIDS_PER_COLUMN":
+      return { ...state, ptextIdsPerColumn: payload };
 
     default:
       return state;

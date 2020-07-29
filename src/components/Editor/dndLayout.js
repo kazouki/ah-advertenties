@@ -7,6 +7,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { selectCards } from "../../store/card/selectors";
+import { selectPtextIdsPerColumn } from "../../store/editor/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
 import { updateCard } from "../../store/card/actions";
@@ -21,6 +22,7 @@ const Container = styled.div`
 function DndLayout(props) {
   const dispatch = useDispatch();
   const state = useSelector(selectLayoutState);
+  const ptextIdsPerColumn = useSelector(selectPtextIdsPerColumn);
   const cards = useSelector(selectCards);
 
   // const cards = useSelector(selectCards);
@@ -55,15 +57,17 @@ function DndLayout(props) {
     const cardToUpdate = cards.cards.find(
       (obj) => obj.id === parseInt(result["draggableId"].split("-")[1])
     );
-    const newDestination = parseInt(
-      result.destination["droppableId"].split("-")[1]
-    );
-    const updatedCard = {
-      ...cardToUpdate,
-      cardId: cardToUpdate.id,
-      columnIndex: newDestination,
-    };
-    dispatch(updateCard(updatedCard));
+    if (result.destination) {
+      const newDestination = parseInt(
+        result.destination["droppableId"].split("-")[1]
+      );
+      const updatedCard = {
+        ...cardToUpdate,
+        cardId: cardToUpdate.id,
+        columnIndex: newDestination,
+      };
+      dispatch(updateCard(updatedCard));
+    }
 
     //###### optionals
     // document.body.style.color = "inherit";
@@ -202,7 +206,11 @@ function DndLayout(props) {
                     <Column
                       column={column}
                       ptexts={ptexts}
-                      isDropDisabled={false}
+                      isDropDisabled={
+                        ptextIdsPerColumn
+                          ? ptextIdsPerColumn[columnId] >= 4
+                          : false
+                      }
                       index={index}
                     />
                     <span
