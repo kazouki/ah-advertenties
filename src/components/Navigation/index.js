@@ -20,6 +20,7 @@ import { AH_BLUE } from "../../config/constants.js";
 
 import { useSelector } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
+import { selectUser } from "../../store/user/selectors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
       display: "block",
     },
     color: "white",
+    margin: 8,
   },
   search: {
     position: "relative",
@@ -81,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
@@ -95,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchAppBar() {
   const classes = useStyles();
   const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
 
   return (
     <div className={classes.root}>
@@ -144,17 +148,18 @@ export default function SearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-
-          <IconButton aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <IconButton aria-label="show 17 new notifications" color="inherit">
+          <Link style={{ color: "white", marginLeft: 10 }} to="/messages">
+            <IconButton aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+          </Link>
+          {/* <IconButton aria-label="show 17 new notifications" color="inherit">
             <Badge badgeContent={17} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           {!token ? (
             <Link style={{ color: "white" }} to="/login">
               <IconButton
@@ -167,13 +172,25 @@ export default function SearchAppBar() {
               </IconButton>
             </Link>
           ) : (
-            <Link to="/profile">
-              <IconButton color="inherit" className={classes.iconButtonAvatar}>
-                <Avatar
+            <Link to="/profile" style={{ textDecoration: "none" }}>
+              {/* <IconButton color="inherit"> */}
+              <div style={{ marginLeft: 8 }}>
+                <Typography
+                  className={classes.menuItem}
+                  style={{ fontSize: 11 }}
+                  noWrap
+                >
+                  Welkom terug
+                </Typography>
+                <Typography style={{ fontSize: 15, color: "white" }}>
+                  <b>{user.name}</b>!
+                </Typography>
+              </div>
+              {/* <Avatar
                   className={classes.avatar}
                   src="https://material-ui.com/static/images/avatar/7.jpg"
-                />
-              </IconButton>
+                /> */}
+              {/* </IconButton> */}
             </Link>
           )}
         </Toolbar>

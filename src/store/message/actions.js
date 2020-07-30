@@ -8,7 +8,9 @@ export function fetchMessages({ cardOwnerId }) {
         data: { cardOwnerId, userId: getState().user.id },
         jwt: getState().user.token,
       });
-      dispatch({ type: "LOAD_MESSAGES", payload: res.data });
+      if (res) {
+        dispatch({ type: "LOAD_MESSAGES", payload: res.data });
+      }
     } catch (e) {
       console.log(e);
     }

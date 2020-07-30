@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -6,11 +6,12 @@ import CardView from "../../components/CardView";
 
 // import { fetchCardDetail } from "../../store/card/actions";
 import { addHeart } from "../../store/card/actions";
-
 import { postBid } from "../../store/card/actions";
+import { postMessage } from "../../store/message/actions";
+
 // import { getHighestBid } from "../../store/card/actions";
 // import { getUserWithStoredToken } from "../../store/user/actions";
-import { fetchMessages } from "../../store/message/actions";
+// import { fetchMessages } from "../../store/message/actions";
 
 import { selectCardDetail } from "../../store/card/selectors";
 import { selectHighestBid } from "../../store/card/selectors";
@@ -19,32 +20,40 @@ import { selectMessages } from "../../store/message/selectors";
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-
 ////////
-
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import Input from "@material-ui/core/Input";
+import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import { TextField } from "@material-ui/core";
+import MoodIcon from "@material-ui/icons/Mood";
 
 export default function CardDetail(props) {
   const [bidValue, setBidValue] = useState("default");
   const [tooLowAlert, setTooLowAlert] = useState("");
+  const [text, setText] = useState("");
 
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const id = props.cardId;
+  console.log("id   in cardetail index", id);
 
   const cardDetail = useSelector(selectCardDetail);
   const highestBidAndId = useSelector(selectHighestBid);
   const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
-  const messages = useSelector(selectMessages);
+
+  const toUserId = cardDetail?.userId;
 
   const useStyles = makeStyles((theme) => ({
     margin: {
       margin: theme.spacing(1),
+    },
+    modalContainer: {
+      background: "rgba(35,144,207,0.4)",
+      borderRadius: 8,
+      maxWidth: "50vw",
     },
     root: {
       flexGrow: 1,
@@ -54,9 +63,10 @@ export default function CardDetail(props) {
       textAlign: "center",
       color: theme.palette.text.secondary,
     },
-    chatboxContainer: {
-      maxHeight: 60,
-      width: "30vw",
+    paperMessages: {
+      padding: theme.spacing(2),
+      minHeight: 250,
+      color: theme.palette.text.secondary,
     },
   }));
   const classes = useStyles();
@@ -88,129 +98,111 @@ export default function CardDetail(props) {
     if (e.target.value < highestBidAndId.highestBid + 1) {
       setTooLowAlert(
         <b>
-          <h5>The amount should be higher than the highest bid!</h5>
+          <h5>Het bedrag kan niet lager zijn dan het hoogste bod!</h5>
         </b>
       );
     } else setTooLowAlert("");
     if (!e.target.value) setTooLowAlert("");
   };
 
-  const fetchMessagesHandler = () => {
-    const cardOwnerId = cardDetail.userId;
-    dispatch(fetchMessages({ cardOwnerId }));
-  };
-
-  // console.log("cardDetail ", cardDetail);
-  // console.log("userToken ", userToken);
-  console.log("highestBidAndId ", highestBidAndId);
-  console.log("highestBidAndId ", highestBidAndId);
+  console.log("highestBidAndId  in CardDetail (pages)", highestBidAndId);
 
   return (
     <>
-      {userToken ? (
-        <span>
-          {highestBidAndId ? (
-            <div className={classes.root}>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Paper className={classes.paper}>
-                    "add to favs button" / tool links
-                  </Paper>
-                </Grid>
-                <Grid item xs={6}>
-                  <Paper className={classes.paper}>
-                    {cardDetail ? (
-                      <CardView
-                        key={cardDetail.id}
-                        id={cardDetail.id}
-                        title={cardDetail.title}
-                        imageUrl={cardDetail.imageUrl}
-                        hearts={cardDetail.hearts}
-                        minimumBid={cardDetail.minimumBid}
-                        activeBids={cardDetail.bids.length}
-                        bidders={cardDetail.bids}
-                        giveHeart={onGiveHeart}
-                        detailMode={true}
-                        heartGrid={10}
-                      />
-                    ) : null}
-                  </Paper>
-                </Grid>
-                <Grid item xs={6}>
-                  <Paper className={classes.paper}>
-                    messagebox section
-                    <Container>
-                      <button onClick={fetchMessagesHandler}>fetch test</button>
-                      {messages[0] ? JSON.stringify(messages[0]) : null}
-                    </Container>
-                  </Paper>
-                </Grid>
-                <Grid item xs={3}>
-                  <Paper className={classes.paper}>
-                    <Container>
-                      Place a bid (starting at $
-                      {/* {highestBidAndId.highestBid && cardDetail
-                        ? `${highestBidAndId.highestBid + 1}`
-                        : `${cardDetail.minimumBid}`}
-                      ) */}
-                    </Container>
+      <Container className={classes.modalContainer}>
+        {userToken ? (
+          <span>
+            {highestBidAndId ? (
+              <div className={classes.root}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Paper className={classes.paper}>
+                      "add to favs button" / tool links
+                    </Paper>
+                  </Grid>
 
-                    <Container>
-                      {/* <Form.Control
-                        value={
-                          bidValue === "default" &&
-                          highestBidAndId.highestBid &&
-                          cardDetail
-                            ? highestBidAndId.highestBid + 1
-                            : bidValue === "default" &&
-                              !highestBidAndId.highestBid
-                            ? cardDetail.minimumBid + 1
-                            : bidValue
-                        }
-                        onChange={onSetBidValue}
-                        type="number"
-                        min={
-                          highestBidAndId && cardDetail
-                            ? highestBidAndId.highestBid + 1
-                            : cardDetail.minimumBid
-                        }
-                        placeholder="Bid"
-                        required
-                      /> */}
+                  <Grid item xs={12}>
+                    <Paper className={classes.paper}>
+                      {cardDetail ? (
+                        <CardView
+                          key={cardDetail.id}
+                          id={cardDetail.id}
+                          title={cardDetail.title}
+                          imageUrl={cardDetail.imageUrl}
+                          hearts={cardDetail.hearts}
+                          minimumBid={cardDetail.minimumBid}
+                          activeBids={cardDetail.bids.length}
+                          bidders={cardDetail.bids}
+                          giveHeart={onGiveHeart}
+                          detailMode={true}
+                          heartGrid={10}
+                        />
+                      ) : null}
+                    </Paper>
+                  </Grid>
 
-                      <Button
-                        variant="outline-secondary"
-                        onClick={onBidSubmitHandler}
-                      >
-                        place bid
-                      </Button>
-                      {tooLowAlert}
-                    </Container>
-                  </Paper>
+                  <Grid item xs={6}>
+                    <Paper className={classes.paper}>
+                      <div>
+                        {cardDetail ? (
+                          <>
+                            {`Plaats een bod vanaf `}
+                            {highestBidAndId.highestBid
+                              ? `${highestBidAndId.highestBid + 1}`
+                              : `${cardDetail.minimumBid}`}
+                            {` euro`}
+                          </>
+                        ) : null}
+                      </div>
+
+                      <div>
+                        {cardDetail ? (
+                          <Input
+                            value={
+                              bidValue === "default" &&
+                              highestBidAndId.highestBid
+                                ? highestBidAndId.highestBid + 1
+                                : bidValue === "default" &&
+                                  !highestBidAndId.highestBid
+                                ? cardDetail.minimumBid + 1
+                                : bidValue
+                            }
+                            onChange={onSetBidValue}
+                            type="number"
+                            min={
+                              highestBidAndId && cardDetail
+                                ? highestBidAndId.highestBid + 1
+                                : cardDetail.minimumBid
+                            }
+                            placeholder="Bid"
+                            required
+                          />
+                        ) : null}
+
+                        <Button onClick={onBidSubmitHandler}>plaats bod</Button>
+                        {tooLowAlert}
+                      </div>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Paper className={classes.paper}>
+                      {highestBidAndId.highestBid ? (
+                        <>
+                          De hoogste bieder is {highestBidAndId.highestBidEmail}
+                          , met
+                          {highestBidAndId.highestBid} euro
+                        </>
+                      ) : (
+                        <>wees de eerste om een bod uit te brengen!</>
+                      )}
+                    </Paper>
+                  </Grid>
                 </Grid>
-                <Grid item xs={3}>
-                  <Paper className={classes.paper}>
-                    {highestBidAndId.highestBid ? (
-                      <>
-                        Highest bidder is {highestBidAndId.highestBidEmail} with
-                        ${highestBidAndId.highestBid}
-                      </>
-                    ) : (
-                      <>be the first one to place a bid!</>
-                    )}
-                  </Paper>
-                </Grid>
-                <Grid item xs={3}>
-                  <Paper className={classes.paper}>.....</Paper>
-                </Grid>
-                <Grid item xs={3}>
-                  <Paper className={classes.paper}>emoji button?</Paper>
-                </Grid>
-              </Grid>
-            </div>
-          ) : null}
-        </span>
-      ) : null}
+              </div>
+            ) : null}
+          </span>
+        ) : null}
+      </Container>
     </>
   );
 }

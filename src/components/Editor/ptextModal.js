@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 // import { selectUser } from "../../store/user/selectors";
 import { selectUserCardIds } from "../../store/user/selectors";
-import { selectCardDetail } from "../../store/card/selectors";
+// import { selectCardDetail } from "../../store/card/selectors";
 import { selectCards } from "../../store/card/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
@@ -30,6 +30,8 @@ import { deleteCard } from "../../store/card/actions";
 import { fetchCardDetail } from "../../store/card/actions";
 import { fetchMessages } from "../../store/message/actions";
 import { getHighestBid } from "../../store/card/actions";
+
+import CardDetail from "../../pages/CardDetail";
 
 const Container = styled.div`
   /* border: 1px solid lightgrey; */
@@ -82,6 +84,74 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
 }));
+
+function CardDetailsModal(props) {
+  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
+
+  const allCards = useSelector(selectCards);
+  const dispatch = useDispatch();
+  // const cardId = props.ptext?.id.split("-")[1];
+  const cardId = parseInt(props.ptextId?.split("-")[1]);
+
+  // console.log("cardId   in  CardDetailsModal", cardId);
+  // console.log("props   in  CardDetailsModal", props);
+
+  const cardOwnerId = allCards?.cards.find(
+    (card) => card.id === parseInt(cardId)
+  );
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <PeopleIcon>
+        <EmojiPeopleIcon
+          style={{ color: "white" }}
+          fontSize="small"
+          onClick={() => {
+            dispatch(fetchCardDetail(cardId));
+            dispatch(getHighestBid(cardId));
+            // if (cardOwnerId)
+            //   dispatch(fetchMessages({ cardOwnerId: cardOwnerId.userId }));
+            handleOpen();
+          }}
+        />
+      </PeopleIcon>
+      {/* <CreateIcon onClick={handleOpen} fontSize="small" /> */}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div>
+            <CardDetail cardId={cardId} />
+            {/* <AHCard
+              ptextId={props.ptextId}
+              editDisabled={false}
+              initState={layoutState}
+              saveStateTo={saveCardStateToStore}
+            /> */}
+          </div>
+        </Fade>
+      </Modal>
+    </div>
+  );
+}
 
 function CardModal(props) {
   const layoutState = useSelector(selectLayoutState);
@@ -140,7 +210,7 @@ export default function Ptext(props) {
 
   const userCardIds = useSelector(selectUserCardIds);
   const layoutState = useSelector(selectLayoutState);
-  const cardDetail = useSelector(selectCardDetail);
+  // const cardDetail = useSelector(selectCardDetail);
   const allCards = useSelector(selectCards);
   const dispatch = useDispatch();
   const cardId = props.ptext?.id.split("-")[1];
@@ -153,35 +223,21 @@ export default function Ptext(props) {
 
   function SwitchToolbar() {
     const userOwnsCard = userCardIds?.includes(parseInt(cardId));
-    const cardOwnerId = allCards?.cards.find(
-      (card) => card.id === parseInt(cardId)
-    );
-    function RenderPeopleIcon() {
-      return (
-        <>
-          <PeopleIcon>
-            <Link
-              onClick={() => {
-                dispatch(fetchCardDetail(cardId));
-                // TODO  include cardOwnerId in router response
-                // const cardOwnerId = cardDetail.userId;
-                dispatch(getHighestBid(cardId));
-                if (cardOwnerId)
-                  dispatch(fetchMessages({ cardOwnerId: cardOwnerId.userId }));
-              }}
-              to={`/carddetail/${cardId}`}
-              style={{ cursor: "default", outline: "none" }}
-            >
-              <EmojiPeopleIcon style={{ color: "white" }} fontSize="small" />
-            </Link>
-          </PeopleIcon>
-        </>
-      );
-    }
+    // const cardOwnerId = allCards?.cards.find(
+    //   (card) => card.id === parseInt(cardId)
+    // );
+
+    // function RenderPeopleIcon() {
+    //   return (
+    //     <>
+    //       <CardDetailsModal />
+    //     </>
+    //   );
+    // }
     if (userOwnsCard) {
       return (
         <>
-          <RenderPeopleIcon />
+          <CardDetailsModal ptextId={props.ptext?.id} />
           <GarbageIcon>
             <DeleteIcon
               style={{ color: "white" }}
@@ -197,7 +253,7 @@ export default function Ptext(props) {
     }
     return (
       <>
-        <RenderPeopleIcon />
+        <CardDetailsModal ptextId={props.ptext?.id} />
       </>
     );
   }
@@ -222,29 +278,6 @@ export default function Ptext(props) {
           />
 
           <SwitchToolbar />
-          {/* TODO   check if card.userId === user.id*/}
-          {/* {console.log("cardId in ptextModal ", cardId)} */}
-          {/* {console.log("userId in ptextModal ", userId)} */}
-
-          {/* <GarbageIcon>
-            <DeleteIcon
-              style={{ color: "white" }}
-              fontSize="small"
-              onClick={() => dispatch(deleteCard(cardId))}
-            />
-          </GarbageIcon>
-          <PeopleIcon>
-            <Link
-              to={`/carddetail/${cardId}`}
-              style={{ cursor: "default", outline: "none" }}
-            >
-              <EmojiPeopleIcon style={{ color: "white" }} fontSize="small" />
-            </Link>
-          </PeopleIcon>
-
-          <PencilIcon>
-            <CardModal ptextId={props.ptext?.id} />
-          </PencilIcon> */}
 
           <Handle isDragDisabled={isDragDisabled} {...provided.dragHandleProps}>
             <DragHandle />

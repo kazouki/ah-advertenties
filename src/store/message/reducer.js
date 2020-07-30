@@ -1,13 +1,15 @@
 const initialState = {
   messageBox: {
-    messages: {
-      fromUserId: null,
-      toUserId: null,
-      id: null,
-      text: "",
-      createdAt: "",
-      updatedAt: "",
-    },
+    messages: [
+      {
+        fromUserId: 1,
+        toUserId: 1,
+        id: 1,
+        text: "geen berichten",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
   },
 };
 
@@ -17,11 +19,11 @@ export default function messagesSliceReducer(
 ) {
   switch (type) {
     case "LOAD_MESSAGES":
-      // console.log("LOAD_MESSAGES worked");
+      console.log("payload in LOAD_MESSAGES ######", payload);
       return {
         ...state,
         messageBox: {
-          messages: payload,
+          messages: payload.reverse(),
         },
       };
 

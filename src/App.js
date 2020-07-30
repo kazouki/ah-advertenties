@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 // import Home from "./pages/Homepage";
 import CardDetail from "./pages/CardDetail";
 import NewCard from "./pages/NewCard";
+import Messages from "./pages/Messages";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppLoading } from "./store/appState/selectors";
@@ -55,6 +56,7 @@ function App() {
           )}
         /> */}
         <Route path="/carddetail/:id" component={CardDetail} />
+        <Route path="/messages" component={Messages} />
 
         <Route path="/newcard" component={NewCard} />
         <Route path="/signup" component={SignUp} bg={AH_BLUE} />

@@ -39,49 +39,55 @@ let theme = createMuiTheme({
   },
 });
 
+const colorContainerMargin = 5;
+const colorContainerPaddingBottom = 5;
+const colorContainerOpacity = 0.18;
+
 const useStyles = makeStyles((theme) => ({
   margin: {
+    padding: 0,
+    marginTop: -5,
     margin: theme.spacing(1),
   },
   adornment: {
     margin: 20,
   },
   fieldContainerRed: {
-    background: "rgba(249,101,80,0.1)",
+    background: `rgba(249,101,80,${colorContainerOpacity})`,
     marginLeft: -90,
-    margin: 8,
-    paddingBottom: 10,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
   },
   fieldContainerGreen: {
-    background: "rgba(139,173,80,0.1)",
+    background: `rgba(139,173,80,${colorContainerOpacity})`,
     marginLeft: 120,
-    margin: 8,
-    paddingBottom: 10,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
   },
   fieldContainerBlue: {
-    background: "rgba(127,168,242,0.1)",
+    background: `rgba(127,168,242,${colorContainerOpacity})`,
     marginLeft: -30,
-    margin: 8,
-    paddingBottom: 10,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
   },
   fieldContainerYellow: {
-    background: "rgba(255,205,70,0.1)",
+    background: `rgba(255,205,70,${colorContainerOpacity})`,
 
     marginLeft: 100,
-    margin: 8,
-    paddingBottom: 10,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
   },
   fieldContainerPurple: {
-    background: "rgba(198,47,222,0.1)",
+    background: `rgba(198,47,222,${colorContainerOpacity})`,
     marginLeft: -120,
-    margin: 8,
-    paddingBottom: 10,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
   },
   fieldContainerLightBlue: {
-    background: "rgba(0,226,255,0.1)",
+    background: `rgba(0,226,255,${colorContainerOpacity})`,
     marginLeft: 80,
-    margin: 8,
-    paddingBottom: 10,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
   },
 }));
 

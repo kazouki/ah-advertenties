@@ -165,11 +165,10 @@ export function fetchCards() {
 }
 
 export function fetchCardDetail(id) {
-  return async function thunk(dispatch, getState) {
+  return async function thunk(dispatch) {
     try {
       const res = await api(`cards/${id}`, { method: "GET" });
       if (res) {
-        console.log("res   in fetchCardDetail action ", res);
         dispatch({ type: "CARD_DETAIL", payload: res.data.cardDetail });
         return true;
       } else return false;
