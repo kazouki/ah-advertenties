@@ -56,7 +56,8 @@ function App() {
           )}
         /> */}
         <Route path="/carddetail/:id" component={CardDetail} />
-        <Route path="/messages" component={Messages} />
+        <Route path="/messages/:id" component={Messages} />
+        <Route path="/messages/all" component={Messages} />
 
         <Route path="/newcard" component={NewCard} />
         <Route path="/signup" component={SignUp} bg={AH_BLUE} />

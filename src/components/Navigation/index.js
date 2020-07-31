@@ -3,7 +3,6 @@ import React from "react";
 import Badge from "@material-ui/core/Badge";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
-// import NotificationsIcon from "@material-ui/icons/Notifications";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-// import Avatar from "@material-ui/core/Avatar";
 
 import { Link } from "react-router-dom";
 
@@ -28,6 +26,7 @@ import Button from "@material-ui/core/Button";
 
 import { useHistory } from "react-router-dom";
 import { createCard } from "../../store/card/actions";
+import { fetchInboxMessages } from "../../store/message/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,7 +142,6 @@ export default function SearchAppBar() {
 
     return (
       <div>
-        {/* <Typography className={classes.menuItem} noWrap> */}
         <Button
           className={classes.menuItem}
           color="primary"
@@ -154,7 +152,6 @@ export default function SearchAppBar() {
         >
           Nieuwe kaart
         </Button>
-        {/* </Typography> */}
 
         <Menu
           id="simple-menu"
@@ -224,18 +221,20 @@ export default function SearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-          <Link style={{ color: "white", marginLeft: 10 }} to="/messages">
+          <Link
+            style={{ color: "white", marginLeft: 10 }}
+            to="/messages/all"
+            onClick={() => {
+              console.log("callback in navigation worked");
+              dispatch(fetchInboxMessages());
+            }}
+          >
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
             </IconButton>
           </Link>
-          {/* <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={17} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
           {!token ? (
             <Link style={{ color: "white" }} to="/login">
               <IconButton
@@ -249,7 +248,6 @@ export default function SearchAppBar() {
             </Link>
           ) : (
             <Link to="/profile" style={{ textDecoration: "none" }}>
-              {/* <IconButton color="inherit"> */}
               <div style={{ marginLeft: 8 }}>
                 <Typography
                   className={classes.menuItem}
@@ -262,11 +260,6 @@ export default function SearchAppBar() {
                   <b>{user.name}</b>!
                 </Typography>
               </div>
-              {/* <Avatar
-                  className={classes.avatar}
-                  src="https://material-ui.com/static/images/avatar/7.jpg"
-                /> */}
-              {/* </IconButton> */}
             </Link>
           )}
         </Toolbar>

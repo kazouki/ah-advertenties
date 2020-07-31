@@ -1,15 +1,52 @@
 import api from "../../api";
 
-export function fetchMessages({ cardOwnerId }) {
+//TODO fetch card specific user messages
+export function fetchConversation({ remoteUserId }) {
+  console.log("remoteUserId   in fetchConversation", remoteUserId);
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`messages/conversation`, {
+        method: "POST",
+        data: { remoteUserId, userId: getState().user.id },
+        jwt: getState().user.token,
+      });
+      if (res) {
+        dispatch({ type: "LOAD_CONVERSATION", payload: res.data });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+//TODO fetch correct messages
+export function fetchAllMessages() {
   return async function (dispatch, getState) {
     try {
       const res = await api(`messages/all`, {
         method: "POST",
-        data: { cardOwnerId, userId: getState().user.id },
+        data: { userId: getState().user.id },
         jwt: getState().user.token,
       });
       if (res) {
-        dispatch({ type: "LOAD_MESSAGES", payload: res.data });
+        dispatch({ type: "LOAD_ALL_USER_MESSAGES", payload: res.data });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function fetchInboxMessages() {
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`messages/inbox`, {
+        method: "POST",
+        data: { userId: getState().user.id },
+        jwt: getState().user.token,
+      });
+      if (res) {
+        dispatch({ type: "LOAD_INBOX_MESSAGES", payload: res.data });
       }
     } catch (e) {
       console.log(e);
@@ -29,7 +66,7 @@ export function postMessage({ toUserId, text }) {
         },
         jwt: getState().user.token,
       });
-      dispatch(fetchMessages({ cardOwnerId: toUserId }));
+      dispatch(fetchConversation({ remoteUserId: toUserId }));
       return res;
     } catch (e) {
       console.log(e);

@@ -1,25 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import CardView from "../../components/CardView";
 import { AH_BLUE } from "../../config/constants.js";
 
-// import { fetchCardDetail } from "../../store/card/actions";
 import { addFav } from "../../store/card/actions";
 import { postBid } from "../../store/card/actions";
-// import { postMessage } from "../../store/message/actions";
-
-// import { getHighestBid } from "../../store/card/actions";
-// import { getUserWithStoredToken } from "../../store/user/actions";
-// import { fetchMessages } from "../../store/message/actions";
 
 import { selectCardDetail } from "../../store/card/selectors";
 import { selectHighestBid } from "../../store/card/selectors";
-// import { selectMessages } from "../../store/message/selectors";
 
-import { selectToken } from "../../store/user/selectors";
+// import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
 
 ////////
@@ -29,25 +22,19 @@ import Container from "@material-ui/core/Container";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-// import { TextField } from "@material-ui/core";
-// import MoodIcon from "@material-ui/icons/Mood";
 
 export default function CardDetail(props) {
   const [bidValue, setBidValue] = useState("default");
   const [tooLowAlert, setTooLowAlert] = useState("");
-  // const [text, setText] = useState("");
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const id = props.cardId;
-  // console.log("id   in cardetail index", id);
 
   const cardDetail = useSelector(selectCardDetail);
   const highestBidAndId = useSelector(selectHighestBid);
-  const userToken = useSelector(selectToken);
+  // const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
-
-  // console.log("cardDetail  in CardDetail page", cardDetail);
-  // const toUserId = cardDetail?.userId;
 
   const useStyles = makeStyles((theme) => ({
     margin: {
@@ -108,7 +95,10 @@ export default function CardDetail(props) {
     if (!e.target.value) setTooLowAlert("");
   };
 
-  // console.log("highestBidAndId  in CardDetail (pages)", highestBidAndId);
+  const onGotoMessages = () => {
+    history.push(`/messages/${id}`);
+    return null;
+  };
 
   return (
     <>
@@ -118,12 +108,6 @@ export default function CardDetail(props) {
             {highestBidAndId ? (
               <div className={classes.root}>
                 <Grid container spacing={3}>
-                  {/* <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                      "add to favs button" / tool links
-                    </Paper>
-                  </Grid> */}
-
                   <Grid item xs={12}>
                     <Paper className={classes.paper}>
                       <CardView
@@ -132,13 +116,11 @@ export default function CardDetail(props) {
                         title={cardDetail.title}
                         description={cardDetail.description}
                         imageUrl={cardDetail.imageUrl}
-                        // hearts={cardDetail.hearts}
                         minimumBid={cardDetail.minimumBid}
                         activeBids={cardDetail.bids.length}
                         bidders={cardDetail.bids}
                         giveHeart={onAddToFavs}
                         detailMode={true}
-                        // heartGrid={10}
                       />
                     </Paper>
                   </Grid>
@@ -219,7 +201,6 @@ export default function CardDetail(props) {
                     </>
                   ) : null}
 
-                  {/* ----------- */}
                   <>
                     <Grid item xs={6}>
                       <Paper className={classes.paper}>
@@ -227,7 +208,7 @@ export default function CardDetail(props) {
                           <>
                             <div>
                               <Button
-                                onClick={onBidSubmitHandler}
+                                onClick={onGotoMessages}
                                 style={{ background: AH_BLUE, color: "white" }}
                               >
                                 Stuur een bericht
@@ -243,11 +224,8 @@ export default function CardDetail(props) {
                         )}
                       </Paper>
                     </Grid>
-                    <Grid item xs={6}>
-                      {/* <Paper className={classes.paper}></Paper> */}
-                    </Grid>{" "}
+                    <Grid item xs={6}></Grid>{" "}
                   </>
-                  {/* ----------- */}
                 </Grid>
               </div>
             ) : null}

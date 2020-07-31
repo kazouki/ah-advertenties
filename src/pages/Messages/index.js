@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // import CardView from "../../components/CardView";
 
 // import { fetchCardDetail } from "../../store/card/actions";
-import { addFav } from "../../store/card/actions";
-import { postBid } from "../../store/card/actions";
+// import { addFav } from "../../store/card/actions";
+// import { postBid } from "../../store/card/actions";
 import { postMessage } from "../../store/message/actions";
 
 // import { getHighestBid } from "../../store/card/actions";
 // import { getUserWithStoredToken } from "../../store/user/actions";
-// import { fetchMessages } from "../../store/message/actions";
+import { fetchConversation } from "../../store/message/actions";
 
 import { selectCardDetail } from "../../store/card/selectors";
-import { selectHighestBid } from "../../store/card/selectors";
+// import { selectHighestBid } from "../../store/card/selectors";
 import { selectMessages } from "../../store/message/selectors";
+import { selectInboxMessages } from "../../store/message/selectors";
 
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
@@ -30,19 +31,22 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 import MoodIcon from "@material-ui/icons/Mood";
 
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+
 export default function CardDetail(props) {
-  // const [bidValue, setBidValue] = useState("default");
-  // const [tooLowAlert, setTooLowAlert] = useState("");
   const [text, setText] = useState("");
 
   const dispatch = useDispatch();
-  //   const { id } = useParams();
-  // const id = 1;
+  const { id } = useParams();
+
   const cardDetail = useSelector(selectCardDetail);
-  // const highestBidAndId = useSelector(selectHighestBid);
   const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
   const messages = useSelector(selectMessages);
+  const inboxMessages = useSelector(selectInboxMessages);
 
   const toUserId = cardDetail?.userId;
 
@@ -52,6 +56,11 @@ export default function CardDetail(props) {
     },
     root: {
       flexGrow: 1,
+    },
+    inboxListRoot: {
+      width: "100%",
+      maxWidth: "80%",
+      backgroundColor: theme.palette.background.paper,
     },
     paper: {
       padding: theme.spacing(2),
@@ -66,49 +75,52 @@ export default function CardDetail(props) {
   }));
   const classes = useStyles();
 
-  // const onGiveHeart = () => {
-  //   dispatch(addHeart(id));
-  // };
+  const RenderInboxList = () => {
+    return (
+      <>
+        <List
+          component="nav"
+          className={classes.inboxListRoot}
+          aria-label="mailbox folders"
+        >
+          {inboxMessages
+            ? inboxMessages.map((message, i) => {
+                return (
+                  <div key={i}>
+                    <ListItem
+                      button
+                      onClick={() => {
+                        dispatch(
+                          fetchConversation({ remoteUserId: message.userId })
+                        );
+                      }}
+                    >
+                      <span style={{ marginRight: 10 }}>
+                        <b>
+                          <i>{message.createdAt.split("T")[0]}</i>
+                        </b>
+                      </span>
+                      <span style={{ marginRight: 10 }}>
+                        <b>van {message.user.name}</b>
+                      </span>
+                      <span style={{ marginRight: 10 }}>
+                        <i> "{message.text}... "</i>
+                      </span>
+                      {/* <ListItemText primary="Inbox" /> */}
+                    </ListItem>
+                  </div>
+                );
+              })
+            : null}
 
-  // const onBidSubmitHandler = (e) => {
-  //   e.preventDefault();
-  //   dispatch(
-  //     postBid({
-  //       cardId: id,
-  //       amount:
-  //         bidValue === "default" && highestBidAndId.highestBid
-  //           ? highestBidAndId.highestBid + 1
-  //           : bidValue === "default" && !highestBidAndId.highestBid
-  //           ? cardDetail.minimumBid + 1
-  //           : bidValue,
-  //       email: user.email,
-  //       token: user.token,
-  //       highestBid: highestBidAndId.highestBid,
-  //     })
-  //   );
-  // };
-
-  // const onSetBidValue = (e) => {
-  //   setBidValue(e.target.value);
-  //   if (e.target.value < highestBidAndId.highestBid + 1) {
-  //     setTooLowAlert(
-  //       <b>
-  //         <h5>The amount should be higher than the highest bid!</h5>
-  //       </b>
-  //     );
-  //   } else setTooLowAlert("");
-  //   if (!e.target.value) setTooLowAlert("");
-  // };
-
-  // const fetchMessagesHandler = () => {
-  //   const cardOwnerId = cardDetail.userId;
-  //   dispatch(fetchMessages({ cardOwnerId }));
-  // };
-
-  // console.log("cardDetail ", cardDetail);
-  // console.log("userToken ", userToken);
-  // console.log("highestBidAndId ", highestBidAndId);
-  // console.log("highestBidAndId ", highestBidAndId);
+          <Divider />
+          <ListItem button divider>
+            <ListItemText primary="Drafts" />
+          </ListItem>
+        </List>
+      </>
+    );
+  };
 
   return (
     <>
@@ -117,11 +129,15 @@ export default function CardDetail(props) {
           <div className={classes.root}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper className={classes.paper}>Berichten</Paper>
+                <Paper className={classes.paper}>
+                  <b>INBOX</b>
+                </Paper>
               </Grid>
 
               <Grid item xs={6}>
-                <Paper className={classes.paper}></Paper>
+                <Paper className={classes.paper}>
+                  <RenderInboxList />
+                </Paper>
               </Grid>
               <Grid item xs={6}>
                 <Paper className={classes.paperMessages}>
@@ -130,11 +146,11 @@ export default function CardDetail(props) {
                   {messages
                     ? messages.map((message, i) => {
                         const switchAlign =
-                          message.fromUserId === user.id
+                          message.userId === user.id
                             ? "flex-end"
                             : "flex-start";
                         const switchJustify =
-                          message.fromUserId === user.id ? "right" : "flex-end";
+                          message.userId === user.id ? "right" : "flex-end";
                         return (
                           <div
                             key={i}
@@ -149,9 +165,26 @@ export default function CardDetail(props) {
                               <div style={{ float: "top" }}>
                                 <Container>
                                   {message.text}
-                                  <strong>
-                                    <em style={{ fontSize: 8 }}> jij </em>
-                                  </strong>
+                                  {message.userId === user.id ? (
+                                    <strong>
+                                      <em style={{ fontSize: 8 }}> jij </em>
+                                    </strong>
+                                  ) : (
+                                    <strong>
+                                      <em style={{ fontSize: 8 }}>
+                                        {" "}
+                                        {inboxMessages
+                                          ? inboxMessages
+                                              ?.filter(
+                                                (inboxMessage) =>
+                                                  inboxMessage.user.id ===
+                                                  message.userId
+                                              )
+                                              .map((obj) => obj.user.name)
+                                          : null}
+                                      </em>
+                                    </strong>
+                                  )}
                                 </Container>
                               </div>
                             </div>
