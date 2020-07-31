@@ -5,6 +5,13 @@ import {
   createMuiTheme,
   withStyles,
 } from "@material-ui/core/styles";
+import { AH_BLUE } from "../config/constants.js";
+
+import { Widget } from "react-chat-widget";
+import "react-chat-widget/lib/styles.css";
+const getCustomLauncher = (handleToggle) => (
+  <button onClick={handleToggle}>This is my launcher component!</button>
+);
 
 let theme = createMuiTheme({
   typography: {
@@ -18,7 +25,7 @@ let theme = createMuiTheme({
   palette: {
     primary: {
       light: "#63ccff",
-      main: "#009be5",
+      main: AH_BLUE,
       dark: "#006db3",
     },
   },
@@ -131,7 +138,8 @@ const styles = {
   mainContent: {
     flex: 1,
     padding: "48px 36px 0",
-    background: "#eaeff1",
+    background: (props) => props.bg,
+    overflowX: "hidden",
   },
 };
 
@@ -143,16 +151,13 @@ function Paperbase(props) {
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appContent}>
-          <main
-            className={classes.mainContent}
-            style={{
-              background: "#00A0E2",
-              overflowX: "hidden",
-            }}
-          >
+          <main className={classes.mainContent}>
             <LayoutComponent />
           </main>
         </div>
+      </div>
+      <div className="chatWidget">
+        <Widget launcher={(handleToggle) => getCustomLauncher(handleToggle)} />
       </div>
     </MuiThemeProvider>
   );

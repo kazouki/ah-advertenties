@@ -6,7 +6,13 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
+import { selectCards } from "../../store/card/selectors";
+import { selectPtextIdsPerColumn } from "../../store/editor/selectors";
+
 import { setLayoutState } from "../../store/editor/actions";
+import { updateCard } from "../../store/card/actions";
+
+import { AH_BLUE } from "../../config/constants.js";
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +22,12 @@ const Container = styled.div`
 function DndLayout(props) {
   const dispatch = useDispatch();
   const state = useSelector(selectLayoutState);
+  const ptextIdsPerColumn = useSelector(selectPtextIdsPerColumn);
+  const cards = useSelector(selectCards);
+
+  // const cards = useSelector(selectCards);
+  // console.log("cards :::", cards);
+  // console.log("state :::", state);
 
   const onDragStart = (start) => {
     //###### optionals
@@ -42,6 +54,21 @@ function DndLayout(props) {
   };
 
   const onDragEnd = (result) => {
+    const cardToUpdate = cards.cards.find(
+      (obj) => obj.id === parseInt(result["draggableId"].split("-")[1])
+    );
+    if (result.destination) {
+      const newDestination = parseInt(
+        result.destination["droppableId"].split("-")[1]
+      );
+      const updatedCard = {
+        ...cardToUpdate,
+        cardId: cardToUpdate.id,
+        columnIndex: newDestination,
+      };
+      dispatch(updateCard(updatedCard));
+    }
+
     //###### optionals
     // document.body.style.color = "inherit";
     // document.body.style.background = "white";
@@ -172,14 +199,18 @@ function DndLayout(props) {
                     style={{
                       margin: -20,
                       marginTop: -60,
-                      border: "40px solid #00A0E2",
+                      border: `40px solid ${AH_BLUE}`,
                       height: "100%",
                     }}
                   >
                     <Column
                       column={column}
                       ptexts={ptexts}
-                      isDropDisabled={false}
+                      isDropDisabled={
+                        ptextIdsPerColumn
+                          ? ptextIdsPerColumn[columnId] >= 4
+                          : false
+                      }
                       index={index}
                     />
                     <span

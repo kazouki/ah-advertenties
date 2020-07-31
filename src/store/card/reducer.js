@@ -14,6 +14,34 @@ export default function cardsSliceReducer(
     case "HIGHEST_BID":
       return { ...state, highestBid: payload };
 
+    case "CREATE_CARD":
+      const createCards = state.cards.cards;
+      createCards.push(payload);
+
+      return { ...state, cards: { cards: createCards } };
+
+    case "DELETE_CARD":
+      const deleteCards = state.cards.cards;
+      const filtered = deleteCards.filter(function (el) {
+        return parseInt(el.id) !== parseInt(payload);
+      });
+      return { ...state, cards: { cards: filtered } };
+
+    case "USER_FAVS":
+      return { ...state, userFavs: payload };
+
+    case "UPDATE_CARD":
+      const deleteUpdateCards = state.cards.cards;
+      const filteredUpdate = deleteUpdateCards.filter(function (el) {
+        return parseInt(el.id) !== parseInt(payload.id);
+      });
+
+      filteredUpdate.push({
+        ...payload,
+      });
+
+      return { ...state, cards: { cards: filteredUpdate } };
+
     default:
       return state;
   }

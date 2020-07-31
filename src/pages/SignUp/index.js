@@ -1,21 +1,73 @@
 import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
+
 import { signUp } from "../../store/user/actions";
 import { selectToken } from "../../store/user/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+
+import Container from "@material-ui/core/Container";
+// import CssBaseline from "@material-ui/core/CssBaseline";
+
+import Grid from "@material-ui/core/Grid";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+
+import clsx from "clsx";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Button from "@material-ui/core/Button";
+
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
+import { AH_BLUE } from "../../config/constants.js";
+
+let theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+    h5: {
+      fontWeight: 500,
+      fontSize: 26,
+      letterSpacing: 0.5,
+    },
+  },
+  palette: {
+    primary: {
+      light: "#63ccff",
+      main: AH_BLUE,
+      dark: "#006db3",
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+}));
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [artist, setArtist] = useState(0);
+  const [passwordTwo, setPasswordTwo] = useState("");
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const history = useHistory();
+
+  const [showPassword, setShowPassword] = useState("");
+  const [showPasswordTwo, setShowPasswordTwo] = useState("");
+
+  const classes = useStyles();
 
   useEffect(() => {
     if (token !== null) {
@@ -26,68 +78,166 @@ export default function SignUp() {
   function submitForm(event) {
     event.preventDefault();
 
-    dispatch(signUp(name, email, password, artist));
+    dispatch(signUp(name, email, password));
 
     setEmail("");
     setPassword("");
     setName("");
   }
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleClickShowPasswordTwo = () => {
+    setShowPasswordTwo(!showPasswordTwo);
+  };
+
+  const handleMouseDownPasswordTwo = (event) => {
+    event.preventDefault();
+  };
+
   return (
-    <Container>
-      <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
-        <h1 className="mt-5 mb-5">Signup</h1>
-        <Form.Group controlId="formBasicName">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            type="text"
-            placeholder="Enter name"
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            type="email"
-            placeholder="Enter email"
-            required
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+    <>
+      <MuiThemeProvider theme={theme}>
+        <Container
+          style={{
+            width: "98%",
+            height: "70vw",
+            background: "rgb(48,194,255, 0.04)",
+            paddingTop: 70,
+            marginTop: 40,
+          }}
+        >
+          <Container
+            style={{
+              width: "50%",
+              height: "40%",
+              minWidth: "400px",
+              minHeight: "400px",
+              background: "white",
+              paddingTop: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Container style={{ marginTop: 0 }}>
+              {/* <CssBaseline /> */}
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            placeholder="Password"
-            required
-          />
-        </Form.Group>
+              <Container>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <AccountCircle style={{ color: AH_BLUE }} />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        id="input-with-icon-grid"
+                        label="Naam"
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
 
-        <Form.Group className="mt-5">
-          <Form.Label>Are you an artist? </Form.Label>
-          <Form.Check
-            value={artist}
-            onChange={(event) => setArtist(event.target.value)}
-          />
-        </Form.Group>
+              <Container>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <AccountCircle style={{ color: AH_BLUE }} />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        id="input-with-icon-gridTwo"
+                        label="E-mail"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
 
-        <Form.Group className="mt-5">
-          <Button variant="primary" type="submit" onClick={submitForm}>
-            Sign up
-          </Button>
-        </Form.Group>
+              <Container style={{ marginTop: 20 }}>
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                >
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Wachtwoord
+                  </InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {showPassword ? (
+                            <Visibility style={{ color: AH_BLUE }} />
+                          ) : (
+                            <VisibilityOff style={{ color: AH_BLUE }} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Container>
+              <Container style={{ marginTop: 20 }}>
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                >
+                  <InputLabel htmlFor="standard-adornment-passwordTwo">
+                    Herhaal wachtwoord
+                  </InputLabel>
+                  <Input
+                    id="standard-adornment-passwordTwo"
+                    type={showPasswordTwo ? "text" : "password"}
+                    value={passwordTwo}
+                    onChange={(event) => setPasswordTwo(event.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPasswordTwo}
+                          onMouseDown={handleMouseDownPasswordTwo}
+                        >
+                          {showPasswordTwo ? (
+                            <Visibility style={{ color: AH_BLUE }} />
+                          ) : (
+                            <VisibilityOff style={{ color: AH_BLUE }} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Container>
 
-        <Link to="/login">Click here to log in</Link>
-      </Form>
-    </Container>
+              <Container>
+                <Button
+                  variant="contained"
+                  style={{ color: AH_BLUE, background: "white", marginTop: 30 }}
+                  type="submit"
+                  onClick={submitForm}
+                >
+                  inschrijven
+                </Button>
+              </Container>
+            </Container>
+          </Container>
+        </Container>
+      </MuiThemeProvider>
+    </>
   );
 }

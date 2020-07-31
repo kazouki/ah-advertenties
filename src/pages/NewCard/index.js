@@ -2,25 +2,119 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createCard } from "../../store/card/actions";
-import { selectUser } from "../../store/user/selectors";
 import { selectToken } from "../../store/user/selectors";
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import { Col } from "react-bootstrap";
+import { makeStyles } from "@material-ui/core/styles";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
-export default function Auction() {
-  const [state, setState] = useState({ cardFields: {} });
+import Checkbox from "@material-ui/core/Checkbox";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
-  const user = useSelector(selectUser);
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { AH_BLUE } from "../../config/constants.js";
+
+let theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+    h5: {
+      fontWeight: 500,
+      fontSize: 26,
+      letterSpacing: 0.5,
+    },
+  },
+  palette: {
+    primary: {
+      light: "#63ccff",
+      main: AH_BLUE,
+      dark: "#006db3",
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
+
+const colorContainerMargin = 5;
+const colorContainerPaddingBottom = 5;
+const colorContainerOpacity = 0.18;
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    padding: 0,
+    marginTop: -5,
+    margin: theme.spacing(1),
+  },
+  adornment: {
+    margin: 20,
+  },
+  fieldContainerRed: {
+    background: `rgba(249,101,80,${colorContainerOpacity})`,
+    marginLeft: -150,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
+  },
+  fieldContainerGreen: {
+    background: `rgba(139,173,80,${colorContainerOpacity})`,
+    marginLeft: -50,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
+  },
+  fieldContainerBlue: {
+    background: `rgba(127,168,242,${colorContainerOpacity})`,
+    marginLeft: 50,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
+  },
+  fieldContainerYellow: {
+    background: `rgba(255,205,70,${colorContainerOpacity})`,
+
+    marginLeft: 150,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
+  },
+  fieldContainerPurple: {
+    background: `rgba(198,47,222,${colorContainerOpacity})`,
+    marginLeft: 50,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
+  },
+  fieldContainerLightBlue: {
+    background: `rgba(0,226,255,${colorContainerOpacity})`,
+    marginLeft: -50,
+    margin: colorContainerMargin,
+    paddingBottom: colorContainerPaddingBottom,
+  },
+}));
+
+export default function NewCard() {
+  const [state, setState] = useState({
+    cardFields: {
+      aangeboden: false,
+      gevraagd: false,
+      title: "",
+      description: "",
+      name: "",
+      telephone: "",
+      email: "",
+      date: "",
+      imageUrl: "",
+      minimumBid: 0,
+    },
+  });
+
   const userToken = useSelector(selectToken);
   const dispatch = useDispatch();
   const history = useHistory();
+  const classes = useStyles();
 
   useEffect(() => {
     if (!userToken) {
-      history.push("/");
+      history.push("/login");
     }
   });
 
@@ -36,70 +130,282 @@ export default function Auction() {
         telephone: state.cardFields.telephone,
         email: state.cardFields.email,
         date: state.cardFields.date,
-        userId: user.id,
         imageUrl: state.cardFields.imageUrl,
         minimumBid: state.cardFields.minimumBid,
-        token: userToken,
       })
     );
+    history.push("/");
   };
 
   const onFieldChangeHandler = (e) => {
     const newState = {
-      ...state.cardFields,
-      [e.target.name]:
-        e.target.name !== "aangeboden" && e.target.name !== "gevraagd"
-          ? e.target.value
-          : e.target.checked,
+      cardFields: {
+        ...state.cardFields,
+        [e.target.name]:
+          e.target.name !== "aangeboden" && e.target.name !== "gevraagd"
+            ? e.target.value
+            : e.target.checked,
+      },
     };
     setState(newState);
   };
 
   return (
-    <div>
-      <Container>
-        <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
-          <h1 className="mt-5 mb-5">Start a new auction</h1>
-          <Form.Group>
-            <Form.Label>Your Title</Form.Label>
-            <Form.Control
-              // value={formTitle}
-              onChange={onFieldChangeHandler}
-              type="text"
-              placeholder="Enter Title"
-              required
-            />
-          </Form.Group>
+    <>
+      <MuiThemeProvider theme={theme}>
+        <Container
+          style={{
+            width: "98%",
+            // height: "70vw",
+            background: "rgb(48,194,255, 0.04)",
+            paddingTop: 10,
+            marginTop: 10,
+          }}
+        >
+          <Container
+            style={{
+              width: "50%",
+              // height: "40%",
+              minWidth: "400px",
+              minHeight: "400px",
+              background: "white",
+              paddingTop: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Container style={{ marginTop: 0 }}>
+              <Container className={classes.fieldContainerRed}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Bied je iets aan?
+                      </InputAdornment>
+                      <Checkbox
+                        name="aangeboden"
+                        checked={state?.cardFields?.aangeboden}
+                        onChange={onFieldChangeHandler}
+                        color="default"
+                        className={classes.checkbox}
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
 
-          <Form.Group>
-            <Form.Label>Minimum Bid</Form.Label>
-            <Form.Control
-              // value={formMinBid}
-              onChange={onFieldChangeHandler}
-              type="number"
-              placeholder="Bid"
-              required
-            />
-          </Form.Group>
+              <Container className={classes.fieldContainerGreen}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Ben je op zoek naar iets?
+                      </InputAdornment>
 
-          <Form.Group>
-            <Form.Label>Image URL</Form.Label>
-            <Form.Control
-              // value={formImg}
-              onChange={onFieldChangeHandler}
-              type="text"
-              placeholder="http://"
-              required
-            />
-          </Form.Group>
+                      <Checkbox
+                        name="gevraagd"
+                        checked={state?.cardFields?.gevraagd}
+                        onChange={onFieldChangeHandler}
+                        color="default"
+                        className={classes.checkbox}
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
 
-          <Form.Group className="mt-5">
-            <Button variant="primary" type="submit" onClick={onCreateCard}>
-              Create Auction
-            </Button>
-          </Form.Group>
-        </Form>
-      </Container>
-    </div>
+              <Container className={classes.fieldContainerBlue}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Wat is de titel van je kaart?
+                      </InputAdornment>
+
+                      <TextField
+                        name="title"
+                        id="input-with-icon-grid"
+                        value={state.cardFields?.title}
+                        onChange={onFieldChangeHandler}
+                        type="text"
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
+
+              <Container className={classes.fieldContainerYellow}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Wat is de beschrijving van je kaart?
+                      </InputAdornment>
+
+                      <TextareaAutosize
+                        style={{
+                          borderRadius: 4,
+                          width: 400,
+                          outline: "none",
+                          maxWidth: 300,
+                          minWidth: 300,
+                          maxHeight: 100,
+                          minHeight: 100,
+                          resize: "none",
+                        }}
+                        aria-label="minimum height"
+                        rowsMin={10}
+                        rows={10}
+                        rowsMax={10}
+                        // inputProps={descriptionInputProps}
+                        name="description"
+                        value={state.cardFields?.description}
+                        onChange={onFieldChangeHandler}
+                        type="text"
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
+
+              <Container className={classes.fieldContainerPurple}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Wat is jouw naam op je kaart?
+                      </InputAdornment>
+
+                      <TextField
+                        name="name"
+                        id="input-with-icon-grid"
+                        value={state.cardFields?.name}
+                        onChange={onFieldChangeHandler}
+                        type="text"
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
+
+              <Container className={classes.fieldContainerLightBlue}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Wat is het telefoon nummer op je kaart?
+                      </InputAdornment>
+
+                      <TextField
+                        name="telephone"
+                        id="input-with-icon-grid"
+                        value={state.cardFields?.telephone}
+                        onChange={onFieldChangeHandler}
+                        type="text"
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
+
+              <Container className={classes.fieldContainerRed}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Wat is de datum op je kaart?
+                      </InputAdornment>
+
+                      <TextField
+                        name="date"
+                        id="input-with-icon-grid"
+                        value={state.cardFields?.date}
+                        onChange={onFieldChangeHandler}
+                        type="text"
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
+
+              <Container className={classes.fieldContainerGreen}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Wat is het e-mail adres op je kaart?
+                      </InputAdornment>
+
+                      <TextField
+                        name="email"
+                        id="input-with-icon-grid"
+                        value={state.cardFields?.email}
+                        onChange={onFieldChangeHandler}
+                        type="text"
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
+
+              <Container className={classes.fieldContainerBlue}>
+                <FormControl className={classes.margin}>
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <InputAdornment
+                        position="start"
+                        className={classes.adornment}
+                      >
+                        Heb je een link naar een afbeelding?
+                      </InputAdornment>
+
+                      <TextField
+                        name="imageUrl"
+                        id="input-with-icon-grid"
+                        value={state.cardFields?.imageUrl}
+                        onChange={onFieldChangeHandler}
+                        label="http://"
+                        type="text"
+                      />
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Container>
+            </Container>
+          </Container>
+        </Container>
+
+        <Button
+          variant="contained"
+          onClick={onCreateCard}
+          style={{ marginBottom: 100, marginTop: 40 }}
+        >
+          maak kaart
+        </Button>
+      </MuiThemeProvider>
+    </>
   );
 }

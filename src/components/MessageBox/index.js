@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectMessage } from "../../store/appState/selectors";
-import { Alert } from "react-bootstrap";
 import { clearMessage } from "../../store/appState/actions";
+
+import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 export default function MessageBox() {
   const message = useSelector(selectMessage);
@@ -10,14 +12,24 @@ export default function MessageBox() {
   const showMessage = message !== null;
   if (!showMessage) return null;
 
+  const pos = {
+    vertical: "bottom",
+    horizontal: "center",
+  };
+  const { vertical, horizontal } = pos;
+
   return (
-    <Alert
-      show={showMessage}
-      variant={message.variant}
-      dismissible={message.dismissable}
-      onClose={message.dismissable ? () => dispatch(clearMessage()) : null}
+    <Snackbar
+      open={showMessage}
+      onClose={() => {
+        dispatch(clearMessage);
+      }}
+      anchorOrigin={{ vertical, horizontal }}
+      key={vertical + horizontal}
     >
-      {message.text}
-    </Alert>
+      <MuiAlert elevation={6} severity={message.variant}>
+        <b>{message.text}</b>
+      </MuiAlert>
+    </Snackbar>
   );
 }

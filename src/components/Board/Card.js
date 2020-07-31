@@ -9,8 +9,9 @@ import ahLogoWit from "../../static/img/ahlogo4.png";
 
 import Checkbox from "@material-ui/core/Checkbox";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
+import { updateCard } from "../../store/card/actions";
 
 import styled from "styled-components";
 import SaveIcon from "@material-ui/icons/Save";
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
     color: "white",
     marginBottom: -10,
     marginTop: -10,
-    marginLeft: -2,
+    marginLeft: 0,
   },
   footertext: {
     display: "flex",
@@ -149,6 +150,7 @@ const FloppyIcon = styled.div`
 export default function AHCard(props) {
   const [state, setState] = useState(props.initState);
   const layoutState = useSelector(selectLayoutState);
+  const dispatch = useDispatch();
 
   const classes = useStyles();
   const CHARACTER_LIMIT = 200;
@@ -171,6 +173,9 @@ export default function AHCard(props) {
   };
 
   const onSaveToStoreHandler = () => {
+    const cardState = state.ptexts[props?.ptextId];
+    const cardId = parseInt(cardState.id.split("-")[1]);
+    dispatch(updateCard({ ...cardState, cardId }));
     props.saveStateTo(state);
   };
 

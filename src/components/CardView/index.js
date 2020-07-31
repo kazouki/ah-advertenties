@@ -1,109 +1,127 @@
 import React from "react";
 
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUserFavs } from "../../store/card/selectors";
+import { selectUser } from "../../store/user/selectors";
+import { unFav } from "../../store/card/actions";
 
-import ListGroup from "react-bootstrap/ListGroup";
-import { BsFillHeartFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
-import Row from "react-bootstrap/Row";
+import Button from "@material-ui/core/Button";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+
+/////////
+import Container from "@material-ui/core/Container";
 
 export default function CardView(props) {
-  const onClickGiveHeart = (event) => {
+  const userFavs = useSelector(selectUserFavs);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const isFav = userFavs?.map((e) => e.cardId).includes(props.id);
+
+  const onClickAddToFavs = (event) => {
+    if (isFav) {
+      dispatch(unFav(props.id));
+      return null;
+    }
     props.giveHeart(props.id);
   };
 
-  // aangeboden,
-  // gevraagd,
-  // title,
-  // description,
-  // name,
-  // telephone,
-  // email,
-  // date,
-  // userId,
-  // imageUrl,
-  // minimumBid,
-
   return (
-    <Card>
-      cardview card is rendered ...
-      {props.detailMode ? (
-        <span style={{ display: "inline-block" }}>
-          <Card.Img
-            style={{ width: "50%" }}
-            variant="top"
-            src={props.imageUrl}
-            alt=""
-          />
-        </span>
-      ) : (
-        <span>
-          <Card.Img variant="top" src={props.imageUrl} alt="" />
-        </span>
-      )}
-      <Card.Body>
-        <Row>
-          <Col>
-            <Card.Title>{props.title}</Card.Title>
-          </Col>
-          <Col md={props.heartGrid}>
-            {props.giveHeartParent ? (
-              <Button
-                size="sm"
-                variant="outline-primary"
-                onClick={props.giveHeart}
-              >
-                <BsFillHeartFill /> {props.hearts}
-              </Button>
-            ) : (
-              <>
-                <Button
-                  size="sm"
-                  variant="outline-primary"
-                  onClick={onClickGiveHeart}
-                >
-                  <BsFillHeartFill /> {props.hearts}
-                </Button>
-              </>
-            )}
-          </Col>
-        </Row>
-        <Card.Text></Card.Text>
-        <ListGroup variant="flush">
-          <ListGroup.Item>
-            <b>bidding start amount is </b> {props.minimumBid}
-            {props.minimumBid === 1 ? <b> dollar</b> : <b> dollars</b>}
-          </ListGroup.Item>
-        </ListGroup>
+    <Container>
+      {/* <Container>
+        <img variant="top" src={props.imageUrl} alt="" />
+      </Container> */}
 
-        <ListGroup variant="flush">
-          {props.bidders ? (
-            <>
-              {props.bidders.map((bidder) => (
-                <span key={bidder.id}>
-                  <ListGroup.Item>
-                    <i>{bidder.email}</i> <b>has placed a bid of $</b>
-                    {bidder.amount}
-                  </ListGroup.Item>
-                </span>
-              ))}
-            </>
-          ) : (
-            <span>
-              <ListGroup.Item>
-                <b>active bids</b> {props.activeBids}
-              </ListGroup.Item>
-            </span>
-          )}
-          {props.showLink ? (
-            <Link to={`/artworks/${props.id}`}>
-              <Button variant="outline-secondary">View Card Details</Button>
-            </Link>
-          ) : null}
-        </ListGroup>
-      </Card.Body>
-    </Card>
+      <Container
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+        }}
+      >
+        {user.token ? (
+          <Button onClick={onClickAddToFavs} disabled={false}>
+            {userFavs ? (
+              <>
+                {isFav ? (
+                  <div>
+                    <FavoriteIcon color="primary" />
+                  </div>
+                ) : (
+                  <div>
+                    <FavoriteBorderIcon color="disabled" />
+                  </div>
+                )}
+              </>
+            ) : (
+              <FavoriteBorderIcon color="disabled" />
+            )}
+          </Button>
+        ) : (
+          <Button disabled={true}>
+            <div>
+              <FavoriteBorderIcon color="disabled" />
+            </div>
+          </Button>
+        )}
+      </Container>
+
+      <Container
+        style={{ width: "90%", border: "1px solid royalblue", borderRadius: 5 }}
+      >
+        {props.title ? (
+          <div style={{ margin: 10 }}>{props.title}</div>
+        ) : (
+          <div style={{ margin: 10 }}>
+            <i>geen titel</i>
+          </div>
+        )}
+      </Container>
+      <Container
+        style={{
+          marginTop: 5,
+          width: "90%",
+          border: "1px solid royalblue",
+          borderRadius: 5,
+        }}
+      >
+        {props.description ? (
+          <div style={{ margin: 10 }}>{props.description}</div>
+        ) : (
+          <div style={{ margin: 10 }}>
+            <i>geen beschrijving</i>
+          </div>
+        )}
+      </Container>
+
+      <Container style={{ marginTop: 10, marginBottom: 10 }}>
+        <b>De minimum vraagprijs is </b> {props.minimumBid}
+        <b> euro! </b>
+      </Container>
+
+      <Container>
+        {props.bidders ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {props.bidders.map((bidder) => (
+              <span key={bidder.id}>
+                <i>{bidder.email}</i> <b>heeft een bod gedaan van </b>
+                {bidder.amount}
+                <b> euro</b>
+              </span>
+            ))}
+          </div>
+        ) : (
+          <span>
+            <b>active bids</b> {props.activeBids}
+          </span>
+        )}
+      </Container>
+    </Container>
   );
 }
