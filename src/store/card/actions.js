@@ -204,6 +204,25 @@ export function addFav(cardId) {
         jwt: getState().user.token,
       });
       dispatch(fetchUserFavs());
+      return res;
+      // console.log("res  from addFav::", res);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function unFav(cardId) {
+  console.log("unFav worked");
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`favorites`, {
+        method: "DELETE",
+        data: { cardId, userId: getState().user.id },
+        jwt: getState().user.token,
+      });
+      dispatch(fetchUserFavs());
+      return res;
       // console.log("res  from addFav::", res);
     } catch (e) {
       console.log(e);

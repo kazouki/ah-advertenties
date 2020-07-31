@@ -1,8 +1,9 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectUserFavs } from "../../store/card/selectors";
-// import selectUser from "../../store/user/selectors"
+import { selectUser } from "../../store/user/selectors";
+import { unFav } from "../../store/card/actions";
 
 import Button from "@material-ui/core/Button";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -13,9 +14,15 @@ import Container from "@material-ui/core/Container";
 
 export default function CardView(props) {
   const userFavs = useSelector(selectUserFavs);
-  // const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const isFav = userFavs?.map((e) => e.cardId).includes(props.id);
 
   const onClickAddToFavs = (event) => {
+    if (isFav) {
+      dispatch(unFav(props.id));
+      return null;
+    }
     props.giveHeart(props.id);
   };
 
@@ -24,6 +31,7 @@ export default function CardView(props) {
       {/* <Container>
         <img variant="top" src={props.imageUrl} alt="" />
       </Container> */}
+
       <Container
         style={{
           display: "flex",
@@ -31,28 +39,43 @@ export default function CardView(props) {
           alignItems: "flex-end",
         }}
       >
-        <Button onClick={onClickAddToFavs}>
-          {userFavs ? (
-            <>
-              {userFavs.map((e) => e.cardId).includes(props.id) ? (
-                <div>
-                  <FavoriteIcon color="primary" />
-                </div>
-              ) : (
-                <div>
-                  <FavoriteBorderIcon color="disabled" />
-                </div>
-              )}
-            </>
-          ) : (
-            <FavoriteBorderIcon color="disabled" />
-          )}
-        </Button>
+        {user.token ? (
+          <Button onClick={onClickAddToFavs} disabled={false}>
+            {userFavs ? (
+              <>
+                {isFav ? (
+                  <div>
+                    <FavoriteIcon color="primary" />
+                  </div>
+                ) : (
+                  <div>
+                    <FavoriteBorderIcon color="disabled" />
+                  </div>
+                )}
+              </>
+            ) : (
+              <FavoriteBorderIcon color="disabled" />
+            )}
+          </Button>
+        ) : (
+          <Button disabled={true}>
+            <div>
+              <FavoriteBorderIcon color="disabled" />
+            </div>
+          </Button>
+        )}
       </Container>
+
       <Container
         style={{ width: "90%", border: "1px solid royalblue", borderRadius: 5 }}
       >
-        {props.title}
+        {props.title ? (
+          <div style={{ margin: 10 }}>{props.title}</div>
+        ) : (
+          <div style={{ margin: 10 }}>
+            <i>geen titel</i>
+          </div>
+        )}
       </Container>
       <Container
         style={{
@@ -63,11 +86,11 @@ export default function CardView(props) {
         }}
       >
         {props.description ? (
-          props.description
+          <div style={{ margin: 10 }}>{props.description}</div>
         ) : (
-          <>
+          <div style={{ margin: 10 }}>
             <i>geen beschrijving</i>
-          </>
+          </div>
         )}
       </Container>
 

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import CardView from "../../components/CardView";
+import { AH_BLUE } from "../../config/constants.js";
 
 // import { fetchCardDetail } from "../../store/card/actions";
 import { addFav } from "../../store/card/actions";
@@ -111,20 +112,20 @@ export default function CardDetail(props) {
 
   return (
     <>
-      <Container className={classes.modalContainer}>
-        <span>
-          {highestBidAndId ? (
-            <div className={classes.root}>
-              <Grid container spacing={3}>
-                {/* <Grid item xs={12}>
+      {cardDetail ? (
+        <Container className={classes.modalContainer}>
+          <span>
+            {highestBidAndId ? (
+              <div className={classes.root}>
+                <Grid container spacing={3}>
+                  {/* <Grid item xs={12}>
                     <Paper className={classes.paper}>
                       "add to favs button" / tool links
                     </Paper>
                   </Grid> */}
 
-                <Grid item xs={12}>
-                  <Paper className={classes.paper}>
-                    {cardDetail ? (
+                  <Grid item xs={12}>
+                    <Paper className={classes.paper}>
                       <CardView
                         key={cardDetail.id}
                         id={cardDetail.id}
@@ -139,83 +140,120 @@ export default function CardDetail(props) {
                         detailMode={true}
                         // heartGrid={10}
                       />
-                    ) : null}
-                  </Paper>
-                </Grid>
+                    </Paper>
+                  </Grid>
 
-                <Grid item xs={6}>
-                  <Paper className={classes.paper}>
-                    {user.token ? (
-                      <>
-                        <div>
-                          {cardDetail ? (
+                  {cardDetail.aangeboden ? (
+                    <>
+                      <Grid item xs={6}>
+                        <Paper className={classes.paper}>
+                          {user.token ? (
                             <>
-                              {`Plaats een bod vanaf `}
-                              {highestBidAndId.highestBid
-                                ? `${highestBidAndId.highestBid + 1}`
-                                : `${cardDetail.minimumBid}`}
-                              {` euro`}
-                            </>
-                          ) : null}
-                        </div>
-                        <div>
-                          {cardDetail ? (
-                            <Input
-                              value={
-                                bidValue === "default" &&
-                                highestBidAndId.highestBid
-                                  ? highestBidAndId.highestBid + 1
-                                  : bidValue === "default" &&
-                                    !highestBidAndId.highestBid
-                                  ? cardDetail.minimumBid + 1
-                                  : bidValue
-                              }
-                              onChange={onSetBidValue}
-                              type="number"
-                              min={
-                                highestBidAndId && cardDetail
-                                  ? highestBidAndId.highestBid + 1
-                                  : cardDetail.minimumBid
-                              }
-                              placeholder="Bid"
-                              required
-                            />
-                          ) : null}
+                              <div>
+                                {`Plaats een bod vanaf `}
+                                {highestBidAndId.highestBid
+                                  ? `${highestBidAndId.highestBid + 1}`
+                                  : `${cardDetail.minimumBid}`}
+                                {` euro`}
+                              </div>
+                              <div>
+                                <Input
+                                  value={
+                                    bidValue === "default" &&
+                                    highestBidAndId.highestBid
+                                      ? highestBidAndId.highestBid + 1
+                                      : bidValue === "default" &&
+                                        !highestBidAndId.highestBid
+                                      ? cardDetail.minimumBid + 1
+                                      : bidValue
+                                  }
+                                  onChange={onSetBidValue}
+                                  type="number"
+                                  min={
+                                    highestBidAndId && cardDetail
+                                      ? highestBidAndId.highestBid + 1
+                                      : cardDetail.minimumBid
+                                  }
+                                  placeholder="Bid"
+                                  required
+                                />
 
-                          <Button onClick={onBidSubmitHandler}>
-                            plaats bod
-                          </Button>
-                          {tooLowAlert}
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <Link to="/login">
-                          {`Log in om een bod uit te brengen! `}
-                        </Link>
-                      </>
-                    )}
-                  </Paper>
+                                <Button
+                                  onClick={onBidSubmitHandler}
+                                  style={{
+                                    background: "lightblue",
+                                    color: "white",
+                                    marginLeft: 15,
+                                  }}
+                                >
+                                  plaats bod
+                                </Button>
+                                {tooLowAlert}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <Link to="/login">
+                                {`Log in om een bod uit te brengen! `}
+                              </Link>
+                            </>
+                          )}
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Paper className={classes.paper}>
+                          {highestBidAndId.highestBid ? (
+                            <>
+                              <b>De hoogste bieder is </b>
+                              {highestBidAndId.highestBidEmail}
+                              <div>
+                                {" met een bod van "}
+                                {highestBidAndId.highestBid} <b> euro</b>
+                              </div>
+                            </>
+                          ) : (
+                            <>wees de eerste om een bod uit te brengen!</>
+                          )}
+                        </Paper>
+                      </Grid>{" "}
+                    </>
+                  ) : null}
+
+                  {/* ----------- */}
+                  <>
+                    <Grid item xs={6}>
+                      <Paper className={classes.paper}>
+                        {user.token ? (
+                          <>
+                            <div>
+                              <Button
+                                onClick={onBidSubmitHandler}
+                                style={{ background: AH_BLUE, color: "white" }}
+                              >
+                                Stuur een bericht
+                              </Button>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Link to="/login">
+                              {`Log in om een bericht te sturen! `}
+                            </Link>
+                          </>
+                        )}
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {/* <Paper className={classes.paper}></Paper> */}
+                    </Grid>{" "}
+                  </>
+                  {/* ----------- */}
                 </Grid>
-                <Grid item xs={6}>
-                  <Paper className={classes.paper}>
-                    {highestBidAndId.highestBid ? (
-                      <>
-                        <b>De hoogste bieder is </b>
-                        {highestBidAndId.highestBidEmail}
-                        {", met "}
-                        {highestBidAndId.highestBid} <b> euro</b>
-                      </>
-                    ) : (
-                      <>wees de eerste om een bod uit te brengen!</>
-                    )}
-                  </Paper>
-                </Grid>
-              </Grid>
-            </div>
-          ) : null}
-        </span>
-      </Container>
+              </div>
+            ) : null}
+          </span>
+        </Container>
+      ) : null}
     </>
   );
 }
