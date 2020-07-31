@@ -11,11 +11,10 @@ export function createCard(cardProps) {
     const ptextCounts = columnKeys.map((key) => {
       return { [key]: columns[key].ptextIds.length };
     });
-
-    //create min column # / max colum #, and use as index constraints in find method
+    //determine max column #, and use as index constraints
     const columnNrs = columnKeys.map((key) => parseInt(key.split("-")[1]));
 
-    const minColumnIndex = Math.min.apply(null, columnNrs);
+    // const minColumnIndex = Math.min.apply(null, columnNrs);
     const maxColumnIndex = Math.max.apply(null, columnNrs);
 
     // check if layout is full
@@ -30,15 +29,10 @@ export function createCard(cardProps) {
       if (isFull) {
         return maxColumnIndex + 1;
       }
-
-      const availableSpot = ptextCounts.find((obj, i) => {
-        return obj[`column-${i + minColumnIndex}`] < 4;
+      const availableSpot = ptextCounts.filter((obj) => {
+        return parseInt(Object.values(obj)) < 4;
       });
-      console.log(
-        "availableSpot    in configureColumnIndexIfFull in action",
-        availableSpot
-      );
-      const availableIndex = Object.keys(availableSpot)[0].split("-")[1];
+      const availableIndex = Object.keys(availableSpot[0])[0].split("-")[1];
       return parseInt(availableIndex);
     }
 
@@ -102,6 +96,8 @@ export function deleteCard(cardId) {
     }
   };
 }
+
+// TODO  create updateCardColumnIndex   thunk  separate from main updateCard thunk
 export function updateCard(cardProps) {
   const {
     aangeboden,
@@ -165,7 +161,7 @@ export function fetchCards() {
 }
 
 export function fetchCardDetail(id) {
-  return async function thunk(dispatch) {
+  return async function (dispatch) {
     try {
       const res = await api(`cards/${id}`, { method: "GET" });
       if (res) {
@@ -178,24 +174,37 @@ export function fetchCardDetail(id) {
   };
 }
 
-export function addHeart(cardId) {
+export function fetchUserFavs() {
   return async function (dispatch, getState) {
     try {
-      const res = await api(`cards`, {
-        method: "PATCH",
-        data: { cardId },
-        jwt: "",
-      });
-      dispatch({ type: "CARD_DETAIL", payload: res.data });
-
-      try {
-        const res = await api("cards", { method: "GET" });
-        if (res) {
-          dispatch({ type: "CARDS", payload: res.data });
-        } else return null;
-      } catch (e) {
-        console.log(e);
+      // console.log(
+      //   "getState().user.id  in fetchUserFavs action",
+      //   getState().user.id
+      // );
+      if (getState().user.token) {
+        const res = await api(`favorites/user`, {
+          method: "POST",
+          data: { userId: getState().user.id },
+        });
+        if (res) dispatch({ type: "USER_FAVS", payload: res.data });
       }
+      return;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function addFav(cardId) {
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`favorites`, {
+        method: "POST",
+        data: { cardId, userId: getState().user.id },
+        jwt: getState().user.token,
+      });
+      dispatch(fetchUserFavs());
+      // console.log("res  from addFav::", res);
     } catch (e) {
       console.log(e);
     }
@@ -210,27 +219,8 @@ export function postBid({ cardId, amount, email, token, highestBid }) {
         data: { cardId, amount, email },
         jwt: token,
       });
-
-      try {
-        const res = await api(`cards/highestbid/${cardId}`);
-        dispatch({ type: "HIGHEST_BID", payload: res.data });
-
-        try {
-          const res = await api(`cards/${cardId}`, { method: "GET" });
-          if (res) {
-            dispatch({
-              type: "CARD_DETAIL",
-              payload: res.data.cardDetail,
-            });
-            return true;
-          } else return false;
-        } catch (e) {
-          console.log(e);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-
+      dispatch(getHighestBid(cardId));
+      dispatch(fetchCardDetail(cardId));
       return res;
     } catch (e) {
       console.log(e);

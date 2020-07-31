@@ -27,6 +27,9 @@ export default function cardsSliceReducer(
       });
       return { ...state, cards: { cards: filtered } };
 
+    case "USER_FAVS":
+      return { ...state, userFavs: payload };
+
     case "UPDATE_CARD":
       const deleteUpdateCards = state.cards.cards;
       const filteredUpdate = deleteUpdateCards.filter(function (el) {

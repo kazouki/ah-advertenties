@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
-import CardView from "../../components/CardView";
+// import CardView from "../../components/CardView";
 
 // import { fetchCardDetail } from "../../store/card/actions";
-import { addHeart } from "../../store/card/actions";
+import { addFav } from "../../store/card/actions";
 import { postBid } from "../../store/card/actions";
 import { postMessage } from "../../store/message/actions";
 
@@ -24,22 +24,22 @@ import { selectUser } from "../../store/user/selectors";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import Input from "@material-ui/core/Input";
+// import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 import MoodIcon from "@material-ui/icons/Mood";
 
 export default function CardDetail(props) {
-  const [bidValue, setBidValue] = useState("default");
-  const [tooLowAlert, setTooLowAlert] = useState("");
+  // const [bidValue, setBidValue] = useState("default");
+  // const [tooLowAlert, setTooLowAlert] = useState("");
   const [text, setText] = useState("");
 
   const dispatch = useDispatch();
   //   const { id } = useParams();
-  const id = 1;
+  // const id = 1;
   const cardDetail = useSelector(selectCardDetail);
-  const highestBidAndId = useSelector(selectHighestBid);
+  // const highestBidAndId = useSelector(selectHighestBid);
   const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
   const messages = useSelector(selectMessages);
@@ -66,39 +66,39 @@ export default function CardDetail(props) {
   }));
   const classes = useStyles();
 
-  const onGiveHeart = () => {
-    dispatch(addHeart(id));
-  };
+  // const onGiveHeart = () => {
+  //   dispatch(addHeart(id));
+  // };
 
-  const onBidSubmitHandler = (e) => {
-    e.preventDefault();
-    dispatch(
-      postBid({
-        cardId: id,
-        amount:
-          bidValue === "default" && highestBidAndId.highestBid
-            ? highestBidAndId.highestBid + 1
-            : bidValue === "default" && !highestBidAndId.highestBid
-            ? cardDetail.minimumBid + 1
-            : bidValue,
-        email: user.email,
-        token: user.token,
-        highestBid: highestBidAndId.highestBid,
-      })
-    );
-  };
+  // const onBidSubmitHandler = (e) => {
+  //   e.preventDefault();
+  //   dispatch(
+  //     postBid({
+  //       cardId: id,
+  //       amount:
+  //         bidValue === "default" && highestBidAndId.highestBid
+  //           ? highestBidAndId.highestBid + 1
+  //           : bidValue === "default" && !highestBidAndId.highestBid
+  //           ? cardDetail.minimumBid + 1
+  //           : bidValue,
+  //       email: user.email,
+  //       token: user.token,
+  //       highestBid: highestBidAndId.highestBid,
+  //     })
+  //   );
+  // };
 
-  const onSetBidValue = (e) => {
-    setBidValue(e.target.value);
-    if (e.target.value < highestBidAndId.highestBid + 1) {
-      setTooLowAlert(
-        <b>
-          <h5>The amount should be higher than the highest bid!</h5>
-        </b>
-      );
-    } else setTooLowAlert("");
-    if (!e.target.value) setTooLowAlert("");
-  };
+  // const onSetBidValue = (e) => {
+  //   setBidValue(e.target.value);
+  //   if (e.target.value < highestBidAndId.highestBid + 1) {
+  //     setTooLowAlert(
+  //       <b>
+  //         <h5>The amount should be higher than the highest bid!</h5>
+  //       </b>
+  //     );
+  //   } else setTooLowAlert("");
+  //   if (!e.target.value) setTooLowAlert("");
+  // };
 
   // const fetchMessagesHandler = () => {
   //   const cardOwnerId = cardDetail.userId;

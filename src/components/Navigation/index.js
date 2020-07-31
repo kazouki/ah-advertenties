@@ -3,7 +3,7 @@ import React from "react";
 import Badge from "@material-ui/core/Badge";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+// import NotificationsIcon from "@material-ui/icons/Notifications";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,16 +11,23 @@ import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import Avatar from "@material-ui/core/Avatar";
+// import Avatar from "@material-ui/core/Avatar";
 
 import { Link } from "react-router-dom";
 
 import ahLogoWit from "../../static/img/ahlogo4.png";
 import { AH_BLUE } from "../../config/constants.js";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
+
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
+
+import { useHistory } from "react-router-dom";
+import { createCard } from "../../store/card/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,6 +106,85 @@ export default function SearchAppBar() {
   const classes = useStyles();
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const onCreateCard = (e) => {
+    // e.preventDefault();
+    dispatch(
+      createCard({
+        aangeboden: false,
+        gevraagd: false,
+        title: "",
+        description: "",
+        name: "",
+        telephone: "",
+        email: "",
+        date: "",
+        imageUrl: "",
+        minimumBid: 0,
+      })
+    );
+    history.push("/");
+  };
+
+  function NewCardMenu() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+      if (!user.token) {
+        history.push("/login");
+      } else setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <div>
+        {/* <Typography className={classes.menuItem} noWrap> */}
+        <Button
+          className={classes.menuItem}
+          color="primary"
+          style={{ marginLeft: 50, background: "#00e1ff" }}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          Nieuwe kaart
+        </Button>
+        {/* </Typography> */}
+
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <Link
+            to={"/newcard"}
+            style={{
+              color: "black",
+              textDecoration: "none",
+            }}
+          >
+            <MenuItem onClick={handleClose}>Kaart details</MenuItem>
+          </Link>
+
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              onCreateCard();
+            }}
+          >
+            Lege kaart
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  }
 
   return (
     <div className={classes.root}>
@@ -114,17 +200,7 @@ export default function SearchAppBar() {
           <Typography className={classes.titleExtension} variant="h6" noWrap>
             Advertenties
           </Typography>
-          <Typography className={classes.menuItem} noWrap>
-            <Link
-              to={"/newcard"}
-              style={{
-                color: "white",
-                textDecoration: "none",
-              }}
-            >
-              Nieuwe kaart
-            </Link>
-          </Typography>
+          <NewCardMenu />
           <Typography className={classes.menuItem} noWrap>
             Mijn Kaarten
           </Typography>

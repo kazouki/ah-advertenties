@@ -25,10 +25,10 @@ import { selectUserCardIds } from "../../store/user/selectors";
 import { selectCards } from "../../store/card/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
-import { deleteCard } from "../../store/card/actions";
+import { deleteCard, fetchUserFavs } from "../../store/card/actions";
 
 import { fetchCardDetail } from "../../store/card/actions";
-import { fetchMessages } from "../../store/message/actions";
+// import { fetchMessages } from "../../store/message/actions";
 import { getHighestBid } from "../../store/card/actions";
 
 import CardDetail from "../../pages/CardDetail";
@@ -94,9 +94,6 @@ function CardDetailsModal(props) {
   // const cardId = props.ptext?.id.split("-")[1];
   const cardId = parseInt(props.ptextId?.split("-")[1]);
 
-  // console.log("cardId   in  CardDetailsModal", cardId);
-  // console.log("props   in  CardDetailsModal", props);
-
   const cardOwnerId = allCards?.cards.find(
     (card) => card.id === parseInt(cardId)
   );
@@ -118,6 +115,8 @@ function CardDetailsModal(props) {
           onClick={() => {
             dispatch(fetchCardDetail(cardId));
             dispatch(getHighestBid(cardId));
+            dispatch(fetchUserFavs(cardId));
+
             // if (cardOwnerId)
             //   dispatch(fetchMessages({ cardOwnerId: cardOwnerId.userId }));
             handleOpen();
