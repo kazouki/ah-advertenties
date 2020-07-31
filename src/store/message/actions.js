@@ -62,7 +62,7 @@ export function postMessage({ toUserId, text }) {
         data: {
           toUserId,
           text,
-          fromUserId: getState().user.id,
+          userId: getState().user.id,
         },
         jwt: getState().user.token,
       });

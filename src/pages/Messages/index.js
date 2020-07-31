@@ -49,6 +49,15 @@ export default function CardDetail(props) {
   const inboxMessages = useSelector(selectInboxMessages);
 
   const toUserId = cardDetail?.userId;
+  const messageBoxRemoteUserId = messages
+    ?.filter((message) => {
+      return message.userId !== user.id;
+    })
+    .map((obj) => obj.userId)[0];
+  console.log(
+    "messageBoxRemoteUserId in messages index",
+    messageBoxRemoteUserId
+  );
 
   const useStyles = makeStyles((theme) => ({
     margin: {
@@ -224,7 +233,14 @@ export default function CardDetail(props) {
                 <Paper className={classes.paper}>
                   <Container>
                     <Button
-                      onClick={() => dispatch(postMessage({ toUserId, text }))}
+                      onClick={() =>
+                        dispatch(
+                          postMessage({
+                            toUserId: messageBoxRemoteUserId,
+                            text,
+                          })
+                        )
+                      }
                     >
                       stuur bericht
                     </Button>
