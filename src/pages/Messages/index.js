@@ -40,16 +40,33 @@ export default function CardDetail(props) {
   const messages = useSelector(selectMessages);
   const inboxMessages = useSelector(selectInboxMessages);
 
-  // const toUserId = cardDetail?.userId;
+  const displayMessages = messages.slice(messages.length - 6, messages.length);
+  console.log("displayMessages ", displayMessages);
+
+  const allInboxUsers = [
+    ...new Set(inboxMessages?.map((inboxMessage) => inboxMessage.userId)),
+  ].map((e) => inboxMessages.filter((m) => m.userId === e));
+  console.log("allInboxUsers ", allInboxUsers);
+
+  const inboxUsersLatestDates = allInboxUsers.map(
+    (e) =>
+      e
+        .map(function (user) {
+          return user.createdAt;
+        })
+        .sort()
+        .reverse()[0]
+  );
+
+  const displayInboxMessages = inboxMessages?.filter((m) =>
+    inboxUsersLatestDates.includes(m.createdAt)
+  );
+
   const messageBoxRemoteUserId = messages
     ?.filter((message) => {
       return message.userId !== user.id;
     })
     .map((obj) => obj.userId)[0];
-  console.log(
-    "messageBoxRemoteUserId in messages index",
-    messageBoxRemoteUserId
-  );
 
   const useStyles = makeStyles((theme) => ({
     margin: {
@@ -76,8 +93,6 @@ export default function CardDetail(props) {
   }));
   const classes = useStyles();
 
-  console.log("inboxMessages ", inboxMessages);
-
   const RenderInboxList = () => {
     return (
       <>
@@ -87,7 +102,7 @@ export default function CardDetail(props) {
           aria-label="mailbox folders"
         >
           {inboxMessages
-            ? inboxMessages.map((message, i) => {
+            ? displayInboxMessages.map((message, i) => {
                 return (
                   <div key={i}>
                     <ListItem
@@ -117,9 +132,6 @@ export default function CardDetail(props) {
             : null}
 
           <Divider />
-          <ListItem button divider>
-            <ListItemText primary="Drafts" />
-          </ListItem>
         </List>
       </>
     );
@@ -146,8 +158,8 @@ export default function CardDetail(props) {
                 <Paper className={classes.paperMessages}>
                   {/* <Container> */}
 
-                  {messages
-                    ? messages.map((message, i) => {
+                  {displayMessages
+                    ? displayMessages.map((message, i) => {
                         const switchAlign =
                           message.userId === user.id
                             ? "flex-end"
@@ -165,7 +177,7 @@ export default function CardDetail(props) {
                             }}
                           >
                             <div key={i}>
-                              <div style={{ float: "top" }}>
+                              <div style={{ marginBottom: 20 }}>
                                 <Container>
                                   {message.text}
                                   {message.userId === user.id ? (
@@ -215,18 +227,15 @@ export default function CardDetail(props) {
                   </Container>
                 </Paper>
               </Grid>
-              <Grid item xs={3}>
-                <Paper className={classes.paper}>
-                  <div></div>
-
-                  <div></div>
-                </Paper>
-              </Grid>
+              <Grid item xs={3}></Grid>
               <Grid item xs={3}></Grid>
               <Grid item xs={3}>
                 <Paper className={classes.paper}>
                   <Container>
                     <Button
+                      disabled={
+                        remoteIdFromModal ? false : messages[1] ? false : true
+                      }
                       onClick={() =>
                         dispatch(
                           postMessage({
@@ -244,11 +253,11 @@ export default function CardDetail(props) {
                 </Paper>
               </Grid>
               <Grid item xs={3}>
-                <Paper className={classes.paper}>
+                {/* <Paper className={classes.paper}>
                   <Container>
                     <MoodIcon />
                   </Container>
-                </Paper>
+                </Paper> */}
               </Grid>
             </Grid>
           </div>

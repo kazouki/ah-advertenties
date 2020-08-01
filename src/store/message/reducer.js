@@ -5,7 +5,7 @@ const initialState = {
         fromUserId: 1,
         toUserId: 1,
         id: 1,
-        text: "geen berichten",
+        text: "kies een gesprek in de inbox ...",
         createdAt: "",
         updatedAt: "",
       },
