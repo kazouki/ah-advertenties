@@ -19,7 +19,7 @@ export function fetchConversation({ remoteUserId }) {
   };
 }
 
-//TODO fetch correct messages
+//TODO fetch  messages  ??
 export function fetchAllMessages() {
   return async function (dispatch, getState) {
     try {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
 import { Link, useHistory } from "react-router-dom";
 
 import CardView from "../../components/CardView";
@@ -11,9 +10,11 @@ import { postBid } from "../../store/card/actions";
 
 import { selectCardDetail } from "../../store/card/selectors";
 import { selectHighestBid } from "../../store/card/selectors";
-
-// import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
+import { selectCards } from "../../store/card/selectors";
+
+import { fetchConversation } from "../../store/message/actions";
+import { fetchInboxMessages } from "../../store/message/actions";
 
 ////////
 import Paper from "@material-ui/core/Paper";
@@ -26,10 +27,13 @@ import { makeStyles } from "@material-ui/core/styles";
 export default function CardDetail(props) {
   const [bidValue, setBidValue] = useState("default");
   const [tooLowAlert, setTooLowAlert] = useState("");
+  const allCards = useSelector(selectCards);
 
   const dispatch = useDispatch();
   const history = useHistory();
   const id = props.cardId;
+  const cardOwnerId = allCards?.cards.find((card) => card.id === parseInt(id))
+    .id;
 
   const cardDetail = useSelector(selectCardDetail);
   const highestBidAndId = useSelector(selectHighestBid);
@@ -96,7 +100,11 @@ export default function CardDetail(props) {
   };
 
   const onGotoMessages = () => {
-    history.push(`/messages/${id}`);
+    dispatch(fetchInboxMessages());
+    console.log("cardOwnerId in onGotoMessages ", cardOwnerId);
+    dispatch(fetchConversation({ remoteUserId: cardOwnerId }));
+
+    history.push(`/messages/all/${cardOwnerId}`);
     return null;
   };
 

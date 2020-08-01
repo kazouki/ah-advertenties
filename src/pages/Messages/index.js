@@ -2,19 +2,11 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-// import CardView from "../../components/CardView";
-
-// import { fetchCardDetail } from "../../store/card/actions";
-// import { addFav } from "../../store/card/actions";
-// import { postBid } from "../../store/card/actions";
 import { postMessage } from "../../store/message/actions";
 
-// import { getHighestBid } from "../../store/card/actions";
-// import { getUserWithStoredToken } from "../../store/user/actions";
 import { fetchConversation } from "../../store/message/actions";
 
 import { selectCardDetail } from "../../store/card/selectors";
-// import { selectHighestBid } from "../../store/card/selectors";
 import { selectMessages } from "../../store/message/selectors";
 import { selectInboxMessages } from "../../store/message/selectors";
 
@@ -25,7 +17,6 @@ import { selectUser } from "../../store/user/selectors";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-// import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
@@ -40,7 +31,8 @@ export default function CardDetail(props) {
   const [text, setText] = useState("");
 
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { remoteIdFromModal } = useParams();
+  console.log("remoteIdFromModal  in Messages index ", remoteIdFromModal);
 
   const cardDetail = useSelector(selectCardDetail);
   const userToken = useSelector(selectToken);
@@ -48,7 +40,7 @@ export default function CardDetail(props) {
   const messages = useSelector(selectMessages);
   const inboxMessages = useSelector(selectInboxMessages);
 
-  const toUserId = cardDetail?.userId;
+  // const toUserId = cardDetail?.userId;
   const messageBoxRemoteUserId = messages
     ?.filter((message) => {
       return message.userId !== user.id;
@@ -83,6 +75,8 @@ export default function CardDetail(props) {
     },
   }));
   const classes = useStyles();
+
+  console.log("inboxMessages ", inboxMessages);
 
   const RenderInboxList = () => {
     return (
@@ -236,7 +230,9 @@ export default function CardDetail(props) {
                       onClick={() =>
                         dispatch(
                           postMessage({
-                            toUserId: messageBoxRemoteUserId,
+                            toUserId: remoteIdFromModal
+                              ? remoteIdFromModal
+                              : messageBoxRemoteUserId,
                             text,
                           })
                         )

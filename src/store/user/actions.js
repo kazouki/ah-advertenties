@@ -8,6 +8,7 @@ import {
   showMessageWithTimeout,
   setMessage,
 } from "../appState/actions";
+import { fetchInboxMessages } from "../message/actions";
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const TOKEN_STILL_VALID = "TOKEN_STILL_VALID";
@@ -95,6 +96,10 @@ export const login = (email, password) => {
 
       // get cards belonging to user
       dispatch(getUserCards(getState().user.id));
+      // refresh inbox
+      dispatch(fetchInboxMessages());
+      // empty the messageBox
+      dispatch({ type: "LOAD_CONVERSATION", payload: [] });
 
       dispatch(appDoneLoading());
     } catch (error) {

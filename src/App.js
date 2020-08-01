@@ -56,7 +56,7 @@ function App() {
           )}
         /> */}
         <Route path="/carddetail/:id" component={CardDetail} />
-        <Route path="/messages/:id" component={Messages} />
+        <Route path="/messages/all/:remoteIdFromModal" component={Messages} />
         <Route path="/messages/all" component={Messages} />
 
         <Route path="/newcard" component={NewCard} />

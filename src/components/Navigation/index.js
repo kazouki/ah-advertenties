@@ -27,6 +27,7 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { createCard } from "../../store/card/actions";
 import { fetchInboxMessages } from "../../store/message/actions";
+import { logOut } from "../../store/user/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,7 +110,6 @@ export default function SearchAppBar() {
   const dispatch = useDispatch();
 
   const onCreateCard = (e) => {
-    // e.preventDefault();
     dispatch(
       createCard({
         aangeboden: false,
@@ -247,7 +247,11 @@ export default function SearchAppBar() {
               </IconButton>
             </Link>
           ) : (
-            <Link to="/profile" style={{ textDecoration: "none" }}>
+            <Link
+              to="/login"
+              style={{ textDecoration: "none" }}
+              onClick={() => dispatch(logOut())}
+            >
               <div style={{ marginLeft: 8 }}>
                 <Typography
                   className={classes.menuItem}
