@@ -33,7 +33,6 @@ export const setLayoutState = (newState) => ({
 });
 
 export const initializeLayout = (cards) => {
-  // console.clear();
   return (dispatch, getState) => {
     let newPtexts = {};
     cards.forEach((card) => {

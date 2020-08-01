@@ -9,6 +9,7 @@ import { fetchConversation } from "../../store/message/actions";
 // import { selectCardDetail } from "../../store/card/selectors";
 import { selectMessages } from "../../store/message/selectors";
 import { selectInboxMessages } from "../../store/message/selectors";
+import { selectRemoteUsername } from "../../store/message/selectors";
 
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
@@ -36,6 +37,7 @@ export default function CardDetail(props) {
   const user = useSelector(selectUser);
   const messages = useSelector(selectMessages);
   const inboxMessages = useSelector(selectInboxMessages);
+  const remoteUsername = useSelector(selectRemoteUsername);
 
   const displayMessages = messages.slice(messages.length - 6, messages.length);
 
@@ -106,6 +108,10 @@ export default function CardDetail(props) {
                         dispatch(
                           fetchConversation({ remoteUserId: message.userId })
                         );
+                        dispatch({
+                          type: "SET_REMOTE_USERNAME",
+                          payload: message.user.name,
+                        });
                       }}
                     >
                       <span style={{ marginRight: 10 }}>
@@ -151,7 +157,8 @@ export default function CardDetail(props) {
               <Grid item xs={6}>
                 <Paper className={classes.paperMessages}>
                   {/* <Container> */}
-
+                  <b>Jouw gesprek met</b> {remoteUsername}
+                  <Divider style={{ marginTop: 4, marginBottom: 10 }} />
                   {displayMessages
                     ? displayMessages.map((message, i) => {
                         const switchAlign =
@@ -226,7 +233,7 @@ export default function CardDetail(props) {
                   <Container>
                     <Button
                       disabled={
-                        remoteIdFromModal ? false : messages[1] ? false : true
+                        remoteIdFromModal ? false : messages[0] ? false : true
                       }
                       onClick={() =>
                         dispatch(

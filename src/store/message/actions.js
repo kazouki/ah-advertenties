@@ -18,6 +18,23 @@ export function fetchConversation({ remoteUserId }) {
   };
 }
 
+export function fetchRemoteUsername({ cardOwnerId }) {
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`messages/remoteusername`, {
+        method: "POST",
+        data: { cardOwnerId },
+        jwt: getState().user.token,
+      });
+      if (res) {
+        dispatch({ type: "SET_REMOTE_USERNAME", payload: res.data });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
 //TODO fetch  messages  ??
 export function fetchAllMessages() {
   return async function (dispatch, getState) {

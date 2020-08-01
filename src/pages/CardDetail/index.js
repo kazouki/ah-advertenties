@@ -15,6 +15,7 @@ import { selectCards } from "../../store/card/selectors";
 
 import { fetchConversation } from "../../store/message/actions";
 import { fetchInboxMessages } from "../../store/message/actions";
+import { fetchRemoteUsername } from "../../store/message/actions";
 
 ////////
 import Paper from "@material-ui/core/Paper";
@@ -100,6 +101,7 @@ export default function CardDetail(props) {
   };
 
   const onGotoMessages = () => {
+    dispatch(fetchRemoteUsername({ cardOwnerId }));
     dispatch(fetchInboxMessages());
     dispatch(fetchConversation({ remoteUserId: cardOwnerId }));
 
