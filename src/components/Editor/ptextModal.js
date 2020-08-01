@@ -25,6 +25,7 @@ import { deleteCard, fetchUserFavs } from "../../store/card/actions";
 
 import { fetchCardDetail } from "../../store/card/actions";
 import { getHighestBid } from "../../store/card/actions";
+import { fetchRemoteUsernameAndId } from "../../store/message/actions";
 
 import CardDetail from "../../pages/CardDetail";
 
@@ -102,6 +103,7 @@ function CardDetailsModal(props) {
           style={{ color: "white" }}
           fontSize="small"
           onClick={() => {
+            dispatch(fetchRemoteUsernameAndId({ cardOwnerId: cardId }));
             dispatch(fetchCardDetail(cardId));
             dispatch(getHighestBid(cardId));
             dispatch(fetchUserFavs(cardId));

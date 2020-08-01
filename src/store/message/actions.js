@@ -18,7 +18,7 @@ export function fetchConversation({ remoteUserId }) {
   };
 }
 
-export function fetchRemoteUsername({ cardOwnerId }) {
+export function fetchRemoteUsernameAndId({ cardOwnerId }) {
   return async function (dispatch, getState) {
     try {
       const res = await api(`messages/remoteusername`, {
@@ -27,7 +27,7 @@ export function fetchRemoteUsername({ cardOwnerId }) {
         jwt: getState().user.token,
       });
       if (res) {
-        dispatch({ type: "SET_REMOTE_USERNAME", payload: res.data });
+        dispatch({ type: "SET_REMOTE_USERNAME_AND_ID", payload: res.data });
       }
     } catch (e) {
       console.log(e);
@@ -83,6 +83,7 @@ export function postMessage({ toUserId, text }) {
         jwt: getState().user.token,
       });
       dispatch(fetchConversation({ remoteUserId: toUserId }));
+      dispatch(fetchInboxMessages());
       return res;
     } catch (e) {
       console.log(e);

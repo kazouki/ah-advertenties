@@ -48,19 +48,23 @@ const tokenStillValid = (userWithoutToken) => ({
 
 export const logOut = () => ({ type: LOG_OUT });
 
-export const signUp = (name, email, password, artist) => {
-  return async (dispatch, getState) => {
+export const signUp = (name, email, password) => {
+  return async (dispatch) => {
     dispatch(appLoading());
     try {
-      const response = await axios.post(`${apiUrl}/signup`, {
-        name,
-        email,
-        password,
-        artist,
+      const response = await api(`signup`, {
+        method: "POST",
+        data: {
+          name,
+          email,
+          password,
+        },
       });
 
       dispatch(loginSuccess(response.data));
-      dispatch(showMessageWithTimeout("success", true, "account created"));
+      dispatch(
+        showMessageWithTimeout("success", true, "Je bent ingeschreven!")
+      );
       dispatch(appDoneLoading());
     } catch (error) {
       if (error.response) {
@@ -79,9 +83,12 @@ export const login = (email, password) => {
   return async (dispatch, getState) => {
     dispatch(appLoading());
     try {
-      const response = await axios.post(`${apiUrl}/login`, {
-        email,
-        password,
+      const response = await api(`login`, {
+        method: "POST",
+        data: {
+          email,
+          password,
+        },
       });
 
       dispatch(loginSuccess(response.data));

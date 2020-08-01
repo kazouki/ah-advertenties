@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 
 import { postMessage } from "../../store/message/actions";
 
 import { fetchConversation } from "../../store/message/actions";
 
-// import { selectCardDetail } from "../../store/card/selectors";
 import { selectMessages } from "../../store/message/selectors";
 import { selectInboxMessages } from "../../store/message/selectors";
 import { selectRemoteUsername } from "../../store/message/selectors";
+import { selectRemoteUserId } from "../../store/message/selectors";
+
+import { fetchInboxMessages } from "../../store/message/actions";
 
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
@@ -30,9 +31,8 @@ export default function CardDetail(props) {
   const [text, setText] = useState("");
 
   const dispatch = useDispatch();
-  const { remoteIdFromModal } = useParams();
+  const remoteIdFromModal = useSelector(selectRemoteUserId);
 
-  // const cardDetail = useSelector(selectCardDetail);
   const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
   const messages = useSelector(selectMessages);
@@ -109,8 +109,11 @@ export default function CardDetail(props) {
                           fetchConversation({ remoteUserId: message.userId })
                         );
                         dispatch({
-                          type: "SET_REMOTE_USERNAME",
-                          payload: message.user.name,
+                          type: "SET_REMOTE_USERNAME_AND_ID",
+                          payload: {
+                            name: message.user.name,
+                            id: message.userId,
+                          },
                         });
                       }}
                     >
@@ -120,7 +123,13 @@ export default function CardDetail(props) {
                         </b>
                       </span>
                       <span style={{ marginRight: 10 }}>
-                        <b>van {message.user.name}</b>
+                        {message.user.name === user.name ? (
+                          <>
+                            <b>van jou aan {message.recipient.name}</b>
+                          </>
+                        ) : (
+                          <b>van {message.user.name} aan jou </b>
+                        )}
                       </span>
                       <span style={{ marginRight: 10 }}>
                         <i> "{message.text}... "</i>
@@ -156,8 +165,15 @@ export default function CardDetail(props) {
               </Grid>
               <Grid item xs={6}>
                 <Paper className={classes.paperMessages}>
-                  {/* <Container> */}
-                  <b>Jouw gesprek met</b> {remoteUsername}
+                  {/* TODO */}
+                  {/* TODO */}
+                  {/* TODO */}
+                  {/* TODO  dont display if no card is selected from layout */}
+                  {remoteUsername ? (
+                    <span style={{ fontSize: 13 }}>
+                      <b>Jouw gesprek met</b> {remoteUsername}
+                    </span>
+                  ) : null}
                   <Divider style={{ marginTop: 4, marginBottom: 10 }} />
                   {displayMessages
                     ? displayMessages.map((message, i) => {
@@ -235,7 +251,7 @@ export default function CardDetail(props) {
                       disabled={
                         remoteIdFromModal ? false : messages[0] ? false : true
                       }
-                      onClick={() =>
+                      onClick={() => {
                         dispatch(
                           postMessage({
                             toUserId: remoteIdFromModal
@@ -243,8 +259,9 @@ export default function CardDetail(props) {
                               : messageBoxRemoteUserId,
                             text,
                           })
-                        )
-                      }
+                        );
+                        dispatch(fetchInboxMessages());
+                      }}
                     >
                       stuur bericht
                     </Button>

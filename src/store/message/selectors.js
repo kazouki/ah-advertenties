@@ -9,3 +9,6 @@ export const selectInboxMessages = (state) => {
 export const selectRemoteUsername = (state) => {
   return state.messagesSliceReducer.remoteUsername;
 };
+export const selectRemoteUserId = (state) => {
+  return state.messagesSliceReducer.id;
+};

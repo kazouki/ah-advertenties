@@ -225,6 +225,8 @@ export default function SearchAppBar() {
             style={{ color: "white", marginLeft: 10 }}
             to="/messages/all"
             onClick={() => {
+              dispatch({ type: "RESET_REMOTE_USERNAME_AND_ID" });
+              dispatch({ type: "LOAD_CONVERSATION", payload: [] });
               dispatch(fetchInboxMessages());
             }}
           >

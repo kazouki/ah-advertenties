@@ -15,8 +15,9 @@ import { selectCards } from "../../store/card/selectors";
 
 import { fetchConversation } from "../../store/message/actions";
 import { fetchInboxMessages } from "../../store/message/actions";
-import { fetchRemoteUsername } from "../../store/message/actions";
+import { fetchRemoteUsernameAndId } from "../../store/message/actions";
 
+import { selectRemoteUserId } from "../../store/message/selectors";
 ////////
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -35,11 +36,15 @@ export default function CardDetail(props) {
   const id = props.cardId;
   const cardOwnerId = allCards?.cards.find((card) => card.id === parseInt(id))
     .id;
+  console.log("cardOwnerId", cardOwnerId);
+  console.log("id  (props.cardId)", id);
 
   const cardDetail = useSelector(selectCardDetail);
   const highestBidAndId = useSelector(selectHighestBid);
   // const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
+  const remoteUserId = useSelector(selectRemoteUserId);
+  console.log("remoteUserId ", remoteUserId);
 
   const useStyles = makeStyles((theme) => ({
     margin: {
@@ -101,11 +106,12 @@ export default function CardDetail(props) {
   };
 
   const onGotoMessages = () => {
-    dispatch(fetchRemoteUsername({ cardOwnerId }));
+    // dispatch({ type: "LOAD_CONVERSATION", payload: [] });
+    // dispatch(fetchRemoteUsernameAndId({ cardOwnerId: id }));
     dispatch(fetchInboxMessages());
     dispatch(fetchConversation({ remoteUserId: cardOwnerId }));
 
-    history.push(`/messages/all/${cardOwnerId}`);
+    history.push(`/messages/all/${remoteUserId}`);
     return null;
   };
 
