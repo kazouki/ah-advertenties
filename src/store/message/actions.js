@@ -2,7 +2,6 @@ import api from "../../api";
 
 //TODO fetch card specific user messages
 export function fetchConversation({ remoteUserId }) {
-  console.log("remoteUserId   in fetchConversation", remoteUserId);
   return async function (dispatch, getState) {
     try {
       const res = await api(`messages/conversation`, {

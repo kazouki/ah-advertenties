@@ -225,7 +225,6 @@ export default function SearchAppBar() {
             style={{ color: "white", marginLeft: 10 }}
             to="/messages/all"
             onClick={() => {
-              console.log("callback in navigation worked");
               dispatch(fetchInboxMessages());
             }}
           >

@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { selectLayoutState } from "../../store/editor/selectors";
 import { selectUserCardIds } from "../../store/user/selectors";
-import { selectCards } from "../../store/card/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
 import { deleteCard, fetchUserFavs } from "../../store/card/actions";
@@ -85,13 +84,8 @@ function CardDetailsModal(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
-  // const allCards = useSelector(selectCards);
   const dispatch = useDispatch();
   const cardId = parseInt(props.ptextId?.split("-")[1]);
-
-  // const cardOwnerId = allCards?.cards.find(
-  //   (card) => card.id === parseInt(cardId)
-  // );
 
   const handleOpen = () => {
     setOpen(true);

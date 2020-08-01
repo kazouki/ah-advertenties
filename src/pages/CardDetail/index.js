@@ -101,7 +101,6 @@ export default function CardDetail(props) {
 
   const onGotoMessages = () => {
     dispatch(fetchInboxMessages());
-    console.log("cardOwnerId in onGotoMessages ", cardOwnerId);
     dispatch(fetchConversation({ remoteUserId: cardOwnerId }));
 
     history.push(`/messages/all/${cardOwnerId}`);

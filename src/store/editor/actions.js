@@ -1,4 +1,4 @@
-import { updateCard } from "../card/actions";
+// import { updateCard } from "../card/actions";
 
 const fields = {
   aangeboden: false,
