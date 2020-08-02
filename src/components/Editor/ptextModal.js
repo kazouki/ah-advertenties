@@ -103,7 +103,8 @@ function CardDetailsModal(props) {
           style={{ color: "white" }}
           fontSize="small"
           onClick={() => {
-            dispatch(fetchRemoteUsernameAndId({ cardOwnerId: cardId }));
+            //TODO    check  neccessity against call in cardetail index
+            // dispatch(fetchRemoteUsernameAndId({ cardId }));
             dispatch(fetchCardDetail(cardId));
             dispatch(getHighestBid(cardId));
             dispatch(fetchUserFavs(cardId));

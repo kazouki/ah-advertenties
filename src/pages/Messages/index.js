@@ -61,9 +61,6 @@ export default function CardDetail(props) {
     inboxUsersLatestDates.includes(m.createdAt)
   );
 
-  console.log("inboxMessages", inboxMessages);
-  // console.log("displayInboxMessages", displayInboxMessages);
-
   const messageBoxRemoteUserId = messages
     ?.filter((message) => {
       return message.userId !== user.id;

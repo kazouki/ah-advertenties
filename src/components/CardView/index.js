@@ -65,7 +65,16 @@ export default function CardView(props) {
           </Button>
         )}
       </Container>
-
+      <Container style={{ marginBottom: 20 }}>
+        <span>
+          <p>kaart van</p>
+          <span style={{ fontSize: 15 }}>
+            <p>
+              <b>{props.cardOwner.name}</b>
+            </p>
+          </span>
+        </span>
+      </Container>
       <Container
         style={{ width: "90%", border: "1px solid royalblue", borderRadius: 5 }}
       >
