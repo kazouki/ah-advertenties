@@ -34,8 +34,11 @@ export default function CardDetail(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const id = props.cardId;
-  const cardOwnerId = allCards?.cards.find((card) => card.id === parseInt(id))
-    .id;
+  const remoteUserId = useSelector(selectRemoteUserId);
+  console.log("remoteUserId ", remoteUserId);
+  const cardOwnerId = remoteUserId;
+  // const cardOwnerId = allCards?.cards.find((card) => card.id === parseInt(id))
+  //   .id;
   console.log("cardOwnerId", cardOwnerId);
   console.log("id  (props.cardId)", id);
 
@@ -43,8 +46,6 @@ export default function CardDetail(props) {
   const highestBidAndId = useSelector(selectHighestBid);
   // const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
-  const remoteUserId = useSelector(selectRemoteUserId);
-  console.log("remoteUserId ", remoteUserId);
 
   const useStyles = makeStyles((theme) => ({
     margin: {
@@ -112,6 +113,7 @@ export default function CardDetail(props) {
     dispatch(fetchConversation({ remoteUserId: cardOwnerId }));
 
     history.push(`/messages/all/${remoteUserId}`);
+
     return null;
   };
 

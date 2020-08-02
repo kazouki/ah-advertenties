@@ -36,22 +36,22 @@ export function fetchRemoteUsernameAndId({ cardOwnerId }) {
 }
 
 //TODO fetch  messages  ??
-export function fetchAllMessages() {
-  return async function (dispatch, getState) {
-    try {
-      const res = await api(`messages/all`, {
-        method: "POST",
-        data: { userId: getState().user.id },
-        jwt: getState().user.token,
-      });
-      if (res) {
-        dispatch({ type: "LOAD_ALL_USER_MESSAGES", payload: res.data });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-}
+// export function fetchAllMessages() {
+//   return async function (dispatch, getState) {
+//     try {
+//       const res = await api(`messages/all`, {
+//         method: "POST",
+//         data: { userId: getState().user.id },
+//         jwt: getState().user.token,
+//       });
+//       if (res) {
+//         dispatch({ type: "LOAD_ALL_USER_MESSAGES", payload: res.data });
+//       }
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   };
+// }
 
 export function fetchInboxMessages() {
   return async function (dispatch, getState) {
@@ -84,6 +84,49 @@ export function postMessage({ toUserId, text }) {
       });
       dispatch(fetchConversation({ remoteUserId: toUserId }));
       dispatch(fetchInboxMessages());
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function messageIsRead({ message, activeUser }) {
+  console.log("isRead worked, message is ", message);
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`messages/isread`, {
+        method: "PUT",
+        data: {
+          ...message,
+          isRead: true,
+          activeUser,
+        },
+      });
+      if (res) {
+        dispatch({ type: "SET_UNREAD_MESSAGES", payload: res.data });
+      }
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function fetchUnreadMessageCount({ userId }) {
+  console.log("fetchUnreadMessageCount worked, userId is ", userId);
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`messages/allunread`, {
+        method: "POST",
+        data: {
+          userId,
+        },
+      });
+      if (res) {
+        console.log("res infetchUnreadMessageCount", res);
+        dispatch({ type: "SET_UNREAD_MESSAGES", payload: res.data });
+      }
       return res;
     } catch (e) {
       console.log(e);

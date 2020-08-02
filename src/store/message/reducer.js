@@ -40,6 +40,8 @@ export default function messagesSliceReducer(
 
     case "SET_REMOTE_USERNAME":
       return { ...state, remoteUsername: payload.name };
+    case "SET_UNREAD_MESSAGES":
+      return { ...state, ...payload };
 
     case "LOAD_ALL_USER_MESSAGES":
       return { ...state, allUserMessages: payload };

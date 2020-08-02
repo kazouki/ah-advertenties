@@ -17,6 +17,7 @@ import Messages from "./pages/Messages";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppLoading } from "./store/appState/selectors";
+import { selectUser } from "./store/user/selectors";
 import { getUserWithStoredToken } from "./store/user/actions";
 
 import { fetchCards } from "./store/card/actions";
@@ -29,11 +30,12 @@ import { AH_BLUE } from "./config/constants.js";
 function App() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectAppLoading);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(getUserWithStoredToken());
     dispatch(fetchCards());
-  }, [dispatch]);
+  }, [dispatch, user.id]);
 
   return (
     <div className="App">

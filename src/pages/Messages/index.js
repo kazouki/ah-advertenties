@@ -11,6 +11,7 @@ import { selectRemoteUsername } from "../../store/message/selectors";
 import { selectRemoteUserId } from "../../store/message/selectors";
 
 import { fetchInboxMessages } from "../../store/message/actions";
+import { messageIsRead } from "../../store/message/actions";
 
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
@@ -39,7 +40,8 @@ export default function CardDetail(props) {
   const inboxMessages = useSelector(selectInboxMessages);
   const remoteUsername = useSelector(selectRemoteUsername);
 
-  const displayMessages = messages.slice(messages.length - 6, messages.length);
+  const minMessages = messages.length - 8 < 0 ? 0 : messages.length - 8;
+  const displayMessages = messages.slice(minMessages, messages.length);
 
   const allInboxUsers = [
     ...new Set(inboxMessages?.map((inboxMessage) => inboxMessage.userId)),
@@ -58,6 +60,9 @@ export default function CardDetail(props) {
   const displayInboxMessages = inboxMessages?.filter((m) =>
     inboxUsersLatestDates.includes(m.createdAt)
   );
+
+  console.log("inboxMessages", inboxMessages);
+  // console.log("displayInboxMessages", displayInboxMessages);
 
   const messageBoxRemoteUserId = messages
     ?.filter((message) => {
@@ -93,6 +98,8 @@ export default function CardDetail(props) {
   const RenderInboxList = () => {
     return (
       <>
+        Laatst verzonden berichten
+        <Divider />
         <List
           component="nav"
           className={classes.inboxListRoot}
@@ -103,18 +110,46 @@ export default function CardDetail(props) {
                 return (
                   <div key={i}>
                     <ListItem
+                      style={{ margin: 15 }}
                       button
                       onClick={() => {
-                        dispatch(
-                          fetchConversation({ remoteUserId: message.userId })
-                        );
-                        dispatch({
-                          type: "SET_REMOTE_USERNAME_AND_ID",
-                          payload: {
-                            name: message.user.name,
-                            id: message.userId,
-                          },
-                        });
+                        if (message.userId === user.id) {
+                          dispatch(
+                            fetchConversation({
+                              remoteUserId: message.recipient.id,
+                            })
+                          );
+
+                          dispatch({
+                            type: "SET_REMOTE_USERNAME",
+                            payload: message.recipient,
+                          });
+                          dispatch({
+                            type: "SET_REMOTE_USERNAME_AND_ID",
+                            payload: {
+                              name: message.recipient.name,
+                              id: message.recipient.id,
+                            },
+                          });
+                        } else {
+                          dispatch(
+                            messageIsRead({ message, activeUser: user.id })
+                          );
+                          dispatch(
+                            fetchConversation({ remoteUserId: message.userId })
+                          );
+                          dispatch({
+                            type: "SET_REMOTE_USERNAME",
+                            payload: message.user,
+                          });
+                          dispatch({
+                            type: "SET_REMOTE_USERNAME_AND_ID",
+                            payload: {
+                              name: message.user.name,
+                              id: message.userId,
+                            },
+                          });
+                        }
                       }}
                     >
                       <span style={{ marginRight: 10 }}>
@@ -135,12 +170,11 @@ export default function CardDetail(props) {
                         <i> "{message.text}... "</i>
                       </span>
                     </ListItem>
+                    <Divider />
                   </div>
                 );
               })
             : null}
-
-          <Divider />
         </List>
       </>
     );
@@ -212,7 +246,7 @@ export default function CardDetail(props) {
                                                   inboxMessage.user.id ===
                                                   message.userId
                                               )
-                                              .map((obj) => obj.user.name)
+                                              .map((obj) => obj.user.name)[0]
                                           : null}
                                       </em>
                                     </strong>

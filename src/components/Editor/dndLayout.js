@@ -8,9 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { selectCards } from "../../store/card/selectors";
 import { selectPtextIdsPerColumn } from "../../store/editor/selectors";
+import { selectUser } from "../../store/user/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
 import { updateCard } from "../../store/card/actions";
+import { updateCardIndex } from "../../store/card/actions";
 
 import { AH_BLUE } from "../../config/constants.js";
 
@@ -24,6 +26,7 @@ function DndLayout(props) {
   const state = useSelector(selectLayoutState);
   const ptextIdsPerColumn = useSelector(selectPtextIdsPerColumn);
   const cards = useSelector(selectCards);
+  const user = useSelector(selectUser);
 
   // const cards = useSelector(selectCards);
   // console.log("cards :::", cards);
@@ -66,7 +69,10 @@ function DndLayout(props) {
         cardId: cardToUpdate.id,
         columnIndex: newDestination,
       };
-      dispatch(updateCard(updatedCard));
+
+      if (user.token)
+        // dispatch(updateCard(updatedCard));
+        dispatch(updateCardIndex(updatedCard));
     }
 
     //###### optionals

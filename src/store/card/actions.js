@@ -97,7 +97,7 @@ export function deleteCard(cardId) {
   };
 }
 
-// TODO  create updateCardColumnIndex   thunk  separate from main updateCard thunk
+//TODO  create updateCardColumnIndex   thunk  separate from main updateCard thunk
 export function updateCard(cardProps) {
   const {
     aangeboden,
@@ -139,6 +139,32 @@ export function updateCard(cardProps) {
         );
         return res;
       } else return null;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+//TODO check functionality
+export function updateCardIndex(cardProps) {
+  const { columnIndex, cardId } = cardProps;
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`cards/index`, {
+        method: "PUT",
+        data: {
+          ...cardProps,
+          userId: getState().user.id,
+          columnIndex,
+          cardId,
+        },
+        jwt: getState().user.token,
+      });
+
+      if (res) {
+        dispatch({ type: "UPDATE_CARD", payload: res.data });
+        return res;
+      }
     } catch (e) {
       console.log(e);
     }

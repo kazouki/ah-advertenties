@@ -12,3 +12,6 @@ export const selectRemoteUsername = (state) => {
 export const selectRemoteUserId = (state) => {
   return state.messagesSliceReducer.id;
 };
+export const selectUnreadMessages = (state) => {
+  return state.messagesSliceReducer.unreadMessages;
+};

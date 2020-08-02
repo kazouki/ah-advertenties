@@ -19,6 +19,7 @@ import { AH_BLUE } from "../../config/constants.js";
 import { useSelector, useDispatch } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
+import { selectUnreadMessages } from "../../store/message/selectors";
 
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -27,6 +28,7 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { createCard } from "../../store/card/actions";
 import { fetchInboxMessages } from "../../store/message/actions";
+import { fetchUnreadMessageCount } from "../../store/message/actions";
 import { logOut } from "../../store/user/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -106,6 +108,7 @@ export default function SearchAppBar() {
   const classes = useStyles();
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
+  const unreadMessages = useSelector(selectUnreadMessages);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -187,7 +190,14 @@ export default function SearchAppBar() {
     <div className={classes.root}>
       <AppBar position="static" style={{ background: AH_BLUE }}>
         <Toolbar>
-          <Link to={"/"} style={{ outline: "none" }}>
+          <Link
+            to={"/"}
+            style={{ outline: "none" }}
+            onClick={() => {
+              if (user.id)
+                dispatch(fetchUnreadMessageCount({ userId: user.id }));
+            }}
+          >
             <img className={classes.homeButton} src={ahLogoWit} alt="" />
           </Link>
 
@@ -221,21 +231,25 @@ export default function SearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-          <Link
-            style={{ color: "white", marginLeft: 10 }}
-            to="/messages/all"
-            onClick={() => {
-              dispatch({ type: "RESET_REMOTE_USERNAME_AND_ID" });
-              dispatch({ type: "LOAD_CONVERSATION", payload: [] });
-              dispatch(fetchInboxMessages());
-            }}
-          >
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-          </Link>
+          {user.token ? (
+            <Link
+              style={{ color: "white", marginLeft: 10 }}
+              to="/messages/all"
+              onClick={() => {
+                dispatch({ type: "RESET_REMOTE_USERNAME_AND_ID" });
+                dispatch({ type: "LOAD_CONVERSATION", payload: [] });
+                dispatch(fetchInboxMessages());
+                if (user.id)
+                  dispatch(fetchUnreadMessageCount({ userId: user.id }));
+              }}
+            >
+              <IconButton aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={unreadMessages} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            </Link>
+          ) : null}
           {!token ? (
             <Link style={{ color: "white" }} to="/login">
               <IconButton
