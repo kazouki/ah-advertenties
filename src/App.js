@@ -14,9 +14,11 @@ import Profile from "./pages/Profile";
 import CardDetail from "./pages/CardDetail";
 import NewCard from "./pages/NewCard";
 import Messages from "./pages/Messages";
+import Favorites from "./pages/Favorites";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppLoading } from "./store/appState/selectors";
+import { selectUser } from "./store/user/selectors";
 import { getUserWithStoredToken } from "./store/user/actions";
 
 import { fetchCards } from "./store/card/actions";
@@ -29,11 +31,12 @@ import { AH_BLUE } from "./config/constants.js";
 function App() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectAppLoading);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(getUserWithStoredToken());
     dispatch(fetchCards());
-  }, [dispatch]);
+  }, [dispatch, user.id]);
 
   return (
     <div className="App">
@@ -56,9 +59,11 @@ function App() {
           )}
         /> */}
         <Route path="/carddetail/:id" component={CardDetail} />
-        <Route path="/messages" component={Messages} />
+        <Route path="/messages/all/:remoteIdFromModal" component={Messages} />
+        <Route path="/messages/all" component={Messages} />
 
         <Route path="/newcard" component={NewCard} />
+        <Route path="/favorites" component={Favorites} />
         <Route path="/signup" component={SignUp} bg={AH_BLUE} />
         {/* <Route
           path="/login"

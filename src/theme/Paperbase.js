@@ -7,10 +7,12 @@ import {
 } from "@material-ui/core/styles";
 import { AH_BLUE } from "../config/constants.js";
 
+// import { RemoveScrollBar } from "react-remove-scroll-bar";
+
 import { Widget } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
 const getCustomLauncher = (handleToggle) => (
-  <button onClick={handleToggle}>This is my launcher component!</button>
+  <button onClick={handleToggle}>Kletsen bij de koffie automaat!</button>
 );
 
 let theme = createMuiTheme({
@@ -136,10 +138,15 @@ const styles = {
     flexDirection: "column",
   },
   mainContent: {
+    overflow: "hidden",
+    // overflowX: "scroll",
+    // overflowY: "hidden",
+    // whiteSpace: "nowrap",
     flex: 1,
     padding: "48px 36px 0",
+    // padding: 0,
+    borderRadius: 10,
     background: (props) => props.bg,
-    overflowX: "hidden",
   },
 };
 
@@ -150,6 +157,7 @@ function Paperbase(props) {
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
+        {/* <RemoveScrollBar /> */}
         <div className={classes.appContent}>
           <main className={classes.mainContent}>
             <LayoutComponent />

@@ -4,6 +4,8 @@ import { showMessageWithTimeout } from "../appState/actions";
 import { initializeLayout } from "../editor/actions";
 import { getUserCards } from "../user/actions";
 
+import { RowMax } from "../../config/constants";
+
 export function createCard(cardProps) {
   return async function (dispatch, getState) {
     const columns = getState().editorSliceReducer.layoutState.columns;
@@ -22,7 +24,7 @@ export function createCard(cardProps) {
       .map((obj) => {
         return Object.values(obj)[0];
       })
-      .every((el) => el >= 4);
+      .every((el) => el >= RowMax);
 
     // determine if new column must be created
     function configureColumnIndexIfFull() {
@@ -30,7 +32,7 @@ export function createCard(cardProps) {
         return maxColumnIndex + 1;
       }
       const availableSpot = ptextCounts.filter((obj) => {
-        return parseInt(Object.values(obj)) < 4;
+        return parseInt(Object.values(obj)) < RowMax;
       });
       const availableIndex = Object.keys(availableSpot[0])[0].split("-")[1];
       return parseInt(availableIndex);
@@ -97,7 +99,7 @@ export function deleteCard(cardId) {
   };
 }
 
-// TODO  create updateCardColumnIndex   thunk  separate from main updateCard thunk
+//TODO  create updateCardColumnIndex   thunk  separate from main updateCard thunk
 export function updateCard(cardProps) {
   const {
     aangeboden,
@@ -139,6 +141,32 @@ export function updateCard(cardProps) {
         );
         return res;
       } else return null;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+//TODO check functionality
+export function updateCardIndex(cardProps) {
+  const { columnIndex, cardId } = cardProps;
+  return async function (dispatch, getState) {
+    try {
+      const res = await api(`cards/index`, {
+        method: "PUT",
+        data: {
+          ...cardProps,
+          userId: getState().user.id,
+          columnIndex,
+          cardId,
+        },
+        jwt: getState().user.token,
+      });
+
+      if (res) {
+        dispatch({ type: "UPDATE_CARD", payload: res.data });
+        return res;
+      }
     } catch (e) {
       console.log(e);
     }

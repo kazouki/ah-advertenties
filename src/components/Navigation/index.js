@@ -3,7 +3,6 @@ import React from "react";
 import Badge from "@material-ui/core/Badge";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
-// import NotificationsIcon from "@material-ui/icons/Notifications";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,16 +10,17 @@ import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-// import Avatar from "@material-ui/core/Avatar";
 
 import { Link } from "react-router-dom";
 
 import ahLogoWit from "../../static/img/ahlogo4.png";
 import { AH_BLUE } from "../../config/constants.js";
+import { AH_BLUE_LIGHT } from "../../config/constants.js";
 
 import { useSelector, useDispatch } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
+import { selectUnreadMessages } from "../../store/message/selectors";
 
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -28,10 +28,13 @@ import Button from "@material-ui/core/Button";
 
 import { useHistory } from "react-router-dom";
 import { createCard } from "../../store/card/actions";
+import { fetchInboxMessages } from "../../store/message/actions";
+import { fetchUnreadMessageCount } from "../../store/message/actions";
+import { logOut } from "../../store/user/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 5,
   },
   homeButton: {
     display: "block",
@@ -40,25 +43,30 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginTop: 7,
-    // flexGrow: 1,
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
     color: "white",
   },
-  titleExtension: {
-    // marginTop: 4,
-    // fontSize: 17,
-  },
+
   menuItem: {
     flexGrow: 1,
-    display: "none",
+    display: "block",
+
+    // marginLeft: 80,
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
     color: "white",
     margin: 8,
+  },
+  menuButtons: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: "20em",
+    marginRight: "20em",
+    padding: 0,
   },
   search: {
     position: "relative",
@@ -106,11 +114,11 @@ export default function SearchAppBar() {
   const classes = useStyles();
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
+  const unreadMessages = useSelector(selectUnreadMessages);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const onCreateCard = (e) => {
-    // e.preventDefault();
     dispatch(
       createCard({
         aangeboden: false,
@@ -143,18 +151,16 @@ export default function SearchAppBar() {
 
     return (
       <div>
-        {/* <Typography className={classes.menuItem} noWrap> */}
         <Button
           className={classes.menuItem}
           color="primary"
-          style={{ marginLeft: 50, background: "#00e1ff" }}
+          style={{ background: AH_BLUE_LIGHT }}
           aria-controls="simple-menu"
           aria-haspopup="true"
           onClick={handleClick}
         >
           Nieuwe kaart
         </Button>
-        {/* </Typography> */}
 
         <Menu
           id="simple-menu"
@@ -170,7 +176,7 @@ export default function SearchAppBar() {
               textDecoration: "none",
             }}
           >
-            <MenuItem onClick={handleClose}>Kaart details</MenuItem>
+            <MenuItem onClick={handleClose}>kaart invullen</MenuItem>
           </Link>
 
           <MenuItem
@@ -179,7 +185,63 @@ export default function SearchAppBar() {
               onCreateCard();
             }}
           >
-            Lege kaart
+            lege kaart
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  }
+
+  function MyCardsMenu() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+      if (!user.token) {
+        history.push("/login");
+      } else setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <div>
+        <Button
+          className={classes.menuItem}
+          color="primary"
+          style={{ background: AH_BLUE_LIGHT }}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          Mijn kaarten
+        </Button>
+
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <Link
+            to={"/favorites"}
+            style={{
+              color: "black",
+              textDecoration: "none",
+            }}
+          >
+            <MenuItem onClick={handleClose}>mijn favorieten</MenuItem>
+          </Link>
+
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              onCreateCard();
+            }}
+          >
+            mijn kaarten
           </MenuItem>
         </Menu>
       </div>
@@ -188,28 +250,30 @@ export default function SearchAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: AH_BLUE }}>
+      <AppBar position="sticky" style={{ background: AH_BLUE }}>
         <Toolbar>
-          <Link to={"/"} style={{ outline: "none" }}>
+          <Link
+            to={"/"}
+            style={{ outline: "none" }}
+            onClick={() => {
+              if (user.id)
+                dispatch(fetchUnreadMessageCount({ userId: user.id }));
+            }}
+          >
             <img className={classes.homeButton} src={ahLogoWit} alt="" />
           </Link>
 
           <Typography className={classes.title} variant="h5" noWrap>
             Albert Heijn
           </Typography>
-          <Typography className={classes.titleExtension} variant="h6" noWrap>
+          <Typography variant="h6" noWrap>
             Advertenties
           </Typography>
-          <NewCardMenu />
-          <Typography className={classes.menuItem} noWrap>
-            Mijn Kaarten
-          </Typography>
-          <Typography className={classes.menuItem} noWrap>
-            Favorieten
-          </Typography>
-          <Typography className={classes.menuItem} noWrap>
-            link4
-          </Typography>
+          <div className={classes.menuButtons}>
+            <NewCardMenu />
+
+            <MyCardsMenu />
+          </div>
 
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -224,18 +288,25 @@ export default function SearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-          <Link style={{ color: "white", marginLeft: 10 }} to="/messages">
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-          </Link>
-          {/* <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={17} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
+          {user.token ? (
+            <Link
+              style={{ color: "white", marginLeft: 10 }}
+              to="/messages/all"
+              onClick={() => {
+                dispatch({ type: "RESET_REMOTE_USERNAME_AND_ID" });
+                dispatch({ type: "LOAD_CONVERSATION", payload: [] });
+                dispatch(fetchInboxMessages());
+                if (user.id)
+                  dispatch(fetchUnreadMessageCount({ userId: user.id }));
+              }}
+            >
+              <IconButton aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={unreadMessages} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            </Link>
+          ) : null}
           {!token ? (
             <Link style={{ color: "white" }} to="/login">
               <IconButton
@@ -248,8 +319,11 @@ export default function SearchAppBar() {
               </IconButton>
             </Link>
           ) : (
-            <Link to="/profile" style={{ textDecoration: "none" }}>
-              {/* <IconButton color="inherit"> */}
+            <Link
+              to="/login"
+              style={{ textDecoration: "none" }}
+              onClick={() => dispatch(logOut())}
+            >
               <div style={{ marginLeft: 8 }}>
                 <Typography
                   className={classes.menuItem}
@@ -262,11 +336,6 @@ export default function SearchAppBar() {
                   <b>{user.name}</b>!
                 </Typography>
               </div>
-              {/* <Avatar
-                  className={classes.avatar}
-                  src="https://material-ui.com/static/images/avatar/7.jpg"
-                /> */}
-              {/* </IconButton> */}
             </Link>
           )}
         </Toolbar>

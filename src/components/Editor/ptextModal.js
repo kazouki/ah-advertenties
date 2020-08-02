@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
@@ -19,17 +18,14 @@ import Fade from "@material-ui/core/Fade";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectLayoutState } from "../../store/editor/selectors";
-// import { selectUser } from "../../store/user/selectors";
 import { selectUserCardIds } from "../../store/user/selectors";
-// import { selectCardDetail } from "../../store/card/selectors";
-import { selectCards } from "../../store/card/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
 import { deleteCard, fetchUserFavs } from "../../store/card/actions";
 
 import { fetchCardDetail } from "../../store/card/actions";
-// import { fetchMessages } from "../../store/message/actions";
 import { getHighestBid } from "../../store/card/actions";
+// import { fetchRemoteUsernameAndId } from "../../store/message/actions";
 
 import CardDetail from "../../pages/CardDetail";
 
@@ -89,14 +85,8 @@ function CardDetailsModal(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
-  const allCards = useSelector(selectCards);
   const dispatch = useDispatch();
-  // const cardId = props.ptext?.id.split("-")[1];
   const cardId = parseInt(props.ptextId?.split("-")[1]);
-
-  const cardOwnerId = allCards?.cards.find(
-    (card) => card.id === parseInt(cardId)
-  );
 
   const handleOpen = () => {
     setOpen(true);
@@ -113,17 +103,15 @@ function CardDetailsModal(props) {
           style={{ color: "white" }}
           fontSize="small"
           onClick={() => {
+            //TODO    check  neccessity against call in cardetail index
+            // dispatch(fetchRemoteUsernameAndId({ cardId }));
             dispatch(fetchCardDetail(cardId));
             dispatch(getHighestBid(cardId));
             dispatch(fetchUserFavs(cardId));
-
-            // if (cardOwnerId)
-            //   dispatch(fetchMessages({ cardOwnerId: cardOwnerId.userId }));
             handleOpen();
           }}
         />
       </PeopleIcon>
-      {/* <CreateIcon onClick={handleOpen} fontSize="small" /> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -139,12 +127,6 @@ function CardDetailsModal(props) {
         <Fade in={open}>
           <div>
             <CardDetail cardId={cardId} />
-            {/* <AHCard
-              ptextId={props.ptextId}
-              editDisabled={false}
-              initState={layoutState}
-              saveStateTo={saveCardStateToStore}
-            /> */}
           </div>
         </Fade>
       </Modal>
@@ -204,13 +186,9 @@ function CardModal(props) {
 // ##################
 
 export default function Ptext(props) {
-  // const user = useSelector(selectUser);
-  // const userId = user.id;
-
   const userCardIds = useSelector(selectUserCardIds);
   const layoutState = useSelector(selectLayoutState);
-  // const cardDetail = useSelector(selectCardDetail);
-  const allCards = useSelector(selectCards);
+  // const allCards = useSelector(selectCards);
   const dispatch = useDispatch();
   const cardId = props.ptext?.id.split("-")[1];
 
@@ -222,17 +200,6 @@ export default function Ptext(props) {
 
   function SwitchToolbar() {
     const userOwnsCard = userCardIds?.includes(parseInt(cardId));
-    // const cardOwnerId = allCards?.cards.find(
-    //   (card) => card.id === parseInt(cardId)
-    // );
-
-    // function RenderPeopleIcon() {
-    //   return (
-    //     <>
-    //       <CardDetailsModal />
-    //     </>
-    //   );
-    // }
     if (userOwnsCard) {
       return (
         <>
