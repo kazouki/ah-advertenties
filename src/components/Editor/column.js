@@ -55,8 +55,6 @@ export default function Column(props) {
         {/* <Title {...provided.dragHandleProps}>{props.column.title}</Title> */}
         <span
           style={{
-            // textIndent: "100%",
-            // whiteSpace: "nowrap",
             overflow: "hidden",
             color: "transparent",
           }}
