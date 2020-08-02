@@ -2,19 +2,24 @@ import React from "react";
 import Column from "./column";
 import styled from "styled-components";
 
+import { RowMax } from "../../config/constants";
+
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { selectCards } from "../../store/card/selectors";
 import { selectPtextIdsPerColumn } from "../../store/editor/selectors";
-import { selectUser } from "../../store/user/selectors";
+// import { selectUser } from "../../store/user/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
-import { updateCard } from "../../store/card/actions";
+// import { updateCard } from "../../store/card/actions";
 import { updateCardIndex } from "../../store/card/actions";
+import { updatePtextCounts } from "../../store/editor/actions";
 
 import { AH_BLUE } from "../../config/constants.js";
+
+// import { RemoveScrollBar } from "react-remove-scroll-bar";
 
 const Container = styled.div`
   display: flex;
@@ -26,13 +31,14 @@ function DndLayout(props) {
   const state = useSelector(selectLayoutState);
   const ptextIdsPerColumn = useSelector(selectPtextIdsPerColumn);
   const cards = useSelector(selectCards);
-  const user = useSelector(selectUser);
+  // const user = useSelector(selectUser);
 
   // const cards = useSelector(selectCards);
   // console.log("cards :::", cards);
   // console.log("state :::", state);
 
   const onDragStart = (start) => {
+    dispatch(updatePtextCounts(cards.cards));
     //###### optionals
     // document.body.style.color = "orange";
     // document.body.style.transition = "background-color 0.2s ease";
@@ -70,9 +76,10 @@ function DndLayout(props) {
         columnIndex: newDestination,
       };
 
-      if (user.token)
-        // dispatch(updateCard(updatedCard));
-        dispatch(updateCardIndex(updatedCard));
+      // if (user.token)
+      // dispatch(updateCard(updatedCard));
+      dispatch(updateCardIndex(updatedCard));
+      dispatch(updatePtextCounts(cards.cards));
     }
 
     //###### optionals
@@ -214,7 +221,7 @@ function DndLayout(props) {
                       ptexts={ptexts}
                       isDropDisabled={
                         ptextIdsPerColumn
-                          ? ptextIdsPerColumn[columnId] >= 4
+                          ? ptextIdsPerColumn[columnId] >= RowMax
                           : false
                       }
                       index={index}
@@ -222,6 +229,7 @@ function DndLayout(props) {
                     <span
                       id="glueStrip"
                       style={{
+                        overflow: "hidden",
                         position: "relative",
                         top: -38,
                         left: -70,
@@ -230,7 +238,7 @@ function DndLayout(props) {
                       <hr
                         style={{
                           border: 0,
-                          width: "150%",
+                          width: "110%",
                           color: "white",
                           background:
                             "linear-gradient(to bottom right, #E8E8E8, white)",
@@ -240,7 +248,7 @@ function DndLayout(props) {
                       <hr
                         style={{
                           border: 0,
-                          width: "150%",
+                          width: "110%",
                           color: "grey",
                           background:
                             "linear-gradient(to bottom right, #DCDCDC, white)",

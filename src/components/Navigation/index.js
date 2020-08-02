@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 import ahLogoWit from "../../static/img/ahlogo4.png";
 import { AH_BLUE } from "../../config/constants.js";
+import { AH_BLUE_LIGHT } from "../../config/constants.js";
 
 import { useSelector, useDispatch } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
@@ -33,7 +34,7 @@ import { logOut } from "../../store/user/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 5,
   },
   homeButton: {
     display: "block",
@@ -42,25 +43,30 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginTop: 7,
-    // flexGrow: 1,
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
     color: "white",
   },
-  titleExtension: {
-    // marginTop: 4,
-    // fontSize: 17,
-  },
+
   menuItem: {
     flexGrow: 1,
-    display: "none",
+    display: "block",
+
+    // marginLeft: 80,
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
     color: "white",
     margin: 8,
+  },
+  menuButtons: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: "20em",
+    marginRight: "20em",
+    padding: 0,
   },
   search: {
     position: "relative",
@@ -148,7 +154,7 @@ export default function SearchAppBar() {
         <Button
           className={classes.menuItem}
           color="primary"
-          style={{ marginLeft: 50, background: "#00e1ff" }}
+          style={{ background: AH_BLUE_LIGHT }}
           aria-controls="simple-menu"
           aria-haspopup="true"
           onClick={handleClick}
@@ -170,7 +176,7 @@ export default function SearchAppBar() {
               textDecoration: "none",
             }}
           >
-            <MenuItem onClick={handleClose}>Kaart details</MenuItem>
+            <MenuItem onClick={handleClose}>kaart invullen</MenuItem>
           </Link>
 
           <MenuItem
@@ -179,7 +185,63 @@ export default function SearchAppBar() {
               onCreateCard();
             }}
           >
-            Lege kaart
+            lege kaart
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  }
+
+  function MyCardsMenu() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+      if (!user.token) {
+        history.push("/login");
+      } else setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <div>
+        <Button
+          className={classes.menuItem}
+          color="primary"
+          style={{ background: AH_BLUE_LIGHT }}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          Mijn kaarten
+        </Button>
+
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <Link
+            to={"/favorites"}
+            style={{
+              color: "black",
+              textDecoration: "none",
+            }}
+          >
+            <MenuItem onClick={handleClose}>mijn favorieten</MenuItem>
+          </Link>
+
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              onCreateCard();
+            }}
+          >
+            mijn kaarten
           </MenuItem>
         </Menu>
       </div>
@@ -188,7 +250,7 @@ export default function SearchAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: AH_BLUE }}>
+      <AppBar position="sticky" style={{ background: AH_BLUE }}>
         <Toolbar>
           <Link
             to={"/"}
@@ -204,19 +266,14 @@ export default function SearchAppBar() {
           <Typography className={classes.title} variant="h5" noWrap>
             Albert Heijn
           </Typography>
-          <Typography className={classes.titleExtension} variant="h6" noWrap>
+          <Typography variant="h6" noWrap>
             Advertenties
           </Typography>
-          <NewCardMenu />
-          <Typography className={classes.menuItem} noWrap>
-            Mijn Kaarten
-          </Typography>
-          <Typography className={classes.menuItem} noWrap>
-            Favorieten
-          </Typography>
-          <Typography className={classes.menuItem} noWrap>
-            link4
-          </Typography>
+          <div className={classes.menuButtons}>
+            <NewCardMenu />
+
+            <MyCardsMenu />
+          </div>
 
           <div className={classes.search}>
             <div className={classes.searchIcon}>

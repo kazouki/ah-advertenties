@@ -4,6 +4,8 @@ import { showMessageWithTimeout } from "../appState/actions";
 import { initializeLayout } from "../editor/actions";
 import { getUserCards } from "../user/actions";
 
+import { RowMax } from "../../config/constants";
+
 export function createCard(cardProps) {
   return async function (dispatch, getState) {
     const columns = getState().editorSliceReducer.layoutState.columns;
@@ -22,7 +24,7 @@ export function createCard(cardProps) {
       .map((obj) => {
         return Object.values(obj)[0];
       })
-      .every((el) => el >= 4);
+      .every((el) => el >= RowMax);
 
     // determine if new column must be created
     function configureColumnIndexIfFull() {
@@ -30,7 +32,7 @@ export function createCard(cardProps) {
         return maxColumnIndex + 1;
       }
       const availableSpot = ptextCounts.filter((obj) => {
-        return parseInt(Object.values(obj)) < 4;
+        return parseInt(Object.values(obj)) < RowMax;
       });
       const availableIndex = Object.keys(availableSpot[0])[0].split("-")[1];
       return parseInt(availableIndex);

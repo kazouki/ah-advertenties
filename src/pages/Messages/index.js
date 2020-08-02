@@ -16,6 +16,9 @@ import { messageIsRead } from "../../store/message/actions";
 import { selectToken } from "../../store/user/selectors";
 import { selectUser } from "../../store/user/selectors";
 
+import { AH_BLUE_EXTRALIGHT } from "../../config/constants.js";
+import { AH_BLUE_LIGHT } from "../../config/constants.js";
+
 ////////
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -72,6 +75,8 @@ export default function CardDetail(props) {
       margin: theme.spacing(1),
     },
     root: {
+      background: AH_BLUE_LIGHT,
+      height: "100%",
       flexGrow: 1,
     },
     inboxListRoot: {
@@ -80,6 +85,12 @@ export default function CardDetail(props) {
       backgroundColor: theme.palette.background.paper,
     },
     paper: {
+      padding: theme.spacing(2),
+      textAlign: "center",
+      color: theme.palette.text.secondary,
+    },
+    paperTop: {
+      marginTop: 10,
       padding: theme.spacing(2),
       textAlign: "center",
       color: theme.palette.text.secondary,
@@ -178,13 +189,13 @@ export default function CardDetail(props) {
   };
 
   return (
-    <>
+    <div>
       {userToken ? (
         <span>
           <div className={classes.root}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper className={classes.paper}>
+                <Paper className={classes.paperTop}>
                   <b>INBOX</b>
                 </Paper>
               </Grid>
@@ -304,6 +315,6 @@ export default function CardDetail(props) {
           </div>
         </span>
       ) : null}
-    </>
+    </div>
   );
 }

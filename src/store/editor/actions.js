@@ -72,6 +72,7 @@ export const initializeLayout = (cards) => {
     const newColumnsPtextIdsXYArr = Object.keys(newColumns).map((e) => {
       return { [newColumns[e].id.split("-")[1]]: newColumns[e].ptextIds };
     });
+
     let ptextIdsPerColumn = {};
     newColumnsPtextIdsXYArr.forEach((e) => {
       const key = Object.keys(e)[0];
@@ -108,6 +109,62 @@ export const initializeLayout = (cards) => {
       columnOrder: [...newColumnOrder],
     };
     dispatch(setLayoutState(newState));
+  };
+};
+
+//TODO   only update ptext counts per column
+export const updatePtextCounts = (cards) => {
+  // console.clear();
+  return (dispatch, getState) => {
+    let newPtexts = {};
+    cards.forEach((card) => {
+      newPtexts[`ptext-${card.id}`] = {
+        id: `ptext-${card.id}`,
+        aangeboden: card.aangeboden,
+        gevraagd: card.gevraagd,
+        title: card.title,
+        description: card.description,
+        name: card.name,
+        telephone: card.telephone,
+        email: card.email,
+        date: card.date,
+        cardId: card.cardId,
+        columnIndex: card.columnIndex,
+      };
+    });
+
+    let newPtextIds = {};
+    cards.forEach((card) => {
+      newPtextIds[`column-${card.columnIndex}`] = cards
+        .filter((ptext) => {
+          return ptext.columnIndex === card.columnIndex;
+        })
+        .map((e) => `ptext-${e.id}`);
+    });
+
+    let newColumns = {};
+    Object.keys(newPtexts).forEach((ptext) => {
+      newColumns[`column-${newPtexts[ptext].columnIndex}`] = {
+        id: `column-${newPtexts[ptext].columnIndex}`,
+        title: `column-${newPtexts[ptext].columnIndex}`,
+        ptextIds: newPtextIds[`column-${newPtexts[ptext].columnIndex}`],
+      };
+    });
+
+    const newColumnsPtextIdsXYArr = Object.keys(newColumns).map((e) => {
+      return { [newColumns[e].id.split("-")[1]]: newColumns[e].ptextIds };
+    });
+
+    let ptextIdsPerColumn = {};
+    newColumnsPtextIdsXYArr.forEach((e) => {
+      const key = Object.keys(e)[0];
+      const val = Object.values(e)[0];
+      ptextIdsPerColumn[`column-${key}`] = val.length;
+    });
+    dispatch({
+      type: "PTEXTIDS_PER_COLUMN",
+      payload: { ...ptextIdsPerColumn },
+    });
   };
 };
 

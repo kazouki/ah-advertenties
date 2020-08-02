@@ -25,7 +25,7 @@ import { deleteCard, fetchUserFavs } from "../../store/card/actions";
 
 import { fetchCardDetail } from "../../store/card/actions";
 import { getHighestBid } from "../../store/card/actions";
-import { fetchRemoteUsernameAndId } from "../../store/message/actions";
+// import { fetchRemoteUsernameAndId } from "../../store/message/actions";
 
 import CardDetail from "../../pages/CardDetail";
 

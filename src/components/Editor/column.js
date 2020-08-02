@@ -4,6 +4,8 @@ import Ptext from "./ptextModal";
 
 import Paper from "@material-ui/core/Paper";
 
+// import Grid from "@material-ui/core/Grid";
+
 import { Droppable } from "react-beautiful-dnd";
 
 //##### optionals
@@ -51,7 +53,16 @@ export default function Column(props) {
       <Paper>
         {/* ### provide drag handle for draggable droppable */}
         {/* <Title {...provided.dragHandleProps}>{props.column.title}</Title> */}
-        <span>{props.column.title}</span>
+        <span
+          style={{
+            // textIndent: "100%",
+            // whiteSpace: "nowrap",
+            overflow: "hidden",
+            color: "transparent",
+          }}
+        >
+          {props.column.title}
+        </span>
 
         <Droppable
           droppableId={props.column?.id}
