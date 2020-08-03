@@ -168,7 +168,7 @@ export default function SignUp() {
     if (!valid) {
       setEmailAlert(
         <b>
-          <h5>Email is incorrect!</h5>
+          <h5>Email is onjuist!</h5>
         </b>
       );
       setSubmitEmailOff(true);
@@ -193,35 +193,35 @@ export default function SignUp() {
         case "too_short":
           setPasswordAlert(
             <b>
-              <h5>Password must contain at least 6 characters!</h5>
+              <h5>Wachtwoord moet minstens 6 lang zijn!</h5>
             </b>
           );
           break;
         case "too_long":
           setPasswordAlert(
             <b>
-              <h5>Password is too long!</h5>
+              <h5>Wachtwoord is te lang!</h5>
             </b>
           );
           break;
         case "no_num":
           setPasswordAlert(
             <b>
-              <h5>Password must contain a number!</h5>
+              <h5>Wachtwoord moet een nummer bevatten!</h5>
             </b>
           );
           break;
         case "no_letter":
           setPasswordAlert(
             <b>
-              <h5>Password must contain a letter!</h5>
+              <h5>Wachtwoord moet een letter bevatten!</h5>
             </b>
           );
           break;
         case "bad_char":
           setPasswordAlert(
             <b>
-              <h5>Character not allowed!</h5>
+              <h5>Symbool niet toegestaan!</h5>
             </b>
           );
           break;
