@@ -223,6 +223,23 @@ export function fetchUserFavs() {
   };
 }
 
+export function fetchUserFavCards() {
+  return async function (dispatch, getState) {
+    try {
+      if (getState().user.token) {
+        const res = await api(`cards/userfavorites`, {
+          method: "POST",
+          data: { userId: getState().user.id },
+        });
+        dispatch({ type: "USER_FAV_CARDS", payload: res.data });
+      }
+      return;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
 export function addFav(cardId) {
   return async function (dispatch, getState) {
     try {

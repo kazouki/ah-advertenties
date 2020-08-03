@@ -63,7 +63,7 @@ function DndLayout(props) {
   };
 
   const onDragEnd = (result) => {
-    const cardToUpdate = cards.cards.find(
+    const cardToUpdate = cards?.cards.find(
       (obj) => obj.id === parseInt(result["draggableId"].split("-")[1])
     );
     if (result.destination) {
@@ -79,7 +79,8 @@ function DndLayout(props) {
       // if (user.token)
       // dispatch(updateCard(updatedCard));
       dispatch(updateCardIndex(updatedCard));
-      dispatch(updatePtextCounts(cards.cards));
+
+      dispatch(updatePtextCounts(cards?.cards));
     }
 
     //###### optionals

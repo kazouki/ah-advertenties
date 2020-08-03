@@ -16,6 +16,7 @@ export const TOKEN_STILL_VALID = "TOKEN_STILL_VALID";
 export const LOG_OUT = "LOG_OUT";
 
 export function getUserCards(userId) {
+  console.log("getusercards worked");
   return async function (dispatch) {
     try {
       const res = await api(`cards/usercards`, {

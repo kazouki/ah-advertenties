@@ -2,10 +2,10 @@ import React from "react";
 
 import DisplayCard from "../../components/DisplayCard";
 
-export default function Favorites() {
+export default function MyCards() {
   return (
     <div>
-      <DisplayCard mode={"favorites"} />
+      <DisplayCard mode={"myCards"} />
     </div>
   );
 }
