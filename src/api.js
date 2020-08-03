@@ -7,7 +7,7 @@ export default async function api(
   try {
     const res = await Axios({
       method: method,
-      url: "http://localhost:4000/" + endpoint,
+      url: "https://ah-advertenties-server.herokuapp.com/" + endpoint,
       headers: {
         Authorization: `Bearer ${jwt}`,
         "Content-Type": "application/json",
