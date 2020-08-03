@@ -10,11 +10,11 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 
-// import Home from "./pages/Homepage";
 import CardDetail from "./pages/CardDetail";
 import NewCard from "./pages/NewCard";
 import Messages from "./pages/Messages";
 import Favorites from "./pages/Favorites";
+import MyCards from "./pages/MyCards";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppLoading } from "./store/appState/selectors";
@@ -22,6 +22,7 @@ import { selectUser } from "./store/user/selectors";
 import { getUserWithStoredToken } from "./store/user/actions";
 
 import { fetchCards } from "./store/card/actions";
+import { fetchUserFavCards } from "./store/card/actions";
 
 import Paperbase from "./theme/Paperbase";
 import DndLayout from "./components/Editor/dndLayout";
@@ -36,6 +37,7 @@ function App() {
   useEffect(() => {
     dispatch(getUserWithStoredToken());
     dispatch(fetchCards());
+    dispatch(fetchUserFavCards(user.id));
   }, [dispatch, user.id]);
 
   return (
@@ -52,23 +54,14 @@ function App() {
           )}
         />
 
-        {/* <Route
-          path="/carddetail/:id"
-          component={() => (
-            <Paperbase LayoutComponent={CardDetail} bg={AH_BLUE} />
-          )}
-        /> */}
         <Route path="/carddetail/:id" component={CardDetail} />
         <Route path="/messages/all/:remoteIdFromModal" component={Messages} />
         <Route path="/messages/all" component={Messages} />
 
         <Route path="/newcard" component={NewCard} />
         <Route path="/favorites" component={Favorites} />
+        <Route path="/mycards" component={MyCards} />
         <Route path="/signup" component={SignUp} bg={AH_BLUE} />
-        {/* <Route
-          path="/login"
-          component={() => <Paperbase LayoutComponent={Login} bg={"white"} />}
-        /> */}
         <Route path="/login" component={Login} />
         <Route path="/profile" component={Profile} />
       </Switch>

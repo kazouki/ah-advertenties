@@ -99,7 +99,6 @@ export function deleteCard(cardId) {
   };
 }
 
-//TODO  create updateCardColumnIndex   thunk  separate from main updateCard thunk
 export function updateCard(cardProps) {
   const {
     aangeboden,
@@ -147,7 +146,6 @@ export function updateCard(cardProps) {
   };
 }
 
-//TODO check functionality
 export function updateCardIndex(cardProps) {
   const { columnIndex, cardId } = cardProps;
   return async function (dispatch, getState) {
@@ -205,16 +203,29 @@ export function fetchCardDetail(id) {
 export function fetchUserFavs() {
   return async function (dispatch, getState) {
     try {
-      // console.log(
-      //   "getState().user.id  in fetchUserFavs action",
-      //   getState().user.id
-      // );
       if (getState().user.token) {
         const res = await api(`favorites/user`, {
           method: "POST",
           data: { userId: getState().user.id },
         });
         if (res) dispatch({ type: "USER_FAVS", payload: res.data });
+      }
+      return;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function fetchUserFavCards() {
+  return async function (dispatch, getState) {
+    try {
+      if (getState().user.token) {
+        const res = await api(`cards/userfavorites`, {
+          method: "POST",
+          data: { userId: getState().user.id },
+        });
+        dispatch({ type: "USER_FAV_CARDS", payload: res.data });
       }
       return;
     } catch (e) {
@@ -233,7 +244,6 @@ export function addFav(cardId) {
       });
       dispatch(fetchUserFavs());
       return res;
-      // console.log("res  from addFav::", res);
     } catch (e) {
       console.log(e);
     }
@@ -241,7 +251,6 @@ export function addFav(cardId) {
 }
 
 export function unFav(cardId) {
-  console.log("unFav worked");
   return async function (dispatch, getState) {
     try {
       const res = await api(`favorites`, {
@@ -251,7 +260,6 @@ export function unFav(cardId) {
       });
       dispatch(fetchUserFavs());
       return res;
-      // console.log("res  from addFav::", res);
     } catch (e) {
       console.log(e);
     }

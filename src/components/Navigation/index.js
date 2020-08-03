@@ -30,7 +30,9 @@ import { useHistory } from "react-router-dom";
 import { createCard } from "../../store/card/actions";
 import { fetchInboxMessages } from "../../store/message/actions";
 import { fetchUnreadMessageCount } from "../../store/message/actions";
+import { fetchUserFavCards } from "../../store/card/actions";
 import { logOut } from "../../store/user/actions";
+import { getUserCards } from "../../store/user/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -232,17 +234,32 @@ export default function SearchAppBar() {
               textDecoration: "none",
             }}
           >
-            <MenuItem onClick={handleClose}>mijn favorieten</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                dispatch(fetchUserFavCards());
+              }}
+            >
+              mijn favorieten
+            </MenuItem>
           </Link>
 
-          <MenuItem
-            onClick={() => {
-              handleClose();
-              onCreateCard();
+          <Link
+            to={"/mycards"}
+            style={{
+              color: "black",
+              textDecoration: "none",
             }}
           >
-            mijn kaarten
-          </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                dispatch(getUserCards(user.id));
+              }}
+            >
+              mijn kaarten
+            </MenuItem>
+          </Link>
         </Menu>
       </div>
     );

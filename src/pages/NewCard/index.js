@@ -394,17 +394,17 @@ export default function NewCard() {
                   </Grid>
                 </FormControl>
               </Container>
+
+              <Button
+                variant="contained"
+                onClick={onCreateCard}
+                style={{ marginBottom: 100, marginTop: 40 }}
+              >
+                maak kaart
+              </Button>
             </Container>
           </Container>
         </Container>
-
-        <Button
-          variant="contained"
-          onClick={onCreateCard}
-          style={{ marginBottom: 100, marginTop: 40 }}
-        >
-          maak kaart
-        </Button>
       </MuiThemeProvider>
     </>
   );

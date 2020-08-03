@@ -91,6 +91,7 @@ export function messageIsRead({ message, activeUser }) {
           isRead: true,
           activeUser,
         },
+        jwt: getState().user.token,
       });
       if (res) {
         dispatch({ type: "SET_UNREAD_MESSAGES", payload: res.data });
@@ -111,6 +112,7 @@ export function fetchUnreadMessageCount({ userId }) {
         data: {
           userId,
         },
+        jwt: getState().user.token,
       });
       if (res) {
         dispatch({ type: "SET_UNREAD_MESSAGES", payload: res.data });

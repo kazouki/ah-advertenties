@@ -64,8 +64,19 @@ export default function SignUp() {
   const token = useSelector(selectToken);
   const history = useHistory();
 
-  const [showPassword, setShowPassword] = useState("");
-  const [showPasswordTwo, setShowPasswordTwo] = useState("");
+  const [submitNameOff, setSubmitNameOff] = useState(true);
+  const [submitEmailOff, setSubmitEmailOff] = useState(true);
+  const [submitPasswordOff, setSubmitPasswordOff] = useState(true);
+
+  const [submitOff, setSubmitOff] = useState(true);
+
+  const [nameAlert, setNameAlert] = useState("");
+  const [emailAlert, setEmailAlert] = useState("");
+  const [passwordAlert, setPasswordAlert] = useState("");
+  const [passwordTwoAlert, setPasswordTwoAlert] = useState("");
+
+  const [showPassword, setShowPassword] = useState();
+  const [showPasswordTwo, setShowPasswordTwo] = useState();
 
   const classes = useStyles();
 
@@ -93,12 +104,141 @@ export default function SignUp() {
     event.preventDefault();
   };
 
-  const handleClickShowPasswordTwo = () => {
-    setShowPasswordTwo(!showPasswordTwo);
+  // const handleClickShowPasswordTwo = () => {
+  //   setShowPasswordTwo(!showPasswordTwo);
+  // };
+
+  // const handleMouseDownPasswordTwo = (event) => {
+  //   event.preventDefault();
+  // };
+
+  const onSetName = (e) => {
+    setName(e.target.value);
+
+    if (e.target.value.length < 2) {
+      setNameAlert(
+        <b>
+          <h5>Je naam moet minimaal twee letters bevatten!</h5>
+        </b>
+      );
+      setSubmitOff(true);
+    } else if (e.target.value.length > 15) {
+      setNameAlert(
+        <b>
+          <h5>Je naam mag maximaal 15 letters bevatten!</h5>
+        </b>
+      );
+      setSubmitNameOff(true);
+    } else {
+      setSubmitNameOff(false);
+      setNameAlert("");
+    }
+
+    if (!e.target.value) setNameAlert("");
+    if (submitNameOff || submitEmailOff || submitPasswordOff) {
+      setSubmitOff(true);
+    } else if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
+      setSubmitOff(false);
   };
 
-  const handleMouseDownPasswordTwo = (event) => {
-    event.preventDefault();
+  function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  function checkPwd(str) {
+    if (str.length < 6) {
+      return "too_short";
+    } else if (str.length > 50) {
+      return "too_long";
+    } else if (str.search(/\d/) == -1) {
+      return "no_num";
+    } else if (str.search(/[a-zA-Z]/) == -1) {
+      return "no_letter";
+    } else if (str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1) {
+      return "bad_char";
+    }
+    return "ok";
+  }
+
+  const onSetEmail = (e) => {
+    setEmail(e.target.value);
+    const valid = validateEmail(email);
+
+    if (!valid) {
+      setEmailAlert(
+        <b>
+          <h5>Email is onjuist!</h5>
+        </b>
+      );
+      setSubmitEmailOff(true);
+    } else {
+      setSubmitEmailOff(false);
+      setEmailAlert("");
+    }
+
+    if (!e.target.value) setEmailAlert("");
+    if (submitNameOff || submitEmailOff || submitPasswordOff) {
+      setSubmitOff(true);
+    } else if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
+      setSubmitOff(false);
+  };
+
+  const onSetPassword = (e) => {
+    setPassword(e.target.value);
+    const valid = checkPwd(password);
+
+    if (valid !== "ok") {
+      switch (valid) {
+        case "too_short":
+          setPasswordAlert(
+            <b>
+              <h5>Wachtwoord moet minstens 6 lang zijn!</h5>
+            </b>
+          );
+          break;
+        case "too_long":
+          setPasswordAlert(
+            <b>
+              <h5>Wachtwoord is te lang!</h5>
+            </b>
+          );
+          break;
+        case "no_num":
+          setPasswordAlert(
+            <b>
+              <h5>Wachtwoord moet een nummer bevatten!</h5>
+            </b>
+          );
+          break;
+        case "no_letter":
+          setPasswordAlert(
+            <b>
+              <h5>Wachtwoord moet een letter bevatten!</h5>
+            </b>
+          );
+          break;
+        case "bad_char":
+          setPasswordAlert(
+            <b>
+              <h5>Symbool niet toegestaan!</h5>
+            </b>
+          );
+          break;
+        default:
+          break;
+      }
+      setSubmitPasswordOff(true);
+    } else {
+      setSubmitPasswordOff(false);
+      setPasswordAlert("");
+    }
+
+    if (!e.target.value) setPasswordAlert("");
+    if (submitNameOff || submitEmailOff || submitPasswordOff) {
+      setSubmitOff(true);
+    } else if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
+      setSubmitOff(false);
   };
 
   return (
@@ -138,11 +278,12 @@ export default function SignUp() {
                         id="input-with-icon-grid"
                         label="Naam"
                         value={name}
-                        onChange={(event) => setName(event.target.value)}
+                        onChange={onSetName}
                       />
                     </Grid>
                   </Grid>
                 </FormControl>
+                {nameAlert}
               </Container>
 
               <Container>
@@ -156,11 +297,12 @@ export default function SignUp() {
                         id="input-with-icon-gridTwo"
                         label="E-mail"
                         value={email}
-                        onChange={(event) => setEmail(event.target.value)}
+                        onChange={onSetEmail}
                       />
                     </Grid>
                   </Grid>
                 </FormControl>
+                {emailAlert}
               </Container>
 
               <Container style={{ marginTop: 20 }}>
@@ -174,7 +316,7 @@ export default function SignUp() {
                     id="standard-adornment-password"
                     type={showPassword ? "text" : "password"}
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={onSetPassword}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -193,7 +335,9 @@ export default function SignUp() {
                   />
                 </FormControl>
               </Container>
-              <Container style={{ marginTop: 20 }}>
+              {passwordAlert}
+
+              {/* <Container style={{ marginTop: 20 }}>
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
@@ -204,7 +348,7 @@ export default function SignUp() {
                     id="standard-adornment-passwordTwo"
                     type={showPasswordTwo ? "text" : "password"}
                     value={passwordTwo}
-                    onChange={(event) => setPasswordTwo(event.target.value)}
+                    onChange={onSetPasswordTwo}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -223,12 +367,14 @@ export default function SignUp() {
                   />
                 </FormControl>
               </Container>
+              {passwordTwoAlert} */}
 
               <Container>
                 <Button
                   variant="contained"
                   style={{ color: AH_BLUE, background: "white", marginTop: 30 }}
                   type="submit"
+                  disabled={submitOff}
                   onClick={submitForm}
                 >
                   inschrijven

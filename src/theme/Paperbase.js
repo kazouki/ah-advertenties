@@ -9,11 +9,11 @@ import { AH_BLUE } from "../config/constants.js";
 
 // import { RemoveScrollBar } from "react-remove-scroll-bar";
 
-import { Widget } from "react-chat-widget";
-import "react-chat-widget/lib/styles.css";
-const getCustomLauncher = (handleToggle) => (
-  <button onClick={handleToggle}>Kletsen bij de koffie automaat!</button>
-);
+// import { Widget } from "react-chat-widget";
+// import "react-chat-widget/lib/styles.css";
+// const getCustomLauncher = (handleToggle) => (
+//   <button onClick={handleToggle}>Kletsen bij de koffie automaat!</button>
+// );
 
 let theme = createMuiTheme({
   typography: {
@@ -139,12 +139,8 @@ const styles = {
   },
   mainContent: {
     overflow: "hidden",
-    // overflowX: "scroll",
-    // overflowY: "hidden",
-    // whiteSpace: "nowrap",
     flex: 1,
     padding: "48px 36px 0",
-    // padding: 0,
     borderRadius: 10,
     background: (props) => props.bg,
   },
@@ -164,9 +160,9 @@ function Paperbase(props) {
           </main>
         </div>
       </div>
-      <div className="chatWidget">
+      {/* <div className="chatWidget">
         <Widget launcher={(handleToggle) => getCustomLauncher(handleToggle)} />
-      </div>
+      </div> */}
     </MuiThemeProvider>
   );
 }
