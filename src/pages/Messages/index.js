@@ -75,9 +75,15 @@ export default function CardDetail(props) {
       margin: theme.spacing(1),
     },
     root: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       background: AH_BLUE_LIGHT,
       height: "100%",
       flexGrow: 1,
+    },
+    messageGrid: {
+      maxWidth: "85%",
     },
     inboxListRoot: {
       width: "100%",
@@ -193,7 +199,7 @@ export default function CardDetail(props) {
       {userToken ? (
         <span>
           <div className={classes.root}>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} className={classes.messageGrid}>
               <Grid item xs={12}>
                 <Paper className={classes.paperTop}>
                   <b>INBOX</b>
@@ -207,10 +213,6 @@ export default function CardDetail(props) {
               </Grid>
               <Grid item xs={6}>
                 <Paper className={classes.paperMessages}>
-                  {/* TODO */}
-                  {/* TODO */}
-                  {/* TODO */}
-                  {/* TODO  dont display if no card is selected from layout */}
                   {remoteUsername ? (
                     <span style={{ fontSize: 13 }}>
                       <b>Jouw gesprek met</b> {remoteUsername}
