@@ -4,8 +4,6 @@ import Ptext from "./ptextModal";
 
 import Paper from "@material-ui/core/Paper";
 
-// import Grid from "@material-ui/core/Grid";
-
 import { Droppable } from "react-beautiful-dnd";
 
 //##### optionals

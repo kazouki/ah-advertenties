@@ -13,7 +13,6 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 
 import Container from "@material-ui/core/Container";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Grid from "@material-ui/core/Grid";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -104,6 +103,7 @@ export default function SignUp() {
     event.preventDefault();
   };
 
+  // ###### optionals
   // const handleClickShowPasswordTwo = () => {
   //   setShowPasswordTwo(!showPasswordTwo);
   // };
@@ -121,7 +121,7 @@ export default function SignUp() {
           <h5>Je naam moet minimaal twee letters bevatten!</h5>
         </b>
       );
-      setSubmitOff(true);
+      setSubmitNameOff(true);
     } else if (e.target.value.length > 15) {
       setNameAlert(
         <b>
@@ -134,31 +134,17 @@ export default function SignUp() {
       setNameAlert("");
     }
 
-    if (!e.target.value) setNameAlert("");
-    if (submitNameOff || submitEmailOff || submitPasswordOff) {
+    if (submitNameOff || submitEmailOff || submitPasswordOff)
       setSubmitOff(true);
-    } else if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
+    if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
       setSubmitOff(false);
+
+    if (!e.target.value) setNameAlert("");
   };
 
   function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
-  }
-
-  function checkPwd(str) {
-    if (str.length < 6) {
-      return "too_short";
-    } else if (str.length > 50) {
-      return "too_long";
-    } else if (str.search(/\d/) == -1) {
-      return "no_num";
-    } else if (str.search(/[a-zA-Z]/) == -1) {
-      return "no_letter";
-    } else if (str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1) {
-      return "bad_char";
-    }
-    return "ok";
   }
 
   const onSetEmail = (e) => {
@@ -177,68 +163,33 @@ export default function SignUp() {
       setEmailAlert("");
     }
 
-    if (!e.target.value) setEmailAlert("");
-    if (submitNameOff || submitEmailOff || submitPasswordOff) {
+    if (submitNameOff || submitEmailOff || submitPasswordOff)
       setSubmitOff(true);
-    } else if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
+    if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
       setSubmitOff(false);
+
+    if (!e.target.value) setEmailAlert("");
   };
 
   const onSetPassword = (e) => {
-    setPassword(e.target.value);
-    const valid = checkPwd(password);
+    const pw = e.target.value;
+    setPassword(pw);
 
-    if (valid !== "ok") {
-      switch (valid) {
-        case "too_short":
-          setPasswordAlert(
-            <b>
-              <h5>Wachtwoord moet minstens 6 lang zijn!</h5>
-            </b>
-          );
-          break;
-        case "too_long":
-          setPasswordAlert(
-            <b>
-              <h5>Wachtwoord is te lang!</h5>
-            </b>
-          );
-          break;
-        case "no_num":
-          setPasswordAlert(
-            <b>
-              <h5>Wachtwoord moet een nummer bevatten!</h5>
-            </b>
-          );
-          break;
-        case "no_letter":
-          setPasswordAlert(
-            <b>
-              <h5>Wachtwoord moet een letter bevatten!</h5>
-            </b>
-          );
-          break;
-        case "bad_char":
-          setPasswordAlert(
-            <b>
-              <h5>Symbool niet toegestaan!</h5>
-            </b>
-          );
-          break;
-        default:
-          break;
-      }
+    var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+    if (!pw.match(passw)) {
       setSubmitPasswordOff(true);
+      setPasswordAlert("password not safe enough!");
     } else {
       setSubmitPasswordOff(false);
       setPasswordAlert("");
     }
+    if (submitNameOff || submitEmailOff || submitPasswordOff)
+      setSubmitOff(true);
+    if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
+      setSubmitOff(false);
 
     if (!e.target.value) setPasswordAlert("");
-    if (submitNameOff || submitEmailOff || submitPasswordOff) {
-      setSubmitOff(true);
-    } else if (!submitNameOff && !submitEmailOff && !submitPasswordOff)
-      setSubmitOff(false);
   };
 
   return (
@@ -265,8 +216,6 @@ export default function SignUp() {
             }}
           >
             <Container style={{ marginTop: 0 }}>
-              {/* <CssBaseline /> */}
-
               <Container>
                 <FormControl className={classes.margin}>
                   <Grid container spacing={1} alignItems="flex-end">
@@ -336,7 +285,7 @@ export default function SignUp() {
                 </FormControl>
               </Container>
               {passwordAlert}
-
+              {/* ###### optionals */}
               {/* <Container style={{ marginTop: 20 }}>
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}

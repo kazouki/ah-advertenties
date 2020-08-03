@@ -10,16 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLayoutState } from "../../store/editor/selectors";
 import { selectCards } from "../../store/card/selectors";
 import { selectPtextIdsPerColumn } from "../../store/editor/selectors";
-// import { selectUser } from "../../store/user/selectors";
 
 import { setLayoutState } from "../../store/editor/actions";
-// import { updateCard } from "../../store/card/actions";
 import { updateCardIndex } from "../../store/card/actions";
 import { updatePtextCounts } from "../../store/editor/actions";
 
 import { AH_BLUE } from "../../config/constants.js";
-
-// import { RemoveScrollBar } from "react-remove-scroll-bar";
 
 const Container = styled.div`
   display: flex;
@@ -31,11 +27,6 @@ function DndLayout(props) {
   const state = useSelector(selectLayoutState);
   const ptextIdsPerColumn = useSelector(selectPtextIdsPerColumn);
   const cards = useSelector(selectCards);
-  // const user = useSelector(selectUser);
-
-  // const cards = useSelector(selectCards);
-  // console.log("cards :::", cards);
-  // console.log("state :::", state);
 
   const onDragStart = (start) => {
     dispatch(updatePtextCounts(cards.cards));
@@ -76,8 +67,6 @@ function DndLayout(props) {
         columnIndex: newDestination,
       };
 
-      // if (user.token)
-      // dispatch(updateCard(updatedCard));
       dispatch(updateCardIndex(updatedCard));
 
       dispatch(updatePtextCounts(cards?.cards));
@@ -146,10 +135,6 @@ function DndLayout(props) {
         };
         dispatch(setLayoutState(newState));
         return;
-
-        //###### optionals
-        //e.g.  request endpoint POST "reorder occurred"
-        //######
       }
 
       // Moving from one list to another

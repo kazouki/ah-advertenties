@@ -1,15 +1,6 @@
 const initialState = {
   messageBox: {
-    messages: [
-      // {
-      //   fromUserId: 1,
-      //   toUserId: 1,
-      //   id: 1,
-      //   text: "kies een gesprek in de inbox ...",
-      //   createdAt: "",
-      //   updatedAt: "",
-      // },
-    ],
+    messages: [],
   },
 };
 

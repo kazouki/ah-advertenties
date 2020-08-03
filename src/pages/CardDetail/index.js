@@ -11,7 +11,6 @@ import { postBid } from "../../store/card/actions";
 import { selectCardDetail } from "../../store/card/selectors";
 import { selectHighestBid } from "../../store/card/selectors";
 import { selectUser } from "../../store/user/selectors";
-// import { selectCards } from "../../store/card/selectors";
 
 import { fetchConversation } from "../../store/message/actions";
 import { fetchInboxMessages } from "../../store/message/actions";
@@ -29,7 +28,6 @@ import { makeStyles } from "@material-ui/core/styles";
 export default function CardDetail(props) {
   const [bidValue, setBidValue] = useState("default");
   const [tooLowAlert, setTooLowAlert] = useState("");
-  // const allCards = useSelector(selectCards);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -38,7 +36,6 @@ export default function CardDetail(props) {
 
   const cardDetail = useSelector(selectCardDetail);
   const highestBidAndId = useSelector(selectHighestBid);
-  // const userToken = useSelector(selectToken);
   const user = useSelector(selectUser);
 
   const useStyles = makeStyles((theme) => ({
@@ -101,9 +98,6 @@ export default function CardDetail(props) {
   };
 
   const onGotoMessages = () => {
-    // dispatch({ type: "LOAD_CONVERSATION", payload: [] });
-
-    //TODO  check neccessity against call in ptextmodal
     dispatch(fetchRemoteUsernameAndId({ cardId: id }));
 
     dispatch(fetchInboxMessages());

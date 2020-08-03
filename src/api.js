@@ -16,6 +16,7 @@ export default async function api(
         ...data,
       },
     });
+
     return res;
   } catch (e) {
     console.log("Api", e);

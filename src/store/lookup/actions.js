@@ -1,20 +1,7 @@
 import api from "../../api";
 import { setLayoutState } from "../editor/actions.js";
 
-export function nlpRequest(textBox) {
-  return async function (dispatch) {
-    try {
-      const res = await api("nlp", { method: "POST", data: { textBox } });
-      if (res) {
-        dispatch({ type: "NLP_RESPONSE", payload: res.data });
-        return res.data;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-}
-
+// temp
 export function populatePtexts() {
   return (dispatch, getState) => {
     const layoutState = getState().editorSliceReducer.layoutState;

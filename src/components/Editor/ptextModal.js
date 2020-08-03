@@ -25,7 +25,6 @@ import { deleteCard, fetchUserFavs } from "../../store/card/actions";
 
 import { fetchCardDetail } from "../../store/card/actions";
 import { getHighestBid } from "../../store/card/actions";
-// import { fetchRemoteUsernameAndId } from "../../store/message/actions";
 
 import CardDetail from "../../pages/CardDetail";
 
@@ -195,7 +194,7 @@ export default function Ptext(props) {
   //###### optionals
   // set draggable to disabled
   const isDragDisabled = false;
-  // const isDragDisabled = props.task.id === "task-1";
+  // const isDragDisabled = props.ptext.id === "ptext-1";
   //######
 
   function SwitchToolbar() {

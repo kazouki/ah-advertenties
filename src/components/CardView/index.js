@@ -28,10 +28,6 @@ export default function CardView(props) {
 
   return (
     <Container>
-      {/* <Container>
-        <img variant="top" src={props.imageUrl} alt="" />
-      </Container> */}
-
       <Container
         style={{
           display: "flex",

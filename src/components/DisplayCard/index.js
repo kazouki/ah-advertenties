@@ -251,7 +251,6 @@ export default function DisplayCard(props) {
                     value={card?.description}
                     rows={6}
                     rowsMax={6}
-                    // step="1"
                     className={classes.textField}
                     margin="dense"
                     // Chalkduster // Brush Script MT // Comic Sans MS // papyrus // Trattatello // Apple Chancery

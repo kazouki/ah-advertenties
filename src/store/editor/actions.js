@@ -114,7 +114,6 @@ export const initializeLayout = (cards) => {
 
 //TODO   only update ptext counts per column
 export const updatePtextCounts = (cards) => {
-  // console.clear();
   return (dispatch, getState) => {
     let newPtexts = {};
     cards.forEach((card) => {
