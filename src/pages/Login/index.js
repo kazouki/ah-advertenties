@@ -3,7 +3,9 @@ import { useHistory, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/user/actions";
+import { fetchUnreadMessageCount } from "../../store/message/actions";
 import { selectToken } from "../../store/user/selectors";
+import { selectUser } from "../../store/user/selectors";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
@@ -60,6 +62,7 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState("");
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
   const history = useHistory();
 
   const classes = useStyles();
@@ -72,11 +75,10 @@ export default function SignUp() {
 
   function submitForm(event) {
     event.preventDefault();
-
     dispatch(login(email, password));
-
     setEmail("");
     setPassword("");
+    dispatch(fetchUnreadMessageCount({ userId: user.id }));
   }
 
   const handleClickShowPassword = () => {

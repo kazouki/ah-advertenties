@@ -80,10 +80,13 @@ export default function CardDetail(props) {
       justifyContent: "center",
       background: AH_BLUE_LIGHT,
       height: "100%",
+
       flexGrow: 1,
     },
     messageGrid: {
       maxWidth: "85%",
+      marginTop: 15,
+      marginBottom: 30,
     },
     inboxListRoot: {
       width: "100%",
