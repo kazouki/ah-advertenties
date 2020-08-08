@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## install & run
 
-## Available Scripts
+* $ npm i && npm run
 
-In the project directory, you can run:
 
-### `npm start`
+Ah-advertenties is a digital remake of the classic Albert Heijn goods & services bulletin board
+found in their dutch supermarkets. 
+This visual layout represents the first version of their board.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## feats
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+---- Create and move cards
+* as a user you can create a new card which will appear on the next first available location on the board.
+if a row already has 4 cards or more, the new card will be placed onto the next row with an empty spot.
+* the user has two ways to create a new card, by filling out a form to create a pre-filled out card, or an empty one.
+* the user can use the toolbar on his card to edit the contents in a modal screen.
+* as a user you are able to move cards around by dragging the drag handle on the card.
+* when a row contains 4 or more cards, the user is only able to remove cards from the row.
 
-### `npm test`
+---- Place bids
+* as a user you can open any card using the on-card toolbar and place a bid or open the detail menu modal by clicking the toolbar icons.
+in the detail modal you are able to "like" the card. If the card has "offer" / "aangeboden"  checked, the user will be able to place a bid.
+* the minimun amount of the bid has to 1 euro higher than the highest bid placed,
+the user is able to see all the other users who placed bids in the detail modal.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+---- Messaging
+* as a user you are able to open the messaging page from the detail modal by clicking the "send message" button.
+This button along with the bidding input and the like button will only be active once the user logs in.
+* the mail icon in the navbar will indicate whether you as a user have any new messages and how many.
+* clicking the mail icon will open the messaging page which lets you open conversations and send new messages.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---- Favorites
+* as a user you are able to view your favorite (liked) cards and a users own cards by going to either of the options on the 
+'Favorites'/'mijn kaarten' link in the navbar.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## stack 
 
-### `npm run eject`
+---- Server
+* postgreSQL
+* sequelize ORM
+* NodeJS
+* Express
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---- Client
+* NodeJS
+* Axios
+* React
+* Material-UI
+* React-beautiful-dnd
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
