@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://i.ibb.co/B6vDcjX/Screenshot-2020-08-08-at-20-09-31.png" alt="Screenshot-2020-08-08-at-20-09-31" width="50%" border="0">
+</p>
+
 ## install & run
 
 * $ npm i && npm run
