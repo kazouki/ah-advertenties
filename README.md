@@ -7,7 +7,7 @@
 * $ npm i && npm run
 
 
-Ah-advertenties is a digital remake of the classic Albert Heijn goods & services bulletin board
+<a href="https://suspicious-leavitt-350441.netlify.app/">Ah-advertenties</a> is a digital remake of the classic Albert Heijn goods & services bulletin board
 found in their dutch supermarkets. 
 This visual layout represents the first version of their board.
 
