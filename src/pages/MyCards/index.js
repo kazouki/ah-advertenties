@@ -1,11 +1,13 @@
 import React from "react";
 
 import DisplayCard from "../../components/DisplayCard";
+import Navigation from "../../components/Navigation";
 
 export default function MyCards() {
   return (
-    <div>
+    <>
+      <Navigation />
       <DisplayCard mode={"myCards"} />
-    </div>
+    </>
   );
 }

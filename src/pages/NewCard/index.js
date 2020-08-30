@@ -17,6 +17,7 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { AH_BLUE } from "../../config/constants.js";
+import Navigation from "../../components/Navigation";
 
 let theme = createMuiTheme({
   typography: {
@@ -152,6 +153,7 @@ export default function NewCard() {
 
   return (
     <>
+      <Navigation />
       <MuiThemeProvider theme={theme}>
         <Container
           style={{

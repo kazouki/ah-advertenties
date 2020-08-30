@@ -6,6 +6,7 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 import { AH_BLUE } from "../config/constants.js";
+import Child from "../components/Child";
 
 let theme = createMuiTheme({
   typography: {
@@ -146,6 +147,7 @@ function Paperbase(props) {
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appContent}>
+          {/* <Child /> */}
           <main className={classes.mainContent}>
             <LayoutComponent />
           </main>

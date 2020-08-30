@@ -84,8 +84,6 @@ export const initializeLayout = (cards) => {
       payload: { ...ptextIdsPerColumn },
     });
 
-    // console.log("newcolumns ", newColumns);
-
     /////// ???????
     let newColumnsOrdered = {};
     Object.keys(newColumns)

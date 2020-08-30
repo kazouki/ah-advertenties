@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { selectCards } from "../../store/card/selectors";
+// import { selectCards } from "../../store/card/selectors";
 import { selectUserCards } from "../../store/user/selectors";
 import { selectUserFavorites } from "../../store/card/selectors";
 
