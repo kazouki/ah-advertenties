@@ -16,6 +16,7 @@ import { updateCardIndex } from "../../store/card/actions";
 import { updatePtextCounts } from "../../store/editor/actions";
 
 import { AH_BLUE } from "../../config/constants.js";
+import Navigation from "../Navigation";
 
 const Container = styled.div`
   display: flex;
@@ -168,6 +169,7 @@ function DndLayout(props) {
     <div
       style={{ background: "linear-gradient(45deg, #989898 30%, #BEBEBE 90%)" }}
     >
+      <Navigation />
       <DragDropContext
         onDragStart={onDragStart}
         onDragUpdate={onDragUpdate}

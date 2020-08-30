@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Badge from "@material-ui/core/Badge";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -7,9 +7,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
+// import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
+// import SearchIcon from "@material-ui/icons/Search";
 
 import { Link } from "react-router-dom";
 
@@ -36,7 +36,12 @@ import { getUserCards } from "../../store/user/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: "100%",
     flexGrow: 5,
+  },
+  appbar: {
+    height: 58,
+    background: AH_BLUE,
   },
   homeButton: {
     display: "block",
@@ -54,9 +59,6 @@ const useStyles = makeStyles((theme) => ({
 
   menuItem: {
     flexGrow: 1,
-    display: "block",
-
-    // marginLeft: 80,
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -65,9 +67,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButtons: {
     display: "flex",
-    flexDirection: "row",
-    marginLeft: "20em",
-    marginRight: "20em",
+    position: "relative",
+    marginLeft: theme.spacing(10),
+    marginRight: theme.spacing(10),
     padding: 0,
   },
   search: {
@@ -139,7 +141,7 @@ export default function SearchAppBar() {
   };
 
   function NewCardMenu() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
       if (!user.token) {
@@ -195,7 +197,7 @@ export default function SearchAppBar() {
   }
 
   function MyCardsMenu() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
       if (!user.token) {
@@ -267,7 +269,7 @@ export default function SearchAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="sticky" style={{ background: AH_BLUE }}>
+      <AppBar position="sticky" className={classes.appbar}>
         <Toolbar>
           <Link
             to={"/"}
@@ -280,19 +282,17 @@ export default function SearchAppBar() {
             <img className={classes.homeButton} src={ahLogoWit} alt="" />
           </Link>
 
-          <Typography className={classes.title} variant="h5" noWrap>
+          <Typography className={classes.title} variant="h5">
             Albert Heijn
           </Typography>
-          <Typography variant="h6" noWrap>
-            Advertenties
-          </Typography>
+          <Typography variant="h6">Advertenties</Typography>
           <div className={classes.menuButtons}>
             <NewCardMenu />
 
             <MyCardsMenu />
           </div>
 
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -304,7 +304,7 @@ export default function SearchAppBar() {
               }}
               inputProps={{ "aria-label": "search" }}
             />
-          </div>
+          </div> */}
           {user.token ? (
             <Link
               style={{ color: "white", marginLeft: 10 }}
@@ -345,7 +345,6 @@ export default function SearchAppBar() {
                 <Typography
                   className={classes.menuItem}
                   style={{ fontSize: 11 }}
-                  noWrap
                 >
                   Welkom terug
                 </Typography>

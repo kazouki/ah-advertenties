@@ -1,5 +1,6 @@
-export const apiUrl =
-  process.env.API_URL || "https://ah-advertenties-server.herokuapp.com";
+export const apiUrl = process.env.API_URL || "http://localhost:4000";
+// export const apiUrl =
+//   process.env.API_URL || "https://ah-advertenties-server.herokuapp.com";
 export const DEFAULT_MESSAGE_TIMEOUT = 5000;
 
 export const AH_BLUE = "#00A0E2";

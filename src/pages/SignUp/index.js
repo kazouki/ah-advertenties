@@ -26,6 +26,7 @@ import Button from "@material-ui/core/Button";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import { AH_BLUE } from "../../config/constants.js";
+import Navigation from "../../components/Navigation";
 
 let theme = createMuiTheme({
   typography: {
@@ -58,7 +59,7 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordTwo, setPasswordTwo] = useState("");
+  // const [passwordTwo, setPasswordTwo] = useState("");
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const history = useHistory();
@@ -72,10 +73,10 @@ export default function SignUp() {
   const [nameAlert, setNameAlert] = useState("");
   const [emailAlert, setEmailAlert] = useState("");
   const [passwordAlert, setPasswordAlert] = useState("");
-  const [passwordTwoAlert, setPasswordTwoAlert] = useState("");
+  // const [passwordTwoAlert, setPasswordTwoAlert] = useState("");
 
   const [showPassword, setShowPassword] = useState();
-  const [showPasswordTwo, setShowPasswordTwo] = useState();
+  // const [showPasswordTwo, setShowPasswordTwo] = useState();
 
   const classes = useStyles();
 
@@ -143,7 +144,7 @@ export default function SignUp() {
   };
 
   function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
 
@@ -194,6 +195,7 @@ export default function SignUp() {
 
   return (
     <>
+      <Navigation />
       <MuiThemeProvider theme={theme}>
         <Container
           style={{
