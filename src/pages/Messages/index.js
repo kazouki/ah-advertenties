@@ -18,6 +18,7 @@ import { selectUser } from "../../store/user/selectors";
 
 // import { AH_BLUE_EXTRALIGHT } from "../../config/constants.js";
 import { AH_BLUE_LIGHT } from "../../config/constants.js";
+import Navigation from "../../components/Navigation";
 
 ////////
 import Paper from "@material-ui/core/Paper";
@@ -199,6 +200,7 @@ export default function CardDetail(props) {
 
   return (
     <div>
+      <Navigation />
       {userToken ? (
         <span>
           <div className={classes.root}>
