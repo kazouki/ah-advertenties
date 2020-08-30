@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { apiUrl } from "./config/constants";
 
 export default async function api(
   endpoint,
@@ -7,7 +8,7 @@ export default async function api(
   try {
     const res = await Axios({
       method: method,
-      url: "https://ah-advertenties-server.herokuapp.com/" + endpoint,
+      url: apiUrl + "/" + endpoint,
       headers: {
         Authorization: `Bearer ${jwt}`,
         "Content-Type": "application/json",

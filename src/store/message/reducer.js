@@ -10,7 +10,6 @@ export default function messagesSliceReducer(
 ) {
   switch (type) {
     case "LOAD_CONVERSATION":
-      console.log("payload  in LOAD_CONVERSATION", payload);
       const sortedByDate = payload.sort(
         (a, b) => a.createdAt.split("T")[0] - b.createdAt.split("T")[0]
       );

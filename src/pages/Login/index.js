@@ -28,6 +28,7 @@ import Button from "@material-ui/core/Button";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import { AH_BLUE } from "../../config/constants.js";
+import Navigation from "../../components/Navigation";
 
 let theme = createMuiTheme({
   typography: {
@@ -91,6 +92,7 @@ export default function SignUp() {
 
   return (
     <>
+      <Navigation />
       <MuiThemeProvider theme={theme}>
         <Container
           style={{

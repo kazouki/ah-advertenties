@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css";
 
 import { Switch, Route } from "react-router-dom";
-import Navigation from "./components/Navigation";
+
 import Loading from "./components/Loading";
 
 import MessageBox from "./components/MessageBox";
@@ -29,6 +29,8 @@ import DndLayout from "./components/Editor/dndLayout";
 import "typeface-roboto";
 import { AH_BLUE } from "./config/constants.js";
 
+// import Split from "react-split";
+
 function App() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectAppLoading);
@@ -37,14 +39,13 @@ function App() {
   useEffect(() => {
     dispatch(getUserWithStoredToken());
     dispatch(fetchCards());
-    dispatch(fetchUserFavCards(user.id));
+    if (user.id) dispatch(fetchUserFavCards(user.id));
   }, [dispatch, user.id]);
 
   return (
     <div className="App">
-      <Navigation />
-      <MessageBox />
-      {isLoading ? <Loading /> : null}
+      {/* <Split sizes={[100, 100]}> */}
+
       <Switch>
         <Route
           exact
@@ -65,6 +66,10 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/profile" component={Profile} />
       </Switch>
+      {/* </Split> */}
+
+      {isLoading ? <Loading /> : null}
+      <MessageBox />
     </div>
   );
 }
