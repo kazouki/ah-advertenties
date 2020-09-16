@@ -1,4 +1,5 @@
-export const apiUrl = process.env.REACT_APP_API_URL;
+// export const apiUrl = process.env.REACT_APP_API_URL;
+export const apiUrl = "https://ah-advertenties-server.herokuapp.com";
 
 export const DEFAULT_MESSAGE_TIMEOUT = 5000;
 
